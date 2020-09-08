@@ -1,9 +1,10 @@
 ﻿using Refugiados.BFF.Models;
+using Refugiados.BFF.Servicos.Model;
 using Refugiados.BFF.Util;
 using Repositorio.Dtos;
 using Repositorio.Repositorios;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace Refugiados.BFF.Servicos
 {
@@ -61,6 +62,21 @@ namespace Refugiados.BFF.Servicos
             _usuarioRepositorio.AtualizarUsuario(emailUsuario, senhaCifrada, codigoUsuario);
         }
 
+        public AutenticarUsuarioServiceModel AutenticarUsuario(string emailUsuario, string senhaUsuario)
+        {
+            var usuario = ListarUsuarios(null, emailUsuario).FirstOrDefault();
+
+            if (usuario == null)
+                return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.Situacao.NomeDeUsuarioInvalido, 0);
+
+            var senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
+
+            if (!string.Equals(usuario.Senha, senhaCifrada))
+                return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.Situacao.SenhaInvalida, 0);
+
+            return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.Situacao.UsuarioAutenticado, usuario.Codigo);
+        }
+
         #region METODOS PRIVADOS
 
         private string CifrarSenhaUsuario(string senha)
@@ -77,5 +93,6 @@ namespace Refugiados.BFF.Servicos
         List<UsuarioModel> ListarUsuarios(int? codigoUsuario, string email);
         void CadastrarUsuario(string emailUsuario, string senhaUsuario);
         void AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
+        AutenticarUsuarioServiceModel AutenticarUsuario(string emailUsuario, string senhaUsuario);
     }
 }

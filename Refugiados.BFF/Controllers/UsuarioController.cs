@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Refugiados.BFF.Models;
 using Refugiados.BFF.Models.Requisicoes;
+using Refugiados.BFF.Servicos.Model;
 
 namespace Refugiados.BFF.Controllers
 {
@@ -29,7 +30,7 @@ namespace Refugiados.BFF.Controllers
         }
 
         [HttpPost]
-        public IActionResult CadastrarUsuario([FromBody] CadastrarUsuarioRequestModel requisicao)
+        public IActionResult CadastrarUsuario([FromBody] UsuarioRequestModel requisicao)
         {
             if (requisicao == null)
                 return BadRequest();
@@ -46,7 +47,7 @@ namespace Refugiados.BFF.Controllers
         }
 
         [HttpPatch]
-        public IActionResult AtualizarUsuario([FromBody] AtualizarUsuarioRequisicaoModelcs requisicao) 
+        public IActionResult AtualizarUsuario([FromBody] AtualizarUsuarioRequestModel requisicao) 
         {
             if (requisicao == null)
                 return BadRequest();
@@ -60,6 +61,28 @@ namespace Refugiados.BFF.Controllers
             _usuarioServico.AtualizarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.CodigoUsuario);
 
             return Ok();
+        }
+
+        [HttpGet("autenticacao")]
+        public IActionResult AutenticarUsuario([FromBody] UsuarioRequestModel requisicao)
+        {
+            if (requisicao == null)
+                return BadRequest();
+
+            if (string.IsNullOrWhiteSpace(requisicao.EmailUsuario))
+                return BadRequest("O Email deve ser informado");
+
+            if (string.IsNullOrWhiteSpace(requisicao.SenhaUsuario))
+                return BadRequest("A senha deve ser informada");
+
+            var resultadoAutenticacao = _usuarioServico.AutenticarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
+
+            if (resultadoAutenticacao.SituacaoAutenticacao == AutenticarUsuarioServiceModel.Situacao.NomeDeUsuarioInvalido)
+                return Ok(new { SucessoAutenticacao = false, Motivo = "Usuario inexistente" });
+            if (resultadoAutenticacao.SituacaoAutenticacao == AutenticarUsuarioServiceModel.Situacao.SenhaInvalida)
+                return Ok(new { SucessoAutenticacao = false, Motivo = "Senha invalida" });
+            
+            return Ok(new { SucessoAutenticacao = true, resultadoAutenticacao.CodigoUsuario });
         }
     }
 }

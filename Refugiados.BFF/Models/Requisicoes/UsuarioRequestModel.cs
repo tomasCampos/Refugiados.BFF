@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace Refugiados.BFF.Models.Requisicoes
 {
-    public class AtualizarUsuarioRequisicaoModelcs
+    public class UsuarioRequestModel
     {
         public string EmailUsuario { get; set; }
         public string SenhaUsuario { get; set; }
-        public int CodigoUsuario { get; set; }
     }
 }
