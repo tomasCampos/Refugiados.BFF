@@ -18,13 +18,40 @@ namespace Repositorio.Insfraestrutura
             _conn = new MySqlConnection(CONNECTION_STRING);
         }
 
-        public IEnumerable<T> Listar<T>(string sql)
+        public IEnumerable<T> Selecionar<T>(string sql)
         {
             _conn.Open();
             var result = _conn.Query<T>(sql).ToList();
             _conn.Close();
 
             return result;
+        }
+
+        public IEnumerable<T> Selecionar<T>(string sql, object parametros)
+        {
+            _conn.Open();
+            var result = _conn.Query<T>(sql, parametros).ToList();
+            _conn.Close();
+
+            return result;
+        }
+
+        public int Executar(string sql)
+        {
+            _conn.Open();
+            var numeroDeLinhasAfetadas = _conn.Execute(sql);
+            _conn.Close();
+
+            return numeroDeLinhasAfetadas;
+        }
+
+        public int Executar(string sql, object parametros)
+        {
+            _conn.Open();
+            var numeroDeLinhasAfetadas = _conn.Execute(sql, parametros);
+            _conn.Close();
+
+            return numeroDeLinhasAfetadas;
         }
     }
 }

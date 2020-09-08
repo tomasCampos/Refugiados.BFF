@@ -1,14 +1,15 @@
 ﻿using Refugiados.BFF.Models;
+using Refugiados.BFF.Util;
+using Repositorio.Dtos;
 using Repositorio.Repositorios;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Refugiados.BFF.Servicos
 {
     public class UsuarioServico : IUsuarioServico
     {
+        private const string CHAVE_CIFRA_SENHA = "1e64fdce-e561-4f3d-bb78-0d7c8c86d14b";
         private readonly IUsuarioRepositorio _usuarioRepositorio;
 
         public UsuarioServico(IUsuarioRepositorio usuarioRepositorio)
@@ -16,25 +17,65 @@ namespace Refugiados.BFF.Servicos
             _usuarioRepositorio = usuarioRepositorio;
         }
 
-        public UsuarioModel ObterUsuario()
+        public List<UsuarioModel> ListarUsuarios(int? codigoUsuario, string email)
         {
-            var usuario = _usuarioRepositorio.ListarUsuarios().FirstOrDefault();
-
-            var usuarioModel = new UsuarioModel
+            var usuarios = new List<UsuarioDto>();
+            if (!codigoUsuario.HasValue)
             {
-                Codigo = usuario.codigo_usuario,
-                Email = usuario.email_usuario,
-                Senha = usuario.senha_usuario,
-                DataCriacao = usuario.data_criacao,
-                DataAlteracao = usuario.data_alteracao
-            };
+                if (string.IsNullOrEmpty(email))
+                    usuarios = _usuarioRepositorio.ListarUsuarios();
+                else
+                    usuarios = _usuarioRepositorio.ListarUsuarios(email);
+            }               
+            else
+                usuarios = _usuarioRepositorio.ListarUsuarios(codigoUsuario.Value);
 
-            return usuarioModel;
+            var ListaDeUsuarios = new List<UsuarioModel>();
+            foreach (var usuario in usuarios)
+            {
+                ListaDeUsuarios.Add(new UsuarioModel 
+                {
+                    Codigo = usuario.codigo_usuario,
+                    Email = usuario.email_usuario,
+                    Senha = usuario.senha_usuario,
+                    DataCriacao = usuario.data_criacao,
+                    DataAlteracao = usuario.data_alteracao
+                });
+            }
+
+            return ListaDeUsuarios;
         }
+
+        public void CadastrarUsuario(string emailUsuario, string senhaUsuario)
+        {            
+            var senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
+            _usuarioRepositorio.CadastrarUsuario(emailUsuario, senhaCifrada);
+        }
+
+        public void AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario)
+        {
+            var senhaCifrada = string.Empty;
+            if (!string.IsNullOrWhiteSpace(senhaUsuario))
+                senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
+
+            _usuarioRepositorio.AtualizarUsuario(emailUsuario, senhaCifrada, codigoUsuario);
+        }
+
+        #region METODOS PRIVADOS
+
+        private string CifrarSenhaUsuario(string senha)
+        {            
+            var senhaCifrada = AES.Encrypt(senha, CHAVE_CIFRA_SENHA);
+            return senhaCifrada;
+        }
+            
+        #endregion
     }
 
     public interface IUsuarioServico 
     {
-        UsuarioModel ObterUsuario();
+        List<UsuarioModel> ListarUsuarios(int? codigoUsuario, string email);
+        void CadastrarUsuario(string emailUsuario, string senhaUsuario);
+        void AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
     }
 }
