@@ -63,7 +63,7 @@ namespace Refugiados.BFF.Controllers
             return Ok();
         }
 
-        [HttpGet("autenticacao")]
+        [HttpPost("autenticacao")]
         public IActionResult AutenticarUsuario([FromBody] UsuarioRequestModel requisicao)
         {
             if (requisicao == null)
