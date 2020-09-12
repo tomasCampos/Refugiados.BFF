@@ -1,55 +1,60 @@
 ﻿using MySqlConnector;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Text;
 using Dapper;
-using System.Linq;
+using Repositorio.CrossCutting;
+using System.Threading.Tasks;
 
 namespace Repositorio.Insfraestrutura
 {
     public class DataBaseConnector
     {
-        private const string CONNECTION_STRING = "server=us-cdbr-east-02.cleardb.com;user=bf7492f9f13e58;password=e5fc5916;database=heroku_93ac2d8811d872a";
         private readonly MySqlConnection _conn;
 
         public DataBaseConnector()
         {
-            _conn = new MySqlConnection(CONNECTION_STRING);
+            _conn = new MySqlConnection(AppConstants.CONNECTION_STRING);
         }
 
-        public IEnumerable<T> Selecionar<T>(string sql)
+        public async Task<IEnumerable<T>> Selecionar<T>(string sql)
         {
-            _conn.Open();
-            var result = _conn.Query<T>(sql).ToList();
-            _conn.Close();
+            await _conn.OpenAsync();
+            
+            var result = await _conn.QueryAsync<T>(sql);
+
+            await _conn.CloseAsync();
 
             return result;
         }
 
-        public IEnumerable<T> Selecionar<T>(string sql, object parametros)
+        public async Task<IEnumerable<T>> SelecionarAsync<T>(string sql, object parametros)
         {
-            _conn.Open();
-            var result = _conn.Query<T>(sql, parametros).ToList();
-            _conn.Close();
+            await _conn.OpenAsync();
+
+            var result = await _conn.QueryAsync<T>(sql, parametros);
+            
+            await _conn.CloseAsync();
 
             return result;
         }
 
-        public int Executar(string sql)
+        public async Task<int> ExecutarAsync(string sql)
         {
-            _conn.Open();
-            var numeroDeLinhasAfetadas = _conn.Execute(sql);
-            _conn.Close();
+            await _conn.OpenAsync();
+
+            var numeroDeLinhasAfetadas = await _conn.ExecuteAsync(sql);
+
+            await _conn.CloseAsync();
 
             return numeroDeLinhasAfetadas;
         }
 
-        public int Executar(string sql, object parametros)
+        public async Task<int> ExecutarAsync(string sql, object parametros)
         {
-            _conn.Open();
-            var numeroDeLinhasAfetadas = _conn.Execute(sql, parametros);
-            _conn.Close();
+            await _conn.OpenAsync();
+            
+            var numeroDeLinhasAfetadas = await _conn.ExecuteAsync(sql, parametros);
+            
+            await _conn.CloseAsync();
 
             return numeroDeLinhasAfetadas;
         }
