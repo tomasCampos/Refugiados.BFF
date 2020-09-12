@@ -47,10 +47,14 @@ namespace Refugiados.BFF.Servicos
             return ListaDeUsuarios;
         }
 
-        public void CadastrarUsuario(string emailUsuario, string senhaUsuario)
+        public int CadastrarUsuario(string emailUsuario, string senhaUsuario)
         {            
             var senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
             _usuarioRepositorio.CadastrarUsuario(emailUsuario, senhaCifrada);
+
+            var usuarioCadastrado = ListarUsuarios(null, emailUsuario).First();
+
+            return usuarioCadastrado.Codigo;
         }
 
         public void AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario)
@@ -91,7 +95,7 @@ namespace Refugiados.BFF.Servicos
     public interface IUsuarioServico 
     {
         List<UsuarioModel> ListarUsuarios(int? codigoUsuario, string email);
-        void CadastrarUsuario(string emailUsuario, string senhaUsuario);
+        int CadastrarUsuario(string emailUsuario, string senhaUsuario);
         void AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
         AutenticarUsuarioServiceModel AutenticarUsuario(string emailUsuario, string senhaUsuario);
     }

@@ -41,9 +41,9 @@ namespace Refugiados.BFF.Controllers
             if (string.IsNullOrWhiteSpace(requisicao.SenhaUsuario))
                 return BadRequest("A senha deve ser informada");
 
-            _usuarioServico.CadastrarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
+            var codigoUsuarioCadastrado = _usuarioServico.CadastrarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
 
-            return Ok();
+            return Ok(new { codigoUsuario = codigoUsuarioCadastrado });
         }
 
         [HttpPatch]
