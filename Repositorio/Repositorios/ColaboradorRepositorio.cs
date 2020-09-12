@@ -29,7 +29,7 @@ namespace Repositorio.Repositorios
                                                     CURRENT_TIMESTAMP,
                                                     @codigo_usuario);";
 
-        private const string ATUALIZAR_COLABORADOR = @"UPDATE `heroku_93ac2d8811d872a`.`colaborador`
+        private const string ATUALIZAR_NOME_COLABORADOR = @"UPDATE `heroku_93ac2d8811d872a`.`colaborador`
                                                       SET
                                                       `nome_colaborador` = @nome_colaborador,
                                                       `data_alteracao` = CURRENT_TIMESTAMP
@@ -45,7 +45,7 @@ namespace Repositorio.Repositorios
         public void AtualizarColaborador(string nome,int codigoUsuario)
         {
             if (!string.IsNullOrWhiteSpace(nome))
-                _dataBase.Executar(ATUALIZAR_COLABORADOR, new { nome_colaborador = nome, codigo_usuario = codigoUsuario });
+                _dataBase.Executar(ATUALIZAR_NOME_COLABORADOR, new { nome_colaborador = nome, codigo_usuario = codigoUsuario });
             
         }
 

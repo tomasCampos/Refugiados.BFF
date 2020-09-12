@@ -36,10 +36,10 @@ namespace Refugiados.BFF.Controllers
             if (string.IsNullOrWhiteSpace(colaborador.NomeColaborador))
                 return BadRequest("Nenhum dado para atualizar");
 
-            if (colaborador.CodigoUsuario <= 0)
+            if (codigoUsuario <= 0)
                 return BadRequest("Usuario inexistente");
 
-            _colaboradorServico.AtualizarColaborador(colaborador.NomeColaborador,colaborador.CodigoUsuario);
+            _colaboradorServico.AtualizarColaborador(colaborador.NomeColaborador, codigoUsuario);
 
             return Ok();
         }
