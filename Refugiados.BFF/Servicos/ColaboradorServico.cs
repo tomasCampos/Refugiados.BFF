@@ -16,23 +16,23 @@ namespace Refugiados.BFF.Servicos
             _colaboradorRepositorio = colaboradorRepositorio;
         }
 
-        public void AtualizarColaborador(string nome, int codigoUsuario)
+        public async Task AtualizarColaborador(string nome, int codigoUsuario)
         {
-            _colaboradorRepositorio.AtualizarColaborador(nome,codigoUsuario);
+            await _colaboradorRepositorio.AtualizarColaborador(nome,codigoUsuario);
         }
 
-        public int CadastrarColaborador(string nome, int codigoUsuario)
+        public async Task<int> CadastrarColaborador(string nome, int codigoUsuario)
         {
-            _colaboradorRepositorio.CadastrarColaborador(nome, codigoUsuario);
-            var colaboradorCadastrado = ObterColaboradorPorCodigoUsuario(codigoUsuario);
+            await _colaboradorRepositorio.CadastrarColaborador(nome, codigoUsuario);
+            var colaboradorCadastrado = await ObterColaboradorPorCodigoUsuario(codigoUsuario);
 
             return colaboradorCadastrado.CodigoColaborador;
         }
 
 
-        public ColaboradorModel ObterColaboradorPorCodigoUsuario(int codigoUsuario)
+        public async Task<ColaboradorModel> ObterColaboradorPorCodigoUsuario(int codigoUsuario)
         {
-            var colaborador = _colaboradorRepositorio.ObterColaboradorPorCodigoUsuario(codigoUsuario);
+            var colaborador = await _colaboradorRepositorio.ObterColaboradorPorCodigoUsuario(codigoUsuario);
 
             if (colaborador == null)
                 return null;
@@ -50,8 +50,8 @@ namespace Refugiados.BFF.Servicos
 
     public interface IColaboradorSerivico
     {
-        int CadastrarColaborador(string nome, int codigoUsuario);
-        ColaboradorModel ObterColaboradorPorCodigoUsuario(int codigoUsuario);
-        void AtualizarColaborador(string nome, int codigoUsuario);
+        Task<int> CadastrarColaborador(string nome, int codigoUsuario);
+        Task<ColaboradorModel> ObterColaboradorPorCodigoUsuario(int codigoUsuario);
+        Task AtualizarColaborador(string nome, int codigoUsuario);
     }
 }
