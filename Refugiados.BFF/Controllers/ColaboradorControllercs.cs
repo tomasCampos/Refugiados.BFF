@@ -28,9 +28,20 @@ namespace Refugiados.BFF.Controllers
         }
 
         [HttpPatch("{codigoUsuario}")]
-        public IActionResult AlterarColaborador(int codigoUsuario, [FromBody] AtualizarColaboradorRequestModel colaborador)
+        public IActionResult AtualizarColaborador(int codigoUsuario, [FromBody] AtualizarColaboradorRequestModel colaborador)
         {
-            throw new NotImplementedException();
+            if (colaborador == null)
+                return BadRequest();
+
+            if (string.IsNullOrWhiteSpace(colaborador.NomeColaborador))
+                return BadRequest("Nenhum dado para atualizar");
+
+            if (colaborador.CodigoUsuario <= 0)
+                return BadRequest("Usuario inexistente");
+
+            _colaboradorServico.AtualizarColaborador(colaborador.NomeColaborador,colaborador.CodigoUsuario);
+
+            return Ok();
         }
     }
 }

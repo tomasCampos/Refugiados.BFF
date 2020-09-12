@@ -16,9 +16,9 @@ namespace Refugiados.BFF.Servicos
             _colaboradorRepositorio = colaboradorRepositorio;
         }
 
-        public void AtualizarColaborador(string nome)
+        public void AtualizarColaborador(string nome, int codigoUsuario)
         {
-            throw new NotImplementedException();
+            _colaboradorRepositorio.AtualizarColaborador(nome,codigoUsuario);
         }
 
         public int CadastrarColaborador(string nome, int codigoUsuario)
@@ -52,6 +52,6 @@ namespace Refugiados.BFF.Servicos
     {
         int CadastrarColaborador(string nome, int codigoUsuario);
         ColaboradorModel ObterColaboradorPorCodigoUsuario(int codigoUsuario);
-        void AtualizarColaborador(string nome);
+        void AtualizarColaborador(string nome, int codigoUsuario);
     }
 }

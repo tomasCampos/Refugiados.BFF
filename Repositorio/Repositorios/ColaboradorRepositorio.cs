@@ -29,6 +29,12 @@ namespace Repositorio.Repositorios
                                                     CURRENT_TIMESTAMP,
                                                     @codigo_usuario);";
 
+        private const string ATUALIZAR_COLABORADOR = @"UPDATE `heroku_93ac2d8811d872a`.`colaborador`
+                                                      SET
+                                                      `nome_colaborador` = @nome_colaborador,
+                                                      `data_alteracao` = CURRENT_TIMESTAMP
+                                                      WHERE `codigo_usuario` = @codigo_usuario;";
+
         #endregion
 
         public ColaboradorRepositorio()
@@ -36,9 +42,11 @@ namespace Repositorio.Repositorios
             _dataBase = new DataBaseConnector();
         }
 
-        public void AtualizarColaborador(string nome)
+        public void AtualizarColaborador(string nome,int codigoUsuario)
         {
-            throw new NotImplementedException();
+            if (!string.IsNullOrWhiteSpace(nome))
+                _dataBase.Executar(ATUALIZAR_COLABORADOR, new { nome_colaborador = nome, codigo_usuario = codigoUsuario });
+            
         }
 
         public void CadastrarColaborador(string nome, int codigoUsuario)
@@ -57,6 +65,6 @@ namespace Repositorio.Repositorios
     {
         void CadastrarColaborador(string nome, int codigoUsuario);
         ColaboradorDto ObterColaboradorPorCodigoUsuario(int codigoUsuario);
-        void AtualizarColaborador(string nome);
+        void AtualizarColaborador(string nome, int codigoUsuario);
     }
 }
