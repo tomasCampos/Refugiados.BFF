@@ -32,9 +32,9 @@ namespace Refugiados.BFF.Servicos
             {
                 return new EmpresaModel
                 {
-                    CodigoEmpresa = empresa.CodigoEmpresa,
-                    CodigoUsuario = int.Parse(empresa.CodigoUsuario),
-                    RazaoSocial = empresa.RazaoSocial
+                    CodigoEmpresa = empresa.codigo_empresa,
+                    CodigoUsuario = int.Parse(empresa.codigo_usuario),
+                    RazaoSocial = empresa.razao_social
                 };
             }
             else

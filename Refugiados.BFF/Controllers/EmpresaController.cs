@@ -41,9 +41,9 @@ namespace Refugiados.BFF.Controllers
                 return BadRequest("O código da empresa deve ser informado");
             }
 
-            await _empresaServico.ObterEmpresaPorId(codigoEmpresa);
+            var empresa = await _empresaServico.ObterEmpresaPorId(codigoEmpresa);
 
-            return Ok();
+            return Ok(empresa);
         }
 
         [HttpPatch]
