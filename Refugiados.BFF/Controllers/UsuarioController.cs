@@ -1,8 +1,5 @@
 ﻿using Refugiados.BFF.Servicos;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Collections.Generic;
-using Refugiados.BFF.Models;
 using Refugiados.BFF.Models.Requisicoes;
 using Refugiados.BFF.Servicos.Model;
 

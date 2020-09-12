@@ -16,9 +16,6 @@ namespace Repositorio.Repositorios
         private const string OBTER_COLABORADOR_POR_CODIGO_USUARIO_SQL = @"SELECT * FROM heroku_93ac2d8811d872a.colaborador
                                                                    WHERE codigo_usuario = @codigo_usuario;";
 
-        private const string OBTER_COLABORADOR_SQL = @"SELECT * FROM heroku_93ac2d8811d872a.colaborador
-                                                        WHERE codigo_colaborador = @codigo_colaborador;";
-
         private const string CADASTRAR_COLABORADOR_SQL = @"INSERT INTO `heroku_93ac2d8811d872a`.`colaborador`
                                                     (`codigo_colaborador`,
                                                     `nome_colaborador`,
@@ -34,6 +31,11 @@ namespace Repositorio.Repositorios
 
         #endregion
 
+        public ColaboradorRepositorio()
+        {
+            _dataBase = new DataBaseConnector();
+        }
+
         public void AtualizarColaborador(string nome)
         {
             throw new NotImplementedException();
@@ -44,13 +46,7 @@ namespace Repositorio.Repositorios
             _dataBase.Executar(CADASTRAR_COLABORADOR_SQL, new { nome_colaborador = nome, codigo_usuario = codigoUsuario });
         }
 
-        public ColaboradorDto ObterColaboradorPorCodigo(int? codigo)
-        {
-            var colaborador = _dataBase.Selecionar<ColaboradorDto>(OBTER_COLABORADOR_SQL, new { codigo_colaborador = codigo }).FirstOrDefault();
-            return colaborador;
-        }
-
-        public ColaboradorDto ObterColaboradorPorCodigoUsuario(int? codigoUsuario)
+        public ColaboradorDto ObterColaboradorPorCodigoUsuario(int codigoUsuario)
         {
             var colaborador = _dataBase.Selecionar<ColaboradorDto>(OBTER_COLABORADOR_POR_CODIGO_USUARIO_SQL, new { codigo_usuario = codigoUsuario }).FirstOrDefault();
             return colaborador;
@@ -60,8 +56,7 @@ namespace Repositorio.Repositorios
     public interface IColaboradorRepositorio
     {
         void CadastrarColaborador(string nome, int codigoUsuario);
-        ColaboradorDto ObterColaboradorPorCodigo(int? codigo);
-        ColaboradorDto ObterColaboradorPorCodigoUsuario(int? codigoUsuario);
+        ColaboradorDto ObterColaboradorPorCodigoUsuario(int codigoUsuario);
         void AtualizarColaborador(string nome);
     }
 }

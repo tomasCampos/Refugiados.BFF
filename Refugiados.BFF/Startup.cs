@@ -33,6 +33,8 @@ namespace Refugiados.BFF
 
             services.AddScoped<IUsuarioServico, UsuarioServico>();
             services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+            services.AddScoped<IColaboradorSerivico, ColaboradorServico>();
+            services.AddScoped<IColaboradorRepositorio, ColaboradorRepositorio>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
