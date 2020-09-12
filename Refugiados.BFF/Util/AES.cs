@@ -2,7 +2,6 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Diagnostics;
 
 namespace Refugiados.BFF.Util
 {
