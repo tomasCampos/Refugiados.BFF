@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Mime;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Refugiados.BFF.Models;
 using Refugiados.BFF.Servicos.Interfaces;
@@ -16,6 +18,9 @@ namespace Refugiados.BFF.Controllers
         }
 
         [HttpPost]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CadastrarEmpresa([FromBody] EmpresaModel request)
         {
             if (request == null || !ModelState.IsValid)
@@ -25,10 +30,12 @@ namespace Refugiados.BFF.Controllers
 
             await _empresaServico.CadastrarEmpresa(request.RazaoSocial, request.CodigoUsuario);
 
-            return Ok();
+            return StatusCode(201);
         }
 
         [HttpGet("{codigoUsuario}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterEmpresaPorUsuario(int codigoUsuario)
         {
             var empresa = await _empresaServico.ObterEmpresaPorCodigoUsuario(codigoUsuario);
@@ -42,6 +49,8 @@ namespace Refugiados.BFF.Controllers
         }
 
         [HttpPatch("{codigoUsuario}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AtualizarEmpresa(int codigoUsuario, [FromBody] EmpresaModel request)
         {
             if (request == null || !ModelState.IsValid)

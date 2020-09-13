@@ -16,6 +16,7 @@ namespace Refugiados.BFF
 {
     public class Startup
     {
+        public readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Environment { get; }
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
@@ -32,6 +33,7 @@ namespace Refugiados.BFF
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddControllers();
             services.AddMvc().AddFluentValidation(
                 fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>()
@@ -43,6 +45,18 @@ namespace Refugiados.BFF
             services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
             services.AddScoped<IColaboradorSerivico, ColaboradorServico>();
             services.AddScoped<IColaboradorRepositorio, ColaboradorRepositorio>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("*")
+                        .AllowAnyHeader()
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod();
+                });
+            });
 
             if (!Environment.IsProduction())
             {
@@ -80,6 +94,8 @@ namespace Refugiados.BFF
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 
