@@ -8,11 +8,11 @@ namespace Refugiados.BFF.Controllers
 {
     [ApiController]
     [Route("colaboradores")]
-    public class ColaboradorControllercs : ControllerBase
+    public class ColaboradorController : ControllerBase
     {
         private readonly IColaboradorSerivico _colaboradorServico;
 
-        public ColaboradorControllercs(IColaboradorSerivico colaboradorServico)
+        public ColaboradorController(IColaboradorSerivico colaboradorServico)
         {
             _colaboradorServico = colaboradorServico;
         }
