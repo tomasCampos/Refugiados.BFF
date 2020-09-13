@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Repositorio.Dtos
 {
     public class EmpresaDto
     {
-        [JsonProperty("codigo_usuario")]
+        [JsonPropertyName("codigo_usuario")]
         public int codigo_usuario { get; set; }
         
-        [JsonProperty("codigo_empresa")] 
+        [JsonPropertyName("codigo_empresa")] 
         public int codigo_empresa { get; set; }
         
-        [JsonProperty("razao_social")] 
+        [JsonPropertyName("razao_social")] 
         public string razao_social { get; set; }
     }
 }
