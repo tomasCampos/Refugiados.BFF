@@ -2,9 +2,9 @@
 version: "3.4"
 
 services:
-  myapi:
-    container_name: myapi
-    image: myapi
+  refugiados:
+    container_name: refugiados
+    image: refugiados
     environment:
       - PORT=5000
     ports:
