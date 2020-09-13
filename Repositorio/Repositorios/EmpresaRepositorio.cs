@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Repositorio.CrossCutting;
 using Repositorio.Dtos;
 using Repositorio.Insfraestrutura;
@@ -17,22 +16,22 @@ namespace Repositorio.Repositorios
         {
             _db = new DataBaseConnector();
         }
-        public async Task AtualizarEmpresa(string razaoSocial, string codigoUsuario)
+        public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario)
         {
-            if (string.IsNullOrWhiteSpace(razaoSocial))
+            if (!string.IsNullOrWhiteSpace(razaoSocial))
             {
-                await _db.ExecutarAsync(AppConstants.ATUALIZAR_RAZAO_SOCIAL_EMPRESA, new { razaoSocial, codigoUsuario });
+                await _db.ExecutarAsync(AppConstants.ATUALIZAR_RAZAO_SOCIAL_EMPRESA, new { razao_social = razaoSocial, codigo_usuario = codigoUsuario });
             }
         }
 
-        public async Task CadastrarEmpresa(string razaoSocial, string codigoUsuario)
+        public async Task CadastrarEmpresa(string razaoSocial, int codigoUsuario)
         {
-            await _db.ExecutarAsync(AppConstants.CADASTRAR_EMPRESA, new { codigoUsuario, codigoEmpresa = Guid.NewGuid().ToString(), razaoSocial});
+            await _db.ExecutarAsync(AppConstants.CADASTRAR_EMPRESA, new { codigo_usuario = codigoUsuario, razao_social = razaoSocial});
         }
 
-        public async Task<EmpresaDto> ObterEmpresaPorId(string codigoEmpresa)
+        public async Task<EmpresaDto> ObterEmpresaPorCodigoUsuario(int codigoUsuario)
         {
-            var response = await _db.SelecionarAsync<EmpresaDto>(AppConstants.OBTER_EMPRESA_POR_ID, new { codigoEmpresa });
+            var response = await _db.SelecionarAsync<EmpresaDto>(AppConstants.OBTER_EMPRESA_POR_CODIGO_USUARIO, new { codigo_usuario = codigoUsuario });
 
             return response.FirstOrDefault();
         }
