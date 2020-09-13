@@ -18,14 +18,9 @@ namespace Refugiados.BFF.Controllers
         [HttpPost]
         public async Task<IActionResult> CadastrarEmpresa([FromBody] EmpresaModel request)
         {
-            if (request == null)
+            if (request == null || !ModelState.IsValid)
             {
                 return BadRequest();
-            }
-
-            if (string.IsNullOrWhiteSpace(request.RazaoSocial))
-            {
-                return BadRequest("O nome da empresa deve ser informado");
             }
 
             await _empresaServico.CadastrarEmpresa(request.RazaoSocial, request.CodigoUsuario);
@@ -39,7 +34,9 @@ namespace Refugiados.BFF.Controllers
             var empresa = await _empresaServico.ObterEmpresaPorCodigoUsuario(codigoUsuario);
 
             if (empresa == null)
+            {
                 return NotFound();
+            }
 
             return Ok(empresa);
         }
@@ -47,14 +44,9 @@ namespace Refugiados.BFF.Controllers
         [HttpPatch("{codigoUsuario}")]
         public async Task<IActionResult> AtualizarEmpresa(int codigoUsuario, [FromBody] EmpresaModel request)
         {
-            if (request == null)
+            if (request == null || !ModelState.IsValid)
             {
                 return BadRequest();
-            }
-
-            if (string.IsNullOrWhiteSpace(request.RazaoSocial))
-            {
-                return BadRequest("O nome da empresa deve ser informado");
             }
 
             await _empresaServico.AtualizarEmpresa(request.RazaoSocial, codigoUsuario);

@@ -1,4 +1,5 @@
 using Autofac;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +9,8 @@ using MySqlConnector;
 using Refugiados.BFF.Servicos;
 using Repositorio.Repositorios;
 using Microsoft.OpenApi.Models;
+using FluentValidation;
+using Refugiados.BFF.Models;
 
 namespace Refugiados.BFF
 {
@@ -30,7 +33,11 @@ namespace Refugiados.BFF
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddTransient<MySqlConnection>(_ => new MySqlConnection(Configuration["ConnectionStrings:Default"]));
+            services.AddMvc().AddFluentValidation(
+                fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>()
+            );
+            services.AddTransient(_ => new MySqlConnection(Configuration["ConnectionStrings:Default"]));
+            services.AddTransient<IValidator<EmpresaModel>, EmpresaValidator>();
 
             services.AddScoped<IUsuarioServico, UsuarioServico>();
             services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
