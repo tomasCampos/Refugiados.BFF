@@ -6,7 +6,7 @@ using Refugiados.BFF.Servicos.Interfaces;
 namespace Refugiados.BFF.Controllers
 {
     [ApiController]
-    [Route("empresa")]
+    [Route("empresas")]
     public class EmpresaController : Controller
     {
         public readonly IEmpresaServico _empresaServico;
@@ -28,26 +28,24 @@ namespace Refugiados.BFF.Controllers
                 return BadRequest("O nome da empresa deve ser informado");
             }
 
-            await _empresaServico.CadastrarEmpresa(request.RazaoSocial, request.CodigoUsuario.ToString());
+            await _empresaServico.CadastrarEmpresa(request.RazaoSocial, request.CodigoUsuario);
 
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ObterEmpresaPorId(string codigoEmpresa)
+        [HttpGet("{codigoUsuario}")]
+        public async Task<IActionResult> ObterEmpresaPorUsuario(int codigoUsuario)
         {
-            if (string.IsNullOrWhiteSpace(codigoEmpresa))
-            {
-                return BadRequest("O código da empresa deve ser informado");
-            }
+            var empresa = await _empresaServico.ObterEmpresaPorCodigoUsuario(codigoUsuario);
 
-            var empresa = await _empresaServico.ObterEmpresaPorId(codigoEmpresa);
+            if (empresa == null)
+                return NotFound();
 
             return Ok(empresa);
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> AtualizarEmpresa([FromBody] EmpresaModel request)
+        [HttpPatch("{codigoUsuario}")]
+        public async Task<IActionResult> AtualizarEmpresa(int codigoUsuario, [FromBody] EmpresaModel request)
         {
             if (request == null)
             {
@@ -59,7 +57,7 @@ namespace Refugiados.BFF.Controllers
                 return BadRequest("O nome da empresa deve ser informado");
             }
 
-            await _empresaServico.AtualizarEmpresa(request.RazaoSocial, request.CodigoUsuario.ToString());
+            await _empresaServico.AtualizarEmpresa(request.RazaoSocial, codigoUsuario);
 
             return Ok();
         }

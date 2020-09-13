@@ -5,8 +5,8 @@ namespace Refugiados.BFF.Servicos.Interfaces
 {
     public interface IEmpresaServico
     {
-        Task<EmpresaModel> ObterEmpresaPorId(string id);
-        Task CadastrarEmpresa(string razaoSocial, string codigoUsuario);
-        Task AtualizarEmpresa(string razaoSocial, string codigoUsuario);
+        Task<EmpresaModel> ObterEmpresaPorCodigoUsuario(int codigoUsuario);
+        Task CadastrarEmpresa(string razaoSocial, int codigoUsuario);
+        Task AtualizarEmpresa(string razaoSocial, int codigoUsuario);
     }
 }

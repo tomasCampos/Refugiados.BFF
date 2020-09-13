@@ -15,7 +15,7 @@ namespace Repositorio.Insfraestrutura
             _conn = new MySqlConnection(AppConstants.CONNECTION_STRING);
         }
 
-        public async Task<IEnumerable<T>> Selecionar<T>(string sql)
+        public async Task<IEnumerable<T>> SelecionarAsync<T>(string sql)
         {
             await _conn.OpenAsync();
             

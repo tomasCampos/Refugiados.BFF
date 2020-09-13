@@ -18,7 +18,7 @@ namespace Repositorio.Repositorios
 
         public async Task<List<UsuarioDto>> ListarUsuarios() 
         {
-            var result = await _dataBase.Selecionar<UsuarioDto>(AppConstants.LISTAR_USUARIO_SQL);
+            var result = await _dataBase.SelecionarAsync<UsuarioDto>(AppConstants.LISTAR_USUARIO_SQL);
 
             return result.ToList();
         }

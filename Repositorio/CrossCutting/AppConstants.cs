@@ -44,24 +44,46 @@
 
         public const string ATUALIZAR_RAZAO_SOCIAL_EMPRESA = @"UPDATE `heroku_93ac2d8811d872a`.`empresa`
                                                     SET
-                                                    `razao_social` = @razaoSocial,
+                                                    `razao_social` = @razao_social,
                                                     `data_alteracao` = CURRENT_TIMESTAMP
-                                                    WHERE `codigo_usuario` = @codigoUsuario;";
+                                                    WHERE `codigo_usuario` = @codigo_usuario;";
 
         public const string CADASTRAR_EMPRESA = @"INSERT INTO `heroku_93ac2d8811d872a`.`empresa`
-                                                    (`codigo_usuario`,
-                                                    `codigo_empresa`,
-                                                    `razao_social`
+                                                            (`codigo_empresa`,
+                                                            `razao_social`,
+                                                            `data_criacao`,
+                                                            `data_alteracao`,
+                                                            `codigo_usuario`)
+                                                            VALUES
+                                                            (default,
+                                                            @razao_social,
+                                                            CURRENT_TIMESTAMP,
+                                                            CURRENT_TIMESTAMP,
+                                                            @codigo_usuario);";
+
+        public const string OBTER_EMPRESA_POR_CODIGO_USUARIO = @"SELECT * FROM heroku_93ac2d8811d872a.empresa 
+                                                    WHERE codigo_usuario = @codigo_usuario;";
+
+        public const string OBTER_COLABORADOR_POR_CODIGO_USUARIO_SQL = @"SELECT * FROM heroku_93ac2d8811d872a.colaborador
+                                                                   WHERE codigo_usuario = @codigo_usuario;";
+
+        public const string CADASTRAR_COLABORADOR_SQL = @"INSERT INTO `heroku_93ac2d8811d872a`.`colaborador`
+                                                    (`codigo_colaborador`,
+                                                    `nome_colaborador`,
                                                     `data_criacao`,
-                                                    `data_alteracao`)
+                                                    `data_alteracao`,
+                                                    `codigo_usuario`)
                                                     VALUES
                                                     (default,
-                                                    @codigoEmpresa,
-                                                    @razaoSocial,
-                                                     default,
-                                                    CURRENT_TIMESTAMP);";
+                                                    @nome_colaborador,
+                                                    default,
+                                                    CURRENT_TIMESTAMP,
+                                                    @codigo_usuario);";
 
-        public const string OBTER_EMPRESA_POR_ID = @"SELECT * FROM heroku_93ac2d8811d872a.empresa 
-                                                    WHERE codigo_empresa = @codigoEmpresa;";
+        public const string ATUALIZAR_NOME_COLABORADOR = @"UPDATE `heroku_93ac2d8811d872a`.`colaborador`
+                                                      SET
+                                                      `nome_colaborador` = @nome_colaborador,
+                                                      `data_alteracao` = CURRENT_TIMESTAMP
+                                                      WHERE `codigo_usuario` = @codigo_usuario;";
     }
 }
