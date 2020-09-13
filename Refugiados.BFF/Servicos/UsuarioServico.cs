@@ -1,37 +1,44 @@
-﻿using Refugiados.BFF.Models;
+﻿using Microsoft.Extensions.Configuration;
+using Refugiados.BFF.Models;
 using Refugiados.BFF.Servicos.Model;
 using Refugiados.BFF.Util;
 using Repositorio.Dtos;
 using Repositorio.Repositorios;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Refugiados.BFF.Servicos
 {
     public class UsuarioServico : IUsuarioServico
     {
-        private const string CHAVE_CIFRA_SENHA = "1e64fdce-e561-4f3d-bb78-0d7c8c86d14b";
         private readonly IUsuarioRepositorio _usuarioRepositorio;
+        private readonly IConfiguration _configuration;
 
-        public UsuarioServico(IUsuarioRepositorio usuarioRepositorio)
+        public UsuarioServico(IUsuarioRepositorio usuarioRepositorio, IConfiguration configuration)
         {
             _usuarioRepositorio = usuarioRepositorio;
+            _configuration = configuration;
         }
 
-        public List<UsuarioModel> ListarUsuarios(int? codigoUsuario, string email)
+        public async Task<List<UsuarioModel>> ListarUsuarios(int? codigoUsuario, string email)
         {
             var usuarios = new List<UsuarioDto>();
+
             if (!codigoUsuario.HasValue)
             {
                 if (string.IsNullOrEmpty(email))
-                    usuarios = _usuarioRepositorio.ListarUsuarios();
+                    usuarios = await _usuarioRepositorio.ListarUsuarios();
                 else
-                    usuarios = _usuarioRepositorio.ListarUsuarios(email);
-            }               
+                    usuarios = await _usuarioRepositorio.ListarUsuarios(email);
+            }
             else
-                usuarios = _usuarioRepositorio.ListarUsuarios(codigoUsuario.Value);
+            {
+                usuarios = await _usuarioRepositorio.ListarUsuarios(codigoUsuario.Value);
+            }
 
             var ListaDeUsuarios = new List<UsuarioModel>();
+            
             foreach (var usuario in usuarios)
             {
                 ListaDeUsuarios.Add(new UsuarioModel 
@@ -47,45 +54,52 @@ namespace Refugiados.BFF.Servicos
             return ListaDeUsuarios;
         }
 
-        public int CadastrarUsuario(string emailUsuario, string senhaUsuario)
+        public async Task<int> CadastrarUsuario(string emailUsuario, string senhaUsuario)
         {            
             var senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
-            _usuarioRepositorio.CadastrarUsuario(emailUsuario, senhaCifrada);
+            
+            await _usuarioRepositorio.CadastrarUsuario(emailUsuario, senhaCifrada);
 
-            var usuarioCadastrado = ListarUsuarios(null, emailUsuario).First();
+            var usuarioCadastrado = await ListarUsuarios(null, emailUsuario);
 
-            return usuarioCadastrado.Codigo;
+            return usuarioCadastrado.FirstOrDefault().Codigo;
         }
 
-        public void AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario)
+        public async Task AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario)
         {
             var senhaCifrada = string.Empty;
             if (!string.IsNullOrWhiteSpace(senhaUsuario))
                 senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
 
-            _usuarioRepositorio.AtualizarUsuario(emailUsuario, senhaCifrada, codigoUsuario);
+            await _usuarioRepositorio.AtualizarUsuario(emailUsuario, senhaCifrada, codigoUsuario);
         }
 
-        public AutenticarUsuarioServiceModel AutenticarUsuario(string emailUsuario, string senhaUsuario)
+        public async Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario)
         {
-            var usuario = ListarUsuarios(null, emailUsuario).FirstOrDefault();
+            var usuarios = await ListarUsuarios(null, emailUsuario);
 
-            if (usuario == null)
+            if (usuarios.FirstOrDefault() == null)
+            {
                 return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.Situacao.NomeDeUsuarioInvalido, 0);
+            }
 
             var senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
 
-            if (!string.Equals(usuario.Senha, senhaCifrada))
+            if (!string.Equals(usuarios.FirstOrDefault().Senha, senhaCifrada))
+            {
                 return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.Situacao.SenhaInvalida, 0);
+            }
 
-            return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.Situacao.UsuarioAutenticado, usuario.Codigo);
+            return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.Situacao.UsuarioAutenticado, usuarios.FirstOrDefault().Codigo);
         }
 
         #region METODOS PRIVADOS
 
         private string CifrarSenhaUsuario(string senha)
-        {            
-            var senhaCifrada = AES.Encrypt(senha, CHAVE_CIFRA_SENHA);
+        {
+            var cifraSenha = _configuration.GetValue<string>("AppConfig:ChaveCifra");
+            var senhaCifrada = AES.Encrypt(senha, cifraSenha);
+            
             return senhaCifrada;
         }
             
@@ -94,9 +108,9 @@ namespace Refugiados.BFF.Servicos
 
     public interface IUsuarioServico 
     {
-        List<UsuarioModel> ListarUsuarios(int? codigoUsuario, string email);
-        int CadastrarUsuario(string emailUsuario, string senhaUsuario);
-        void AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
-        AutenticarUsuarioServiceModel AutenticarUsuario(string emailUsuario, string senhaUsuario);
+        Task<List<UsuarioModel>> ListarUsuarios(int? codigoUsuario, string email);
+        Task<int> CadastrarUsuario(string emailUsuario, string senhaUsuario);
+        Task AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
+        Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario);
     }
 }
