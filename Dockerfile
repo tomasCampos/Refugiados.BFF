@@ -4,7 +4,7 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
-COPY ["Refugiados.BFF/Refugiados.BFF.csproj", "Refugiados.BFF/"]
+COPY . .
 RUN dotnet restore "Refugiados.BFF/Refugiados.BFF.csproj"
 COPY ./Refugiados.BFF ./Refugiados.BFF
 WORKDIR "/src/Refugiados.BFF"
