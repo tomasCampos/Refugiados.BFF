@@ -19,7 +19,7 @@ namespace Refugiados.BFF.Servicos.Model
             NomeDeUsuarioJaUtilizado
         };
 
-        public SituacaoCadastroUsuario SituacaoCadastro { get; set; }
-        public int CodigoUsuarioCadastrado { get; set; }
+        public SituacaoCadastroUsuario SituacaoCadastro { get; private set; }
+        public int CodigoUsuarioCadastrado { get; private set; }
     }
 }

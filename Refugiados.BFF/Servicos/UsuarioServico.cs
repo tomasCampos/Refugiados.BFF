@@ -94,21 +94,20 @@ namespace Refugiados.BFF.Servicos
 
         public async Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario)
         {
-            var usuarios = await ListarUsuarios(null, emailUsuario);
-
+            var usuarios = await ListarUsuarios(null, emailUsuario);            
             if (usuarios.FirstOrDefault() == null)
             {
-                return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.NomeDeUsuarioInvalido, 0);
+                return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.NomeDeUsuarioInvalido, 0, 0);
             }
 
             var senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
 
             if (!string.Equals(usuarios.FirstOrDefault().Senha, senhaCifrada))
             {
-                return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.SenhaInvalida, 0);
+                return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.SenhaInvalida, 0, 0);
             }
 
-            return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.UsuarioAutenticado, usuarios.FirstOrDefault().Codigo);
+            return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.UsuarioAutenticado, usuarios.FirstOrDefault().Codigo, usuarios.FirstOrDefault().PerfilUsuario);
         }
 
         #region METODOS PRIVADOS

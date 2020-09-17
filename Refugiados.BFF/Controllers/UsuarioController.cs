@@ -104,7 +104,7 @@ namespace Refugiados.BFF.Controllers
                 return Ok(new { SucessoAutenticacao = false, Motivo = "Senha invalida" });
             }
             
-            return Ok(new { SucessoAutenticacao = true, resultadoAutenticacao.CodigoUsuario });
+            return Ok(new { SucessoAutenticacao = true, resultadoAutenticacao.CodigoUsuario, resultadoAutenticacao.PerfilUsuario });
         }
 
         #region Metodos privados
