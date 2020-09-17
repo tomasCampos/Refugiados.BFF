@@ -55,7 +55,7 @@ namespace Refugiados.BFF.Servicos
             return ListaDeUsuarios;
         }
 
-        public async Task<CadastrarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario)
+        public async Task<CadastrarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario = null)
         {
             var NomeDeUsuarioJaUtilizado = await ListarUsuarios(null, emailUsuario);
             if (NomeDeUsuarioJaUtilizado.Any())
@@ -112,7 +112,7 @@ namespace Refugiados.BFF.Servicos
     public interface IUsuarioServico 
     {
         Task<List<UsuarioModel>> ListarUsuarios(int? codigoUsuario, string email);
-        Task<CadastrarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario);
+        Task<CadastrarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario = null);
         Task AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
         Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario);
     }

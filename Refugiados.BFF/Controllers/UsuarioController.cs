@@ -48,7 +48,7 @@ namespace Refugiados.BFF.Controllers
                 return BadRequest("A senha deve ser informada");
             }
 
-            var resultadoCadastro = await _usuarioServico.CadastrarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, null);
+            var resultadoCadastro = await _usuarioServico.CadastrarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
 
             if (resultadoCadastro.SituacaoCadastro == CadastrarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
                 return Ok(new { SucessoCadastro = false, Motivo = "Nome de usuário já utilizado" });
