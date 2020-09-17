@@ -48,9 +48,12 @@ namespace Refugiados.BFF.Controllers
                 return BadRequest("A senha deve ser informada");
             }
 
-            var codigoUsuarioCadastrado = await _usuarioServico.CadastrarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
+            var resultadoCadastro = await _usuarioServico.CadastrarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
 
-            return Ok(new { codigoUsuario = codigoUsuarioCadastrado });
+            if (resultadoCadastro.SituacaoCadastro == CadastrarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
+                return Ok(new { SucessoCadastro = false, Motivo = "Nome de usuário já utilizado" });
+            else
+                return Ok(new { SucessoCadastro = true, resultadoCadastro.CodigoUsuarioCadastrado });
         }
 
         [HttpPatch]
@@ -96,12 +99,12 @@ namespace Refugiados.BFF.Controllers
 
             var resultadoAutenticacao = await _usuarioServico.AutenticarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
 
-            if (resultadoAutenticacao.SituacaoAutenticacao == AutenticarUsuarioServiceModel.Situacao.NomeDeUsuarioInvalido)
+            if (resultadoAutenticacao.SituacaoAutenticacao == AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.NomeDeUsuarioInvalido)
             {
                 return Ok(new { SucessoAutenticacao = false, Motivo = "Usuario inexistente" });
             }
 
-            if (resultadoAutenticacao.SituacaoAutenticacao == AutenticarUsuarioServiceModel.Situacao.SenhaInvalida)
+            if (resultadoAutenticacao.SituacaoAutenticacao == AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.SenhaInvalida)
             {
                 return Ok(new { SucessoAutenticacao = false, Motivo = "Senha invalida" });
             }

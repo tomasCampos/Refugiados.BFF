@@ -2,20 +2,20 @@
 {
     public class AutenticarUsuarioServiceModel
     {
-        public AutenticarUsuarioServiceModel(Situacao situacao, int codigoUsuario)
+        public AutenticarUsuarioServiceModel(SituacaoAutenticacaoUsuario situacao, int codigoUsuario)
         {
             SituacaoAutenticacao = situacao;
             CodigoUsuario = codigoUsuario;
         }
 
-        public enum Situacao
+        public enum SituacaoAutenticacaoUsuario
         {
             UsuarioAutenticado,
             NomeDeUsuarioInvalido,
             SenhaInvalida,
         };
 
-        public Situacao SituacaoAutenticacao { get; private set; }
+        public SituacaoAutenticacaoUsuario SituacaoAutenticacao { get; private set; }
 
         public int CodigoUsuario { get; private set; }
     }
