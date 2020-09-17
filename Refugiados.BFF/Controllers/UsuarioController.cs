@@ -31,7 +31,7 @@ namespace Refugiados.BFF.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CadastrarUsuario([FromBody] UsuarioRequestModel requisicao)
+        public async Task<IActionResult> CadastrarUsuarioAdmin([FromBody] UsuarioRequestModel requisicao)
         {
             if (requisicao == null)
             {
@@ -48,7 +48,7 @@ namespace Refugiados.BFF.Controllers
                 return BadRequest("A senha deve ser informada");
             }
 
-            var resultadoCadastro = await _usuarioServico.CadastrarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
+            var resultadoCadastro = await _usuarioServico.CadastrarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, null);
 
             if (resultadoCadastro.SituacaoCadastro == CadastrarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
                 return Ok(new { SucessoCadastro = false, Motivo = "Nome de usuário já utilizado" });

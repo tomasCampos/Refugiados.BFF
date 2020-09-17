@@ -47,21 +47,22 @@ namespace Refugiados.BFF.Servicos
                     Email = usuario.email_usuario,
                     Senha = usuario.senha_usuario,
                     DataCriacao = usuario.data_criacao,
-                    DataAlteracao = usuario.data_alteracao
+                    DataAlteracao = usuario.data_alteracao,
+                    PerfilUsuario = usuario.perfil_usuario
                 });
             }
 
             return ListaDeUsuarios;
         }
 
-        public async Task<CadastrarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario)
+        public async Task<CadastrarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario)
         {
             var NomeDeUsuarioJaUtilizado = await ListarUsuarios(null, emailUsuario);
             if (NomeDeUsuarioJaUtilizado.Any())
                 return new CadastrarUsuarioServiceModel(CadastrarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado, 0);
 
             var senhaCifrada = CifrarSenhaUsuario(senhaUsuario);            
-            await _usuarioRepositorio.CadastrarUsuario(emailUsuario, senhaCifrada);
+            await _usuarioRepositorio.CadastrarUsuario(emailUsuario, senhaCifrada, perfilUsuario);
             var usuarioCadastrado = await ListarUsuarios(null, emailUsuario);
 
             return new CadastrarUsuarioServiceModel(CadastrarUsuarioServiceModel.SituacaoCadastroUsuario.UsuarioCadastrado, usuarioCadastrado.FirstOrDefault().Codigo);
@@ -111,7 +112,7 @@ namespace Refugiados.BFF.Servicos
     public interface IUsuarioServico 
     {
         Task<List<UsuarioModel>> ListarUsuarios(int? codigoUsuario, string email);
-        Task<CadastrarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario);
+        Task<CadastrarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario);
         Task AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
         Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario);
     }
