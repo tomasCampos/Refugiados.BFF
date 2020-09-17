@@ -7,6 +7,7 @@ using Repositorio.Repositorios;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Repositorio.CrossCutting.AppConstants;
 
 namespace Refugiados.BFF.Servicos
 {
@@ -14,11 +15,13 @@ namespace Refugiados.BFF.Servicos
     {
         private readonly IUsuarioRepositorio _usuarioRepositorio;
         private readonly IConfiguration _configuration;
+        private readonly IColaboradorSerivico _colaboradorServico;
 
-        public UsuarioServico(IUsuarioRepositorio usuarioRepositorio, IConfiguration configuration)
+        public UsuarioServico(IUsuarioRepositorio usuarioRepositorio, IConfiguration configuration, IColaboradorSerivico colaboradorServico)
         {
             _usuarioRepositorio = usuarioRepositorio;
             _configuration = configuration;
+            _colaboradorServico = colaboradorServico;
         }
 
         public async Task<List<UsuarioModel>> ListarUsuarios(int? codigoUsuario, string email)
@@ -68,6 +71,18 @@ namespace Refugiados.BFF.Servicos
             return new CadastrarUsuarioServiceModel(CadastrarUsuarioServiceModel.SituacaoCadastroUsuario.UsuarioCadastrado, usuarioCadastrado.FirstOrDefault().Codigo);
         }
 
+        public async Task<CadastrarUsuarioServiceModel> CadastrarUsuarioColaborador(string emailUsuario, string senhaUsuario, string nomeColaborador) 
+        {
+            var resultadoCadastroUsuario = await CadastrarUsuario(emailUsuario, senhaUsuario, (int)PerfilUsuario.Colaborador);
+
+            if(resultadoCadastroUsuario.SituacaoCadastro == CadastrarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
+                    return resultadoCadastroUsuario;
+
+            await _colaboradorServico.CadastrarColaborador(nomeColaborador, resultadoCadastroUsuario.CodigoUsuarioCadastrado);
+
+            return resultadoCadastroUsuario;
+        }
+
         public async Task AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario)
         {
             var senhaCifrada = string.Empty;
@@ -113,6 +128,7 @@ namespace Refugiados.BFF.Servicos
     {
         Task<List<UsuarioModel>> ListarUsuarios(int? codigoUsuario, string email);
         Task<CadastrarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario = null);
+        Task<CadastrarUsuarioServiceModel> CadastrarUsuarioColaborador(string emailUsuario, string senhaUsuario, string nomeColaborador);
         Task AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
         Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario);
     }

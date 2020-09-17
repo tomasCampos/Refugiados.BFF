@@ -87,5 +87,11 @@
                                                       `nome_colaborador` = @nome_colaborador,
                                                       `data_alteracao` = CURRENT_TIMESTAMP
                                                       WHERE `codigo_usuario` = @codigo_usuario;";
+
+        public enum PerfilUsuario 
+        {
+            Colaborador = 1,
+            Empresa = 2
+        };
     }
 }

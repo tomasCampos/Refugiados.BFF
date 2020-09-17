@@ -31,30 +31,25 @@ namespace Refugiados.BFF.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CadastrarUsuarioAdmin([FromBody] UsuarioRequestModel requisicao)
+        public async Task<IActionResult> CadastrarUsuario([FromBody] UsuarioRequestModel requisicao)
         {
-            if (requisicao == null)
-            {
-                return BadRequest();
-            }
-
-            if (string.IsNullOrWhiteSpace(requisicao.EmailUsuario))
-            {
-                return BadRequest("O Email deve ser informado");
-            }
-
-            if (string.IsNullOrWhiteSpace(requisicao.SenhaUsuario))
-            {
-                return BadRequest("A senha deve ser informada");
-            }
+            if (requisicao == null || !ModelState.IsValid)            
+                return BadRequest();            
 
             var resultadoCadastro = await _usuarioServico.CadastrarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
-
-            if (resultadoCadastro.SituacaoCadastro == CadastrarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
-                return Ok(new { SucessoCadastro = false, Motivo = "Nome de usuário já utilizado" });
-            else
-                return Ok(new { SucessoCadastro = true, resultadoCadastro.CodigoUsuarioCadastrado });
+            return FormatarResultadoCadastroUsuario(resultadoCadastro);
         }
+
+        [HttpPost("colaborador")]
+        public async Task<IActionResult> CadastrarUsuarioColaborador([FromBody] UsuarioColaboradorRequestModel requisicao)
+        {
+            if (requisicao == null || !ModelState.IsValid)            
+                return BadRequest();            
+
+            var resultadoCadastro = await _usuarioServico.CadastrarUsuarioColaborador(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.NomeColaborador);
+            return FormatarResultadoCadastroUsuario(resultadoCadastro);
+        }
+
 
         [HttpPatch]
         public async Task<IActionResult> AtualizarUsuario([FromBody] AtualizarUsuarioRequestModel requisicao) 
@@ -111,5 +106,17 @@ namespace Refugiados.BFF.Controllers
             
             return Ok(new { SucessoAutenticacao = true, resultadoAutenticacao.CodigoUsuario });
         }
+
+        #region Metodos privados
+
+        private IActionResult FormatarResultadoCadastroUsuario(CadastrarUsuarioServiceModel resultadoCadastro)
+        {
+            if (resultadoCadastro.SituacaoCadastro == CadastrarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
+                return Ok(new { SucessoCadastro = false, Motivo = "Nome de usuário já utilizado" });
+            else
+                return Ok(new { SucessoCadastro = true, resultadoCadastro.CodigoUsuarioCadastrado });
+        }
+
+        #endregion
     }
 }
