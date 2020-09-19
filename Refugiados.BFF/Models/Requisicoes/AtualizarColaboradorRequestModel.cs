@@ -7,7 +7,6 @@ namespace Refugiados.BFF.Models.Requisicoes
 {
     public class AtualizarColaboradorRequestModel
     {
-        public string NomeColaborador { get; set; }
-        public int CodigoUsuario { get; set; }
+        public string NomeColaborador { get; set; }        
     }
 }
