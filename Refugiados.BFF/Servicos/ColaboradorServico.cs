@@ -43,7 +43,8 @@ namespace Refugiados.BFF.Servicos
                 CodigoUsuario = colaborador.codigo_usuario,
                 NomeColaborador = colaborador.nome_colaborador,
                 DataAlteracao = colaborador.data_alteracao,
-                DataCriacao = colaborador.data_criacao
+                DataCriacao = colaborador.data_criacao,
+                EmailContato = colaborador.email_usuario
             };
         }
     }

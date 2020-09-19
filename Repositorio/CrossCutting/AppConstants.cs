@@ -66,8 +66,10 @@
         public const string OBTER_EMPRESA_POR_CODIGO_USUARIO = @"SELECT * FROM heroku_93ac2d8811d872a.empresa 
                                                     WHERE codigo_usuario = @codigo_usuario;";
 
-        public const string OBTER_COLABORADOR_POR_CODIGO_USUARIO_SQL = @"SELECT * FROM heroku_93ac2d8811d872a.colaborador
-                                                                   WHERE codigo_usuario = @codigo_usuario;";
+        public const string OBTER_COLABORADOR_POR_CODIGO_USUARIO_SQL = @"SELECT c.codigo_colaborador, c.nome_colaborador, c.codigo_usuario, c.data_alteracao, c.data_criacao, u.email_usuario 
+                                                                        FROM heroku_93ac2d8811d872a.colaborador AS c
+                                                                        INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON c.codigo_usuario = u.codigo_usuario
+                                                                        WHERE c.codigo_usuario = @codigo_usuario;";
 
         public const string CADASTRAR_COLABORADOR_SQL = @"INSERT INTO `heroku_93ac2d8811d872a`.`colaborador`
                                                     (`codigo_colaborador`,
