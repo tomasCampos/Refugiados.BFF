@@ -14,13 +14,15 @@
                                                     (`codigo_usuario`,
                                                     `email_usuario`,
                                                     `senha_usuario`,
+                                                    `perfil_usuario`,
                                                     `data_criacao`,
                                                     `data_alteracao`)
                                                     VALUES
                                                     (default,
                                                     @email_usuario,
                                                     @senha_Usuario,
-                                                     default,
+                                                    @perfil_usuario,
+                                                    default,
                                                     CURRENT_TIMESTAMP);";
 
         public const string ATUALIZAR_USUARIO = @"UPDATE `heroku_93ac2d8811d872a`.`usuario`
@@ -85,5 +87,11 @@
                                                       `nome_colaborador` = @nome_colaborador,
                                                       `data_alteracao` = CURRENT_TIMESTAMP
                                                       WHERE `codigo_usuario` = @codigo_usuario;";
+
+        public enum PerfilUsuario 
+        {
+            Colaborador = 1,
+            Empresa = 2
+        };
     }
 }

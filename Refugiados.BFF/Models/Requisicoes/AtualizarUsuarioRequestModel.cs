@@ -1,7 +1,8 @@
 ﻿namespace Refugiados.BFF.Models.Requisicoes
 {
-    public class AtualizarUsuarioRequestModel : UsuarioRequestModel
+    public class AtualizarUsuarioRequestModel
     {
-        public int CodigoUsuario { get; set; }
+        public string EmailUsuario { get; set; }
+        public string SenhaUsuario { get; set; }
     }
 }

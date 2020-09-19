@@ -37,9 +37,9 @@ namespace Repositorio.Repositorios
             return result.ToList();
         }
 
-        public async Task CadastrarUsuario(string email, string senha) 
+        public async Task CadastrarUsuario(string email, string senha, int? perfil) 
         {
-            await _dataBase.ExecutarAsync(AppConstants.CADASTRAR_USUARIO, new { email_usuario = email, senha_usuario = senha });
+            await _dataBase.ExecutarAsync(AppConstants.CADASTRAR_USUARIO, new { email_usuario = email, senha_usuario = senha, perfil_usuario = perfil });
         }
 
         public async Task AtualizarUsuario(string email, string senha, int codigo)
@@ -64,7 +64,7 @@ namespace Repositorio.Repositorios
         Task<List<UsuarioDto>> ListarUsuarios();
         Task<List<UsuarioDto>> ListarUsuarios(int codigo);
         Task<List<UsuarioDto>> ListarUsuarios(string email);
-        Task CadastrarUsuario(string email, string senha);
+        Task CadastrarUsuario(string email, string senha, int? perfil);
         Task AtualizarUsuario(string email, string senha, int codigo);
     }
 }

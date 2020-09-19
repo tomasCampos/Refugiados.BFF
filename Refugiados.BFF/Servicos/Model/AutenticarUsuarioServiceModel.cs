@@ -1,22 +1,27 @@
-﻿namespace Refugiados.BFF.Servicos.Model
+﻿using Microsoft.Net.Http.Headers;
+
+namespace Refugiados.BFF.Servicos.Model
 {
     public class AutenticarUsuarioServiceModel
     {
-        public AutenticarUsuarioServiceModel(Situacao situacao, int codigoUsuario)
+        public AutenticarUsuarioServiceModel(SituacaoAutenticacaoUsuario situacao, int codigoUsuario, int? perfilUsuario)
         {
             SituacaoAutenticacao = situacao;
             CodigoUsuario = codigoUsuario;
+            PerfilUsuario = perfilUsuario;
         }
 
-        public enum Situacao
+        public enum SituacaoAutenticacaoUsuario
         {
             UsuarioAutenticado,
             NomeDeUsuarioInvalido,
             SenhaInvalida,
         };
 
-        public Situacao SituacaoAutenticacao { get; private set; }
+        public SituacaoAutenticacaoUsuario SituacaoAutenticacao { get; private set; }
 
         public int CodigoUsuario { get; private set; }
+
+        public int? PerfilUsuario { get;  private set; }
     }
 }
