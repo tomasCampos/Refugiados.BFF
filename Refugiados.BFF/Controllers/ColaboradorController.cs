@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Refugiados.BFF.Models.Requisicoes;
 using Refugiados.BFF.Servicos;
 using System;
@@ -18,6 +19,8 @@ namespace Refugiados.BFF.Controllers
         }
 
         [HttpGet("{codigoUsuario}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterColaboradorPorUsuario(int codigoUsuario)
         {
             var colaborador = await _colaboradorServico.ObterColaboradorPorCodigoUsuario(codigoUsuario);
@@ -29,6 +32,8 @@ namespace Refugiados.BFF.Controllers
         }
 
         [HttpPatch("{codigoUsuario}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AtualizarColaborador(int codigoUsuario, [FromBody] AtualizarColaboradorRequestModel colaborador)
         {
             if (colaborador == null)
