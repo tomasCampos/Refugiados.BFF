@@ -71,6 +71,10 @@
                                                                         INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON c.codigo_usuario = u.codigo_usuario
                                                                         WHERE c.codigo_usuario = @codigo_usuario;";
 
+        public const string LISTAR_COLABORADORES_SQL = @"SELECT c.codigo_colaborador, c.nome_colaborador, c.codigo_usuario, c.data_alteracao, c.data_criacao, u.email_usuario 
+                                                        FROM heroku_93ac2d8811d872a.colaborador AS c
+                                                        INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON c.codigo_usuario = u.codigo_usuario;";
+
         public const string CADASTRAR_COLABORADOR_SQL = @"INSERT INTO `heroku_93ac2d8811d872a`.`colaborador`
                                                     (`codigo_colaborador`,
                                                     `nome_colaborador`,

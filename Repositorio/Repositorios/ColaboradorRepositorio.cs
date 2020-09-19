@@ -30,6 +30,12 @@ namespace Repositorio.Repositorios
             await _dataBase.ExecutarAsync(AppConstants.CADASTRAR_COLABORADOR_SQL, new { nome_colaborador = nome, codigo_usuario = codigoUsuario });
         }
 
+        public async Task<List<ColaboradorDto>> ListarColaboradores()
+        {
+            var colaboradores = await _dataBase.SelecionarAsync<ColaboradorDto>(AppConstants.LISTAR_COLABORADORES_SQL);
+            return colaboradores.ToList();
+        }
+
         public async Task<ColaboradorDto> ObterColaboradorPorCodigoUsuario(int codigoUsuario)
         {
             var colaborador = await _dataBase.SelecionarAsync<ColaboradorDto>(AppConstants.OBTER_COLABORADOR_POR_CODIGO_USUARIO_SQL, new { codigo_usuario = codigoUsuario });
@@ -41,6 +47,7 @@ namespace Repositorio.Repositorios
     {
         Task CadastrarColaborador(string nome, int codigoUsuario);
         Task<ColaboradorDto> ObterColaboradorPorCodigoUsuario(int codigoUsuario);
+        Task<List<ColaboradorDto>> ListarColaboradores();
         Task AtualizarColaborador(string nome, int codigoUsuario);
     }
 }
