@@ -58,24 +58,24 @@ namespace Refugiados.BFF.Servicos
             return ListaDeUsuarios;
         }
 
-        public async Task<CadastrarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario = null)
+        public async Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario = null)
         {
             var NomeDeUsuarioJaUtilizado = await ListarUsuarios(null, emailUsuario);
             if (NomeDeUsuarioJaUtilizado.Any())
-                return new CadastrarUsuarioServiceModel(CadastrarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado, 0);
+                return new CadastrarAtualizarUsuarioServiceModel(CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado, 0);
 
             var senhaCifrada = CifrarSenhaUsuario(senhaUsuario);            
             await _usuarioRepositorio.CadastrarUsuario(emailUsuario, senhaCifrada, perfilUsuario);
             var usuarioCadastrado = await ListarUsuarios(null, emailUsuario);
 
-            return new CadastrarUsuarioServiceModel(CadastrarUsuarioServiceModel.SituacaoCadastroUsuario.UsuarioCadastrado, usuarioCadastrado.FirstOrDefault().Codigo);
+            return new CadastrarAtualizarUsuarioServiceModel(CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.UsuarioCadastrado, usuarioCadastrado.FirstOrDefault().Codigo);
         }
 
-        public async Task<CadastrarUsuarioServiceModel> CadastrarUsuarioColaborador(string emailUsuario, string senhaUsuario, string nomeColaborador) 
+        public async Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioColaborador(string emailUsuario, string senhaUsuario, string nomeColaborador) 
         {
             var resultadoCadastroUsuario = await CadastrarUsuario(emailUsuario, senhaUsuario, (int)PerfilUsuario.Colaborador);
 
-            if(resultadoCadastroUsuario.SituacaoCadastro == CadastrarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
+            if(resultadoCadastroUsuario.SituacaoCadastro == CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
                     return resultadoCadastroUsuario;
 
             await _colaboradorServico.CadastrarColaborador(nomeColaborador, resultadoCadastroUsuario.CodigoUsuarioCadastrado);
@@ -83,13 +83,21 @@ namespace Refugiados.BFF.Servicos
             return resultadoCadastroUsuario;
         }
 
-        public async Task AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario)
+        public async Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario)
         {
+            if(!string.IsNullOrWhiteSpace(emailUsuario))
+            {
+                var NomeDeUsuarioJaUtilizado = await ListarUsuarios(null, emailUsuario);
+                if (NomeDeUsuarioJaUtilizado.Any())
+                    return new CadastrarAtualizarUsuarioServiceModel(CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado, 0);
+            }
+
             var senhaCifrada = string.Empty;
             if (!string.IsNullOrWhiteSpace(senhaUsuario))
                 senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
 
             await _usuarioRepositorio.AtualizarUsuario(emailUsuario, senhaCifrada, codigoUsuario);
+            return new CadastrarAtualizarUsuarioServiceModel(CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.UsuarioCadastrado, codigoUsuario);
         }
 
         public async Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario)
@@ -126,9 +134,9 @@ namespace Refugiados.BFF.Servicos
     public interface IUsuarioServico 
     {
         Task<List<UsuarioModel>> ListarUsuarios(int? codigoUsuario, string email);
-        Task<CadastrarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario = null);
-        Task<CadastrarUsuarioServiceModel> CadastrarUsuarioColaborador(string emailUsuario, string senhaUsuario, string nomeColaborador);
-        Task AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
+        Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario = null);
+        Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioColaborador(string emailUsuario, string senhaUsuario, string nomeColaborador);
+        Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
         Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario);
     }
 }

@@ -31,6 +31,15 @@ namespace Refugiados.BFF.Controllers
             return Ok(colaborador);
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> ListarColaborador()
+        {
+            var colaborador = await _colaboradorServico.ListarColaboradores();
+
+            return Ok(colaborador);
+        }
+
         [HttpPatch("{codigoUsuario}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
