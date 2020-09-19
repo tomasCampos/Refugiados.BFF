@@ -51,8 +51,8 @@ namespace Refugiados.BFF.Controllers
         }
 
 
-        [HttpPatch]
-        public async Task<IActionResult> AtualizarUsuario([FromBody] AtualizarUsuarioRequestModel requisicao) 
+        [HttpPatch("{codigoUsuario}")]
+        public async Task<IActionResult> AtualizarUsuario([FromBody] AtualizarUsuarioRequestModel requisicao, int codigoUsuario) 
         {
             if (requisicao == null)
             {
@@ -64,12 +64,12 @@ namespace Refugiados.BFF.Controllers
                 return BadRequest("Nenhum dado para atualizar");
             }
 
-            if (requisicao.CodigoUsuario <= 0)
+            if (codigoUsuario <= 0)
             {
                 return BadRequest("Usuario inexistente");
             }
 
-            await _usuarioServico.AtualizarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.CodigoUsuario);
+            await _usuarioServico.AtualizarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, codigoUsuario);
 
             return Ok();
         }
