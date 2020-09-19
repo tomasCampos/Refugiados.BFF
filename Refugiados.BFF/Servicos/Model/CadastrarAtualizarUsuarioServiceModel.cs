@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Refugiados.BFF.Servicos.Model
 {
-    public class CadastrarUsuarioServiceModel
+    public class CadastrarAtualizarUsuarioServiceModel
     {
-        public CadastrarUsuarioServiceModel(SituacaoCadastroUsuario situacaoCadastro, int codigoUsuarioCadastrado)
+        public CadastrarAtualizarUsuarioServiceModel(SituacaoCadastroUsuario situacaoCadastro, int codigoUsuarioCadastrado)
         {
             SituacaoCadastro = situacaoCadastro;
             CodigoUsuarioCadastrado = codigoUsuarioCadastrado;

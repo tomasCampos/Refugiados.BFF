@@ -60,6 +60,7 @@ namespace Refugiados.BFF.Controllers
 
         [HttpPatch("{codigoUsuario}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AtualizarUsuario([FromBody] AtualizarUsuarioRequestModel requisicao, int codigoUsuario)
         {
@@ -78,9 +79,9 @@ namespace Refugiados.BFF.Controllers
                 return BadRequest("Usuario inexistente");
             }
 
-            await _usuarioServico.AtualizarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, codigoUsuario);
+            var resultadoCadastro = await _usuarioServico.AtualizarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, codigoUsuario);
 
-            return Ok();
+            return FormatarResultadoCadastroUsuario(resultadoCadastro);
         }
 
         [HttpPost("autenticacao")]
@@ -108,9 +109,9 @@ namespace Refugiados.BFF.Controllers
 
         #region Metodos privados
 
-        private IActionResult FormatarResultadoCadastroUsuario(CadastrarUsuarioServiceModel resultadoCadastro)
+        private IActionResult FormatarResultadoCadastroUsuario(CadastrarAtualizarUsuarioServiceModel resultadoCadastro)
         {
-            if (resultadoCadastro.SituacaoCadastro == CadastrarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
+            if (resultadoCadastro.SituacaoCadastro == CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
                 return Conflict("Nome de usuário já utilizado");
             else
                 return Created($"/usuarios/{resultadoCadastro.CodigoUsuarioCadastrado}", resultadoCadastro.CodigoUsuarioCadastrado);
