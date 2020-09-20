@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Repositorio.CrossCutting;
@@ -27,6 +28,12 @@ namespace Repositorio.Repositorios
         public async Task CadastrarEmpresa(string razaoSocial, int codigoUsuario)
         {
             await _db.ExecutarAsync(AppConstants.CADASTRAR_EMPRESA, new { codigo_usuario = codigoUsuario, razao_social = razaoSocial});
+        }
+
+        public async Task<List<EmpresaDto>> ListarEmpresas()
+        {
+            var empresas = await _db.SelecionarAsync<EmpresaDto>(AppConstants.LISTAR_EMPRESAS_SQL);
+            return empresas.ToList();
         }
 
         public async Task<EmpresaDto> ObterEmpresaPorCodigoUsuario(int codigoUsuario)

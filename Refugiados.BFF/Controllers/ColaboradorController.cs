@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Refugiados.BFF.Models.Colaborador.Requisicoes;
+using Refugiados.BFF.Models.Respostas;
 using Refugiados.BFF.Servicos;
 using System;
 using System.Threading.Tasks;
@@ -26,18 +27,35 @@ namespace Refugiados.BFF.Controllers
             var colaborador = await _colaboradorServico.ObterColaboradorPorCodigoUsuario(codigoUsuario);
 
             if (colaborador == null)
-                return NotFound();
+            {
+                return NotFound(new RespostaModel
+                {
+                    StatusCode = 404,
+                    Sucesso = false,
+                    Mensagem = "Não encontrado"
+                });
+            }
 
-            return Ok(colaborador);
+            return Ok(new RespostaModel 
+            {   
+                StatusCode = 200,
+                Sucesso = true,
+                Corpo = colaborador 
+            });
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> ListarColaborador()
         {
-            var colaborador = await _colaboradorServico.ListarColaboradores();
+            var colaboradores = await _colaboradorServico.ListarColaboradores();
 
-            return Ok(colaborador);
+            return Ok(new RespostaModel
+            {
+                StatusCode = 200,
+                Sucesso = true,
+                Corpo = colaboradores
+            });
         }
 
         [HttpPatch("{codigoUsuario}")]
@@ -45,18 +63,35 @@ namespace Refugiados.BFF.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AtualizarColaborador(int codigoUsuario, [FromBody] AtualizarColaboradorRequestModel colaborador)
         {
-            if (colaborador == null)
-                return BadRequest();
-
-            if (string.IsNullOrWhiteSpace(colaborador.NomeColaborador))
-                return BadRequest("Nenhum dado para atualizar");
-
             if (codigoUsuario <= 0)
-                return BadRequest("Usuario inexistente");
+            {
+                return BadRequest(new RespostaModel
+                {
+                    StatusCode = 400,
+                    Sucesso = false,
+                    Mensagem = "Código inválido"
+                });
+            }
+
+            var validacao = colaborador.Validar();
+            if (!validacao.Valido)
+            {
+                return BadRequest(new RespostaModel
+                {
+                    StatusCode = 400,
+                    Sucesso = false,
+                    Mensagem = validacao.MensagemDeErro
+                });
+            }
 
             await _colaboradorServico.AtualizarColaborador(colaborador.NomeColaborador, codigoUsuario);
 
-            return Ok();
+            return Ok(new RespostaModel 
+            {
+                StatusCode = 200,
+                Sucesso = true,
+                Corpo = new { codigoUsuario }
+            });
         }
     }
 }

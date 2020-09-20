@@ -1,24 +1,24 @@
-﻿using FluentValidation;
+﻿using Refugiados.BFF.Models.Requisicoes;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Refugiados.BFF.Models.Usuario.Requisicoes
 {
-    public class UsuarioRequestModel
+    public class UsuarioRequestModel : IRequestModel
     {
         public string EmailUsuario { get; set; }
         public string SenhaUsuario { get; set; }
-    }
 
-    public class UsuarioRequestModelValidator : AbstractValidator<UsuarioRequestModel>
-    {
-        public UsuarioRequestModelValidator()
+        public ValidacaoRequisicaoModel Validar()
         {
-            RuleFor(usuario => usuario.EmailUsuario)
-                .NotEmpty().WithMessage("O campo email do usuario deve ser preenchido")
-                .NotNull().WithMessage("O email do usuario não pode ser nulo");
+            var erros = new List<string>();
 
-            RuleFor(usuarioColaborador => usuarioColaborador.SenhaUsuario)
-                .NotEmpty().WithMessage("O campo senha do usuario deve ser preenchido")
-                .NotNull().WithMessage("A senha do usuario não pode ser nula");
+            if (string.IsNullOrWhiteSpace(EmailUsuario))
+                erros.Add("O campo email do usuario deve ser preenchido");
+            if (string.IsNullOrWhiteSpace(SenhaUsuario))
+                erros.Add("O campo senha do usuario deve ser preenchido");
+
+            return new ValidacaoRequisicaoModel { Erros = erros, Valido = !erros.Any() };
         }
     }
 }

@@ -1,8 +1,7 @@
-﻿using System.Net.Mime;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Refugiados.BFF.Models;
+using Refugiados.BFF.Models.Respostas;
 using Refugiados.BFF.Models.Requisicoes.Empresa;
 using Refugiados.BFF.Servicos.Interfaces;
 
@@ -27,10 +26,34 @@ namespace Refugiados.BFF.Controllers
 
             if (empresa == null)
             {
-                return NotFound();
+                return NotFound(new RespostaModel 
+                {
+                    StatusCode = 404,
+                    Sucesso = false,
+                    Mensagem = "Não encontrado"
+                });
             }
 
-            return Ok(empresa);
+            return Ok(new RespostaModel 
+            {
+                StatusCode = 200,
+                Sucesso = true,
+                Corpo = empresa
+            });
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> ListarEmpresa()
+        {
+            var empresas = await _empresaServico.ListarEmpresas();
+
+            return Ok(new RespostaModel
+            {
+                StatusCode = 200,
+                Sucesso = true,
+                Corpo = empresas
+            });
         }
 
         [HttpPatch("{codigoUsuario}")]
@@ -38,14 +61,35 @@ namespace Refugiados.BFF.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AtualizarEmpresa(int codigoUsuario, [FromBody] AtualizarEmpresaRequestModel request)
         {
-            if (request == null || !ModelState.IsValid)
+            if (codigoUsuario <= 0)
             {
-                return BadRequest();
+                return BadRequest(new RespostaModel
+                {
+                    StatusCode = 400,
+                    Sucesso = false,
+                    Mensagem = "Código inválido"
+                });
+            }
+
+            var validacao = request.Validar();
+            if (!validacao.Valido)
+            {
+                return BadRequest(new RespostaModel
+                {
+                    StatusCode = 400,
+                    Sucesso = false,
+                    Mensagem = validacao.MensagemDeErro
+                });
             }
 
             await _empresaServico.AtualizarEmpresa(request.RazaoSocial, codigoUsuario);
 
-            return Ok();
+            return Ok(new RespostaModel
+            {
+                StatusCode = 200,
+                Sucesso = true,
+                Corpo = new { codigoUsuario } 
+            });
         }
     }
 }

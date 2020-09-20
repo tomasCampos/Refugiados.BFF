@@ -1,24 +1,26 @@
-﻿using FluentValidation;
-using Refugiados.BFF.Models.Usuario.Requisicoes;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Refugiados.BFF.Models.Requisicoes.Usuario
 {
-    public class UsuarioEmpresaRequestModel : UsuarioRequestModel
+    public class UsuarioEmpresaRequestModel : IRequestModel
     {
         public string RazaoSocial { get; set; }
-    }
+        public string EmailUsuario { get; set; }
+        public string SenhaUsuario { get; set; }
 
-    public class UsuarioEmpresaRequestModelValidator : AbstractValidator<UsuarioEmpresaRequestModel>
-    {
-        public UsuarioEmpresaRequestModelValidator()
+        public ValidacaoRequisicaoModel Validar()
         {
-            RuleFor(empresa => empresa.RazaoSocial)
-                .NotEmpty().WithMessage("O campo razão social deve ser preenchido")
-                .NotNull().WithMessage("A razão social da empresa não pode ser nula");
+            var erros = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(EmailUsuario))
+                erros.Add("O campo email do usuario deve ser preenchido");
+            if (string.IsNullOrWhiteSpace(SenhaUsuario))
+                erros.Add("O campo senha do usuario deve ser preenchido");
+            if (string.IsNullOrWhiteSpace(RazaoSocial))
+                erros.Add("O campo razão social deve ser preenchido");
+
+            return new ValidacaoRequisicaoModel { Erros = erros, Valido = !erros.Any() };
         }
     }
 }
