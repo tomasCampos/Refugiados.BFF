@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Refugiados.BFF.Models.Requisicoes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

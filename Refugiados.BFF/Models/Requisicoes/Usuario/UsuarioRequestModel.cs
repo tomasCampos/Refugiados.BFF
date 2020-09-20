@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Refugiados.BFF.Models.Requisicoes;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Refugiados.BFF.Models.Usuario.Requisicoes

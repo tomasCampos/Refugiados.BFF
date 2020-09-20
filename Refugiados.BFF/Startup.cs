@@ -40,7 +40,6 @@ namespace Refugiados.BFF
                 fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>()
             );
             services.AddTransient(_ => new MySqlConnection(Configuration["ConnectionStrings:Default"]));
-            services.AddTransient<IValidator<EmpresaModel>, EmpresaValidator>();
 
             services.AddScoped<IUsuarioServico, UsuarioServico>();
             services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
