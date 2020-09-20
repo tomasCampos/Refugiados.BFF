@@ -203,7 +203,7 @@ namespace Refugiados.BFF.Controllers
                 {
                     StatusCode = 201,
                     Sucesso = true,
-                    Corpo = new { resultadoCadastro.CodigoUsuarioCadastrado } 
+                    Corpo = new { CodigoUsuario = resultadoCadastro.CodigoUsuarioCadastrado } 
                 });
             }
 
@@ -211,7 +211,7 @@ namespace Refugiados.BFF.Controllers
             {
                 StatusCode = 200,
                 Sucesso = true,
-                Corpo = new { resultadoCadastro.CodigoUsuarioCadastrado }
+                Corpo = new { CodigoUsuario = resultadoCadastro.CodigoUsuarioCadastrado }
             });
         }
 

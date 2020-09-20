@@ -90,7 +90,7 @@ namespace Refugiados.BFF.Controllers
             {
                 StatusCode = 200,
                 Sucesso = true,
-                Corpo = codigoUsuario
+                Corpo = new { codigoUsuario }
             });
         }
     }
