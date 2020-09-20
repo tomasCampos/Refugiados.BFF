@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Refugiados.BFF.Models.Requisicoes
+namespace Refugiados.BFF.Models.Usuario.Requisicoes
 {
     public class UsuarioRequestModel
     {

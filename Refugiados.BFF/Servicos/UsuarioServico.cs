@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Refugiados.BFF.Models;
+using Refugiados.BFF.Servicos.Interfaces;
 using Refugiados.BFF.Servicos.Model;
 using Refugiados.BFF.Util;
 using Repositorio.Dtos;
@@ -16,12 +17,14 @@ namespace Refugiados.BFF.Servicos
         private readonly IUsuarioRepositorio _usuarioRepositorio;
         private readonly IConfiguration _configuration;
         private readonly IColaboradorSerivico _colaboradorServico;
+        private readonly IEmpresaServico _empresaServico;
 
-        public UsuarioServico(IUsuarioRepositorio usuarioRepositorio, IConfiguration configuration, IColaboradorSerivico colaboradorServico)
+        public UsuarioServico(IUsuarioRepositorio usuarioRepositorio, IConfiguration configuration, IColaboradorSerivico colaboradorServico, IEmpresaServico empresaServico)
         {
             _usuarioRepositorio = usuarioRepositorio;
             _configuration = configuration;
             _colaboradorServico = colaboradorServico;
+            _empresaServico = empresaServico;
         }
 
         public async Task<List<UsuarioModel>> ListarUsuarios(int? codigoUsuario, string email)
@@ -83,6 +86,18 @@ namespace Refugiados.BFF.Servicos
             return resultadoCadastroUsuario;
         }
 
+        public async Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioEmpresa(string emailUsuario, string senhaUsuario, string razaoSocial)
+        {
+            var resultadoCadastroUsuario = await CadastrarUsuario(emailUsuario, senhaUsuario, (int)PerfilUsuario.Empresa);
+
+            if (resultadoCadastroUsuario.SituacaoCadastro == CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
+                return resultadoCadastroUsuario;
+
+            await _empresaServico.CadastrarEmpresa(razaoSocial, resultadoCadastroUsuario.CodigoUsuarioCadastrado);
+
+            return resultadoCadastroUsuario;
+        }
+
         public async Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario)
         {
             if(!string.IsNullOrWhiteSpace(emailUsuario))
@@ -127,7 +142,7 @@ namespace Refugiados.BFF.Servicos
             
             return senhaCifrada;
         }
-            
+
         #endregion
     }
 
@@ -136,6 +151,7 @@ namespace Refugiados.BFF.Servicos
         Task<List<UsuarioModel>> ListarUsuarios(int? codigoUsuario, string email);
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario = null);
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioColaborador(string emailUsuario, string senhaUsuario, string nomeColaborador);
+        Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioEmpresa(string emailUsuario, string senhaUsuario, string razaoSocial);
         Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
         Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario);
     }

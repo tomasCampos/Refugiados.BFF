@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Refugiados.BFF.Models;
+using Refugiados.BFF.Models.Requisicoes.Empresa;
 using Refugiados.BFF.Servicos.Interfaces;
 
 namespace Refugiados.BFF.Controllers
@@ -15,22 +16,6 @@ namespace Refugiados.BFF.Controllers
         public EmpresaController(IEmpresaServico empresaServico)
         {
             _empresaServico = empresaServico;
-        }
-
-        [HttpPost]
-        [Consumes(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CadastrarEmpresa([FromBody] EmpresaModel request)
-        {
-            if (request == null || !ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
-            await _empresaServico.CadastrarEmpresa(request.RazaoSocial, request.CodigoUsuario);
-
-            return StatusCode(201);
         }
 
         [HttpGet("{codigoUsuario}")]
@@ -51,7 +36,7 @@ namespace Refugiados.BFF.Controllers
         [HttpPatch("{codigoUsuario}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AtualizarEmpresa(int codigoUsuario, [FromBody] EmpresaModel request)
+        public async Task<IActionResult> AtualizarEmpresa(int codigoUsuario, [FromBody] AtualizarEmpresaRequestModel request)
         {
             if (request == null || !ModelState.IsValid)
             {
