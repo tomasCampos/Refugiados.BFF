@@ -41,7 +41,7 @@ namespace Refugiados.BFF.Controllers
                 return BadRequest();
 
             var resultadoCadastro = await _usuarioServico.CadastrarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
-            return FormatarResultadoCadastroUsuario(resultadoCadastro);
+            return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro);
         }
 
         [HttpPost("colaborador")]
@@ -54,7 +54,7 @@ namespace Refugiados.BFF.Controllers
                 return BadRequest();
 
             var resultadoCadastro = await _usuarioServico.CadastrarUsuarioColaborador(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.NomeColaborador);
-            return FormatarResultadoCadastroUsuario(resultadoCadastro);
+            return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro);
         }
 
 
@@ -81,7 +81,7 @@ namespace Refugiados.BFF.Controllers
 
             var resultadoCadastro = await _usuarioServico.AtualizarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, codigoUsuario);
 
-            return FormatarResultadoCadastroUsuario(resultadoCadastro);
+            return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro, false);
         }
 
         [HttpPost("autenticacao")]
@@ -109,12 +109,14 @@ namespace Refugiados.BFF.Controllers
 
         #region Metodos privados
 
-        private IActionResult FormatarResultadoCadastroUsuario(CadastrarAtualizarUsuarioServiceModel resultadoCadastro)
+        private IActionResult FormatarResultadoCadastroOuAtualizacaoUsuario(CadastrarAtualizarUsuarioServiceModel resultadoCadastro, bool cadastro = true )
         {
             if (resultadoCadastro.SituacaoCadastro == CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
                 return Conflict(new { Mensagem = "Nome de usuário já utilizado", CodigoUsuarioCadastrado = 0 });
-            else
+            else if(cadastro)
                 return Created($"/usuarios/{resultadoCadastro.CodigoUsuarioCadastrado}", new { Mensagem = "Cadastrado com sucesso", resultadoCadastro.CodigoUsuarioCadastrado });
+
+            return Ok(new { Mensagem = "Cadastrado com sucesso", resultadoCadastro.CodigoUsuarioCadastrado });
         }
 
         #endregion
