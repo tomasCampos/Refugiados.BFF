@@ -5,7 +5,6 @@ using Refugiados.BFF.Servicos.Model;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Refugiados.BFF.Models.Respostas;
-using System.Linq;
 using Refugiados.BFF.Models.Requisicoes.Usuario;
 
 namespace Refugiados.BFF.Controllers

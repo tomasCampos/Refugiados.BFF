@@ -1,5 +1,4 @@
 ﻿using System;
-using static Repositorio.CrossCutting.AppConstants;
 
 namespace Refugiados.BFF.Models
 {

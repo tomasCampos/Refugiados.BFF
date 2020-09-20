@@ -1,5 +1,4 @@
 ﻿using System;
-using FluentValidation;
 
 namespace Refugiados.BFF.Models
 {

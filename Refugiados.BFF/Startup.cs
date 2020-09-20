@@ -9,9 +9,6 @@ using MySqlConnector;
 using Refugiados.BFF.Servicos;
 using Repositorio.Repositorios;
 using Microsoft.OpenApi.Models;
-using FluentValidation;
-using Refugiados.BFF.Models.Usuario.Requisicoes;
-using Refugiados.BFF.Models.Requisicoes.Usuario;
 
 namespace Refugiados.BFF
 {

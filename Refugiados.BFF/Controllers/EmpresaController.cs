@@ -1,8 +1,6 @@
-﻿using System.Net.Mime;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Refugiados.BFF.Models;
 using Refugiados.BFF.Models.Respostas;
 using Refugiados.BFF.Models.Requisicoes.Empresa;
 using Refugiados.BFF.Servicos.Interfaces;
