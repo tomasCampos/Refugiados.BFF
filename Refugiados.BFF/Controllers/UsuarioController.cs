@@ -112,9 +112,9 @@ namespace Refugiados.BFF.Controllers
         private IActionResult FormatarResultadoCadastroUsuario(CadastrarAtualizarUsuarioServiceModel resultadoCadastro)
         {
             if (resultadoCadastro.SituacaoCadastro == CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
-                return Conflict("Nome de usuário já utilizado");
+                return Conflict(new { Mensagem = "Nome de usuário já utilizado", CodigoUsuarioCadastrado = 0 });
             else
-                return Created($"/usuarios/{resultadoCadastro.CodigoUsuarioCadastrado}", resultadoCadastro.CodigoUsuarioCadastrado);
+                return Created($"/usuarios/{resultadoCadastro.CodigoUsuarioCadastrado}", new { Mensagem = "Cadastrado com sucesso", resultadoCadastro.CodigoUsuarioCadastrado });
         }
 
         #endregion
