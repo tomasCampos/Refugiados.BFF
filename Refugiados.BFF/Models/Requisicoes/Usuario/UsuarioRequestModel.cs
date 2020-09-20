@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Refugiados.BFF.Models.Requisicoes
+namespace Refugiados.BFF.Models.Usuario.Requisicoes
 {
     public class UsuarioRequestModel : IRequestModel
     {

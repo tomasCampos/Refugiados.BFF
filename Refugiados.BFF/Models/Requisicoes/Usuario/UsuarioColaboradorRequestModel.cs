@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Refugiados.BFF.Models.Requisicoes
+namespace Refugiados.BFF.Models.Usuario.Requisicoes
 {
     public class UsuarioColaboradorRequestModel : IRequestModel
     {
