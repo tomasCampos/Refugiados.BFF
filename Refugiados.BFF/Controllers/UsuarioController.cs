@@ -4,6 +4,7 @@ using Refugiados.BFF.Models.Usuario.Requisicoes;
 using Refugiados.BFF.Servicos.Model;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Refugiados.BFF.Models.Requisicoes.Usuario;
 
 namespace Refugiados.BFF.Controllers
 {
@@ -57,6 +58,18 @@ namespace Refugiados.BFF.Controllers
             return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro);
         }
 
+        [HttpPost("empresa")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CadastrarUsuarioEmpresa([FromBody] UsuarioEmpresaRequestModel requisicao)
+        {
+            if (requisicao == null || !ModelState.IsValid)
+                return BadRequest();
+
+            var resultadoCadastro = await _usuarioServico.CadastrarUsuarioEmpresa(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.RazaoSocial);
+            return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro);
+        }
 
         [HttpPatch("{codigoUsuario}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

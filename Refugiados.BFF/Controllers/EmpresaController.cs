@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Refugiados.BFF.Models;
+using Refugiados.BFF.Models.Requisicoes.Empresa;
 using Refugiados.BFF.Servicos.Interfaces;
 
 namespace Refugiados.BFF.Controllers
@@ -35,7 +36,7 @@ namespace Refugiados.BFF.Controllers
         [HttpPatch("{codigoUsuario}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AtualizarEmpresa(int codigoUsuario, [FromBody] EmpresaModel request)
+        public async Task<IActionResult> AtualizarEmpresa(int codigoUsuario, [FromBody] AtualizarEmpresaRequestModel request)
         {
             if (request == null || !ModelState.IsValid)
             {

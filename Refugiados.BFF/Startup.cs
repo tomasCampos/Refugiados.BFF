@@ -10,8 +10,8 @@ using Refugiados.BFF.Servicos;
 using Repositorio.Repositorios;
 using Microsoft.OpenApi.Models;
 using FluentValidation;
-using Refugiados.BFF.Models;
 using Refugiados.BFF.Models.Usuario.Requisicoes;
+using Refugiados.BFF.Models.Requisicoes.Usuario;
 
 namespace Refugiados.BFF
 {
@@ -40,7 +40,7 @@ namespace Refugiados.BFF
                 fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>()
             );
             services.AddTransient(_ => new MySqlConnection(Configuration["ConnectionStrings:Default"]));
-            services.AddTransient<IValidator<EmpresaModel>, EmpresaValidator>();
+            services.AddTransient<IValidator<UsuarioEmpresaRequestModel>, UsuarioEmpresaRequestModelValidator>();
             services.AddTransient<IValidator<UsuarioRequestModel>, UsuarioRequestModelValidator>();
             services.AddTransient<IValidator<UsuarioColaboradorRequestModel>, UsuarioColaboradorRequestModelValidator>();
 

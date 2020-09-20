@@ -20,9 +20,5 @@
     <ProjectReference Include="..\Repositorio\Repositorio.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Requisicoes\Empresa\" />
-  </ItemGroup>
-
 
 </Project>
