@@ -92,8 +92,16 @@ namespace Refugiados.BFF.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CadastrarUsuarioEmpresa([FromBody] UsuarioEmpresaRequestModel requisicao)
         {
-            if (requisicao == null || !ModelState.IsValid)
-                return BadRequest();
+            var validacao = requisicao.Validar();
+            if (!validacao.Valido)
+            {
+                return BadRequest(new RespostaModel
+                {
+                    StatusCode = 400,
+                    Sucesso = false,
+                    Mensagem = validacao.MensagemDeErro
+                });
+            }
 
             var resultadoCadastro = await _usuarioServico.CadastrarUsuarioEmpresa(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.RazaoSocial);
             return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro);

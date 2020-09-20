@@ -1,11 +1,7 @@
-﻿using FluentValidation;
-using Refugiados.BFF.Models.Requisicoes;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace Refugiados.BFF.Models.Usuario.Requisicoes
+namespace Refugiados.BFF.Models.Requisicoes.Usuario
 {
     public class UsuarioColaboradorRequestModel : IRequestModel
     {
