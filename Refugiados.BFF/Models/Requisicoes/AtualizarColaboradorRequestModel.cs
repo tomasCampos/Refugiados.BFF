@@ -5,8 +5,17 @@ using System.Threading.Tasks;
 
 namespace Refugiados.BFF.Models.Requisicoes
 {
-    public class AtualizarColaboradorRequestModel
+    public class AtualizarColaboradorRequestModel : IRequestModel
     {
-        public string NomeColaborador { get; set; }        
+        public string NomeColaborador { get; set; }
+
+        public ValidacaoRequisicaoModel Validar()
+        {
+            var erros = new List<string>();
+            if (string.IsNullOrWhiteSpace(NomeColaborador))
+                erros.Add("Nenhum dado para atualizar");
+
+            return new ValidacaoRequisicaoModel { Erros = erros, Valido = !erros.Any() };
+        }
     }
 }

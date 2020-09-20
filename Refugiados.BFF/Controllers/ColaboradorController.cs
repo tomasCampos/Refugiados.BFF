@@ -63,19 +63,6 @@ namespace Refugiados.BFF.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AtualizarColaborador(int codigoUsuario, [FromBody] AtualizarColaboradorRequestModel colaborador)
         {
-            if (colaborador == null)
-                return BadRequest();
-
-            if (string.IsNullOrWhiteSpace(colaborador.NomeColaborador))
-            {
-                return BadRequest(new RespostaModel
-                {
-                    StatusCode = 400,
-                    Sucesso = false,
-                    Mensagem = "Nenhum dado para atualizar"
-                });
-            }
-
             if (codigoUsuario <= 0)
             {
                 return BadRequest(new RespostaModel
@@ -83,6 +70,17 @@ namespace Refugiados.BFF.Controllers
                     StatusCode = 400,
                     Sucesso = false,
                     Mensagem = "Código inválido"
+                });
+            }
+
+            var validacao = colaborador.Validar();
+            if (!validacao.Valido)
+            {
+                return BadRequest(new RespostaModel
+                {
+                    StatusCode = 400,
+                    Sucesso = false,
+                    Mensagem = validacao.MensagemDeErro
                 });
             }
 

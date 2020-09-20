@@ -6,19 +6,24 @@ using System.Threading.Tasks;
 
 namespace Refugiados.BFF.Models.Requisicoes
 {
-    public class UsuarioColaboradorRequestModel : UsuarioRequestModel
+    public class UsuarioColaboradorRequestModel : IRequestModel
     {
         public string NomeColaborador { get; set; }
+        public string EmailUsuario { get; set; }
+        public string SenhaUsuario { get; set; }
 
-    }
-
-    public class UsuarioColaboradorRequestModelValidator : AbstractValidator<UsuarioColaboradorRequestModel>
-    {
-        public UsuarioColaboradorRequestModelValidator()
+        public ValidacaoRequisicaoModel Validar()
         {
-            RuleFor(usuarioColaborador => usuarioColaborador.NomeColaborador)
-                .NotEmpty().WithMessage("O campo nome do colaborador deve ser preenchido")
-                .NotNull().WithMessage("O nome do colaborador não pode ser nulo");
+            var erros = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(EmailUsuario))
+                erros.Add("O campo email do usuario deve ser preenchido");
+            if (string.IsNullOrWhiteSpace(SenhaUsuario))
+                erros.Add("O campo senha do usuario deve ser preenchido");
+            if (string.IsNullOrWhiteSpace(NomeColaborador))
+                erros.Add("O campo nome do colaborador deve ser preenchido");
+
+            return new ValidacaoRequisicaoModel { Erros = erros, Valido = !erros.Any() };
         }
     }
 }

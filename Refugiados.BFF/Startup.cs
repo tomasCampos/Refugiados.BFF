@@ -41,8 +41,6 @@ namespace Refugiados.BFF
             );
             services.AddTransient(_ => new MySqlConnection(Configuration["ConnectionStrings:Default"]));
             services.AddTransient<IValidator<EmpresaModel>, EmpresaValidator>();
-            services.AddTransient<IValidator<UsuarioRequestModel>, UsuarioRequestModelValidator>();
-            services.AddTransient<IValidator<UsuarioColaboradorRequestModel>, UsuarioColaboradorRequestModelValidator>();
 
             services.AddScoped<IUsuarioServico, UsuarioServico>();
             services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
