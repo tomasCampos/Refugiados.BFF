@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Refugiados.BFF.Models;
+using Refugiados.BFF.Models.Respostas;
 using Refugiados.BFF.Servicos.Interfaces;
 
 namespace Refugiados.BFF.Controllers
@@ -42,10 +43,20 @@ namespace Refugiados.BFF.Controllers
 
             if (empresa == null)
             {
-                return NotFound();
+                return NotFound(new RespostaModel 
+                {
+                    StatusCode = 404,
+                    Sucesso = false,
+                    Mensagem = "Não encontrado"
+                });
             }
 
-            return Ok(empresa);
+            return Ok(new RespostaModel 
+            {
+                StatusCode = 200,
+                Sucesso = true,
+                Corpo = empresa
+            });
         }
 
         [HttpPatch("{codigoUsuario}")]
@@ -60,7 +71,12 @@ namespace Refugiados.BFF.Controllers
 
             await _empresaServico.AtualizarEmpresa(request.RazaoSocial, codigoUsuario);
 
-            return Ok();
+            return Ok(new RespostaModel
+            {
+                StatusCode = 200,
+                Sucesso = true,
+                Corpo = codigoUsuario
+            });
         }
     }
 }

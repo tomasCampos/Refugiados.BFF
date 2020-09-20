@@ -4,6 +4,7 @@ using Refugiados.BFF.Models.Requisicoes;
 using Refugiados.BFF.Servicos.Model;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Refugiados.BFF.Models.Respostas;
 
 namespace Refugiados.BFF.Controllers
 {
@@ -24,11 +25,22 @@ namespace Refugiados.BFF.Controllers
         public async Task<IActionResult> ListarUsuarios(int? codigoUsuario, string emailUsuario = null)
         {
             if (codigoUsuario.HasValue && codigoUsuario.Value == 0)
-                return BadRequest("Informe um código válido");
+                return BadRequest(new RespostaModel 
+                {
+                    StatusCode = 400,
+                    Sucesso = false,
+                    Mensagem = "Informe um código válido",
+                });
 
             var usuarios = await _usuarioServico.ListarUsuarios(codigoUsuario, emailUsuario);
 
-            return Ok(usuarios);
+            return Ok(new RespostaModel 
+            {
+                StatusCode = 200,
+                Sucesso = true,
+                Mensagem = string.Empty,
+                Corpo = usuarios
+            });
         }
 
         [HttpPost]
@@ -66,21 +78,38 @@ namespace Refugiados.BFF.Controllers
         {
             if (requisicao == null)
             {
-                return BadRequest();
+                return BadRequest(new RespostaModel
+                {
+                    StatusCode = 400,
+                    Sucesso = false,
+                    Mensagem = "Nenhum dado para atualizar",
+                    Corpo = null
+                });
             }
 
             if (string.IsNullOrWhiteSpace(requisicao.EmailUsuario) && string.IsNullOrWhiteSpace(requisicao.SenhaUsuario))
             {
-                return BadRequest("Nenhum dado para atualizar");
+                return BadRequest(new RespostaModel
+                {
+                    StatusCode = 400,
+                    Sucesso = false,
+                    Mensagem = "Nenhum dado para atualizar",
+                    Corpo = null
+                });
             }
 
             if (codigoUsuario <= 0)
             {
-                return BadRequest("Usuario inexistente");
+                return BadRequest(new RespostaModel
+                {
+                    StatusCode = 400,
+                    Sucesso = false,
+                    Mensagem = "Usuário inexistente",
+                    Corpo = null
+                });
             }
 
             var resultadoCadastro = await _usuarioServico.AtualizarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, codigoUsuario);
-
             return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro, false);
         }
 
@@ -112,11 +141,31 @@ namespace Refugiados.BFF.Controllers
         private IActionResult FormatarResultadoCadastroOuAtualizacaoUsuario(CadastrarAtualizarUsuarioServiceModel resultadoCadastro, bool cadastro = true )
         {
             if (resultadoCadastro.SituacaoCadastro == CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
-                return Conflict(new { Mensagem = "Nome de usuário já utilizado", CodigoUsuarioCadastrado = 0 });
-            else if(cadastro)
-                return Created($"/usuarios/{resultadoCadastro.CodigoUsuarioCadastrado}", new { Mensagem = "Cadastrado com sucesso", resultadoCadastro.CodigoUsuarioCadastrado });
+            {
+                return Conflict(new RespostaModel
+                {
+                    StatusCode = 409,
+                    Sucesso = false,
+                    Mensagem = "Nome de usuário já utilizado",
+                    Corpo = null
+                });
+            }
+            else if (cadastro)
+            {
+                return Created($"/usuarios/{resultadoCadastro.CodigoUsuarioCadastrado}", new RespostaModel
+                {
+                    StatusCode = 201,
+                    Sucesso = true,
+                    Corpo = resultadoCadastro.CodigoUsuarioCadastrado
+                });
+            }
 
-            return Ok(new { Mensagem = "Cadastrado com sucesso", resultadoCadastro.CodigoUsuarioCadastrado });
+            return Ok(new RespostaModel
+            {
+                StatusCode = 200,
+                Sucesso = true,
+                Corpo = resultadoCadastro.CodigoUsuarioCadastrado
+            });
         }
 
         #endregion
