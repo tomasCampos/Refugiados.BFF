@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Refugiados.BFF.Models;
 using Refugiados.BFF.Servicos.Interfaces;
 using Repositorio.Repositorios.Interfaces;
@@ -41,6 +43,23 @@ namespace Refugiados.BFF.Servicos
             {
                 return null;
             }
+        }
+
+        public async Task<List<EmpresaModel>> ListarEmpresas()
+        {
+            var lista = await _empresaRepositorio.ListarEmpresas();
+
+            var colaboradores = lista.Select(empresa => new EmpresaModel
+            {
+                DataAlteracao = empresa.data_alteracao,
+                DataCriacao = empresa.data_criacao,
+                CodigoEmpresa = empresa.codigo_empresa,
+                CodigoUsuario = empresa.codigo_usuario,
+                RazaoSocial = empresa.razao_social,
+                EmailContato = empresa.email_usuario
+            }).ToList();
+
+            return colaboradores;
         }
     }
 }

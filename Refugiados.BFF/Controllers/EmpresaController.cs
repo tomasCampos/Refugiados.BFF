@@ -42,14 +42,44 @@ namespace Refugiados.BFF.Controllers
             });
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> ListarEmpresa()
+        {
+            var empresas = await _empresaServico.ListarEmpresas();
+
+            return Ok(new RespostaModel
+            {
+                StatusCode = 200,
+                Sucesso = true,
+                Corpo = empresas
+            });
+        }
+
         [HttpPatch("{codigoUsuario}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AtualizarEmpresa(int codigoUsuario, [FromBody] AtualizarEmpresaRequestModel request)
         {
-            if (request == null || !ModelState.IsValid)
+            if (codigoUsuario <= 0)
             {
-                return BadRequest();
+                return BadRequest(new RespostaModel
+                {
+                    StatusCode = 400,
+                    Sucesso = false,
+                    Mensagem = "Código inválido"
+                });
+            }
+
+            var validacao = request.Validar();
+            if (!validacao.Valido)
+            {
+                return BadRequest(new RespostaModel
+                {
+                    StatusCode = 400,
+                    Sucesso = false,
+                    Mensagem = validacao.MensagemDeErro
+                });
             }
 
             await _empresaServico.AtualizarEmpresa(request.RazaoSocial, codigoUsuario);
