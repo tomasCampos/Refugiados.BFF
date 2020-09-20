@@ -17,22 +17,6 @@ namespace Refugiados.BFF.Controllers
             _empresaServico = empresaServico;
         }
 
-        [HttpPost]
-        [Consumes(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CadastrarEmpresa([FromBody] EmpresaModel request)
-        {
-            if (request == null || !ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
-            await _empresaServico.CadastrarEmpresa(request.RazaoSocial, request.CodigoUsuario);
-
-            return StatusCode(201);
-        }
-
         [HttpGet("{codigoUsuario}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

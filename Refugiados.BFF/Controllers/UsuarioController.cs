@@ -1,6 +1,6 @@
 ﻿using Refugiados.BFF.Servicos;
 using Microsoft.AspNetCore.Mvc;
-using Refugiados.BFF.Models.Requisicoes;
+using Refugiados.BFF.Models.Usuario.Requisicoes;
 using Refugiados.BFF.Servicos.Model;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;

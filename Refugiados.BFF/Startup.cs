@@ -11,7 +11,7 @@ using Repositorio.Repositorios;
 using Microsoft.OpenApi.Models;
 using FluentValidation;
 using Refugiados.BFF.Models;
-using Refugiados.BFF.Models.Requisicoes;
+using Refugiados.BFF.Models.Usuario.Requisicoes;
 
 namespace Refugiados.BFF
 {
