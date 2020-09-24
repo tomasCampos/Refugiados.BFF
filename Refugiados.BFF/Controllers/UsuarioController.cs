@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Refugiados.BFF.Models.Respostas;
 using Refugiados.BFF.Models.Requisicoes.Usuario;
+using System.Net;
 
 namespace Refugiados.BFF.Controllers
 {
@@ -28,7 +29,7 @@ namespace Refugiados.BFF.Controllers
             if (codigoUsuario.HasValue && codigoUsuario.Value == 0)
                 return BadRequest(new RespostaModel 
                 {
-                    StatusCode = 400,
+                    StatusCode = HttpStatusCode.BadRequest,
                     Sucesso = false,
                     Mensagem = "Informe um código válido",
                 });
@@ -37,7 +38,7 @@ namespace Refugiados.BFF.Controllers
 
             return Ok(new RespostaModel 
             {
-                StatusCode = 200,
+                StatusCode = HttpStatusCode.OK,
                 Sucesso = true,
                 Mensagem = string.Empty,
                 Corpo = usuarios
@@ -55,7 +56,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return BadRequest(new RespostaModel 
                 {
-                    StatusCode = 400,
+                    StatusCode = HttpStatusCode.BadRequest,
                     Sucesso = false,
                     Mensagem = validacao.MensagemDeErro
                 });
@@ -76,7 +77,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return BadRequest(new RespostaModel
                 {
-                    StatusCode = 400,
+                    StatusCode = HttpStatusCode.BadRequest,
                     Sucesso = false,
                     Mensagem = validacao.MensagemDeErro
                 });
@@ -97,7 +98,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return BadRequest(new RespostaModel
                 {
-                    StatusCode = 400,
+                    StatusCode = HttpStatusCode.BadRequest,
                     Sucesso = false,
                     Mensagem = validacao.MensagemDeErro
                 });
@@ -117,7 +118,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return BadRequest(new RespostaModel
                 {
-                    StatusCode = 400,
+                    StatusCode = HttpStatusCode.BadRequest,
                     Sucesso = false,
                     Mensagem = "Usuário inexistente"
                 });
@@ -128,7 +129,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return BadRequest(new RespostaModel
                 {
-                    StatusCode = 400,
+                    StatusCode = HttpStatusCode.BadRequest,
                     Sucesso = false,
                     Mensagem = validacao.MensagemDeErro
                 });
@@ -148,7 +149,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return BadRequest(new RespostaModel
                 {
-                    StatusCode = 400,
+                    StatusCode = HttpStatusCode.BadRequest,
                     Sucesso = false,
                     Mensagem = validacao.MensagemDeErro
                 });
@@ -160,7 +161,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return Ok(new RespostaModel
                 {
-                    StatusCode = 200,
+                    StatusCode = HttpStatusCode.OK,
                     Sucesso = false,
                     Mensagem = "Usuario inexistente"
                 });
@@ -170,7 +171,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return Ok(new RespostaModel
                 {
-                    StatusCode = 200,
+                    StatusCode = HttpStatusCode.OK,
                     Sucesso = false,
                     Mensagem = "Senha Invalida"
                 });
@@ -178,7 +179,7 @@ namespace Refugiados.BFF.Controllers
 
             return Ok(new RespostaModel 
             {
-                StatusCode = 200,
+                StatusCode = HttpStatusCode.OK,
                 Sucesso = true,
                 Corpo = new { resultadoAutenticacao.CodigoUsuario, resultadoAutenticacao.PerfilUsuario }
             });
@@ -192,7 +193,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return Conflict(new RespostaModel
                 {
-                    StatusCode = 409,
+                    StatusCode = HttpStatusCode.Conflict,
                     Sucesso = false,
                     Mensagem = "Nome de usuário já utilizado"
                 });
@@ -201,7 +202,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return Created($"/usuarios/{resultadoCadastro.CodigoUsuarioCadastrado}", new RespostaModel
                 {
-                    StatusCode = 201,
+                    StatusCode = HttpStatusCode.Created,
                     Sucesso = true,
                     Corpo = new { CodigoUsuario = resultadoCadastro.CodigoUsuarioCadastrado } 
                 });
@@ -209,7 +210,7 @@ namespace Refugiados.BFF.Controllers
 
             return Ok(new RespostaModel
             {
-                StatusCode = 200,
+                StatusCode = HttpStatusCode.OK,
                 Sucesso = true,
                 Corpo = new { CodigoUsuario = resultadoCadastro.CodigoUsuarioCadastrado }
             });

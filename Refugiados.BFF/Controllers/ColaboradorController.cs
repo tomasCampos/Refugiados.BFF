@@ -4,6 +4,7 @@ using Refugiados.BFF.Models.Colaborador.Requisicoes;
 using Refugiados.BFF.Models.Respostas;
 using Refugiados.BFF.Servicos;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Refugiados.BFF.Controllers
@@ -30,7 +31,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return NotFound(new RespostaModel
                 {
-                    StatusCode = 404,
+                    StatusCode = HttpStatusCode.NotFound,
                     Sucesso = false,
                     Mensagem = "Não encontrado"
                 });
@@ -38,7 +39,7 @@ namespace Refugiados.BFF.Controllers
 
             return Ok(new RespostaModel 
             {   
-                StatusCode = 200,
+                StatusCode = HttpStatusCode.OK,
                 Sucesso = true,
                 Corpo = colaborador 
             });
@@ -52,7 +53,7 @@ namespace Refugiados.BFF.Controllers
 
             return Ok(new RespostaModel
             {
-                StatusCode = 200,
+                StatusCode = HttpStatusCode.OK,
                 Sucesso = true,
                 Corpo = colaboradores
             });
@@ -67,7 +68,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return BadRequest(new RespostaModel
                 {
-                    StatusCode = 400,
+                    StatusCode = HttpStatusCode.BadRequest,
                     Sucesso = false,
                     Mensagem = "Código inválido"
                 });
@@ -78,7 +79,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return BadRequest(new RespostaModel
                 {
-                    StatusCode = 400,
+                    StatusCode = HttpStatusCode.BadRequest,
                     Sucesso = false,
                     Mensagem = validacao.MensagemDeErro
                 });
@@ -88,7 +89,7 @@ namespace Refugiados.BFF.Controllers
 
             return Ok(new RespostaModel 
             {
-                StatusCode = 200,
+                StatusCode = HttpStatusCode.OK,
                 Sucesso = true,
                 Corpo = new { codigoUsuario }
             });

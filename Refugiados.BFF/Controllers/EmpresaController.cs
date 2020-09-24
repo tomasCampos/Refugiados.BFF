@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Refugiados.BFF.Models.Respostas;
 using Refugiados.BFF.Models.Requisicoes.Empresa;
 using Refugiados.BFF.Servicos.Interfaces;
+using System.Net;
 
 namespace Refugiados.BFF.Controllers
 {
@@ -28,7 +29,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return NotFound(new RespostaModel 
                 {
-                    StatusCode = 404,
+                    StatusCode = HttpStatusCode.NotFound,
                     Sucesso = false,
                     Mensagem = "Não encontrado"
                 });
@@ -36,7 +37,7 @@ namespace Refugiados.BFF.Controllers
 
             return Ok(new RespostaModel 
             {
-                StatusCode = 200,
+                StatusCode = HttpStatusCode.OK,
                 Sucesso = true,
                 Corpo = empresa
             });
@@ -50,7 +51,7 @@ namespace Refugiados.BFF.Controllers
 
             return Ok(new RespostaModel
             {
-                StatusCode = 200,
+                StatusCode = HttpStatusCode.OK,
                 Sucesso = true,
                 Corpo = empresas
             });
@@ -65,7 +66,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return BadRequest(new RespostaModel
                 {
-                    StatusCode = 400,
+                    StatusCode = HttpStatusCode.OK,
                     Sucesso = false,
                     Mensagem = "Código inválido"
                 });
@@ -76,7 +77,7 @@ namespace Refugiados.BFF.Controllers
             {
                 return BadRequest(new RespostaModel
                 {
-                    StatusCode = 400,
+                    StatusCode = HttpStatusCode.BadRequest,
                     Sucesso = false,
                     Mensagem = validacao.MensagemDeErro
                 });
@@ -86,7 +87,7 @@ namespace Refugiados.BFF.Controllers
 
             return Ok(new RespostaModel
             {
-                StatusCode = 200,
+                StatusCode = HttpStatusCode.OK,
                 Sucesso = true,
                 Corpo = new { codigoUsuario } 
             });
