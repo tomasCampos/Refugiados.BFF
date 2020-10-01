@@ -88,7 +88,7 @@
                                                     VALUES
                                                     (default,
                                                     @nome_colaborador,
-                                                    default,
+                                                    CURRENT_TIMESTAMP,
                                                     CURRENT_TIMESTAMP,
                                                     @codigo_usuario);";
 
