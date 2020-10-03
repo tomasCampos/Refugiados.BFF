@@ -55,13 +55,21 @@
                                                             `razao_social`,
                                                             `data_criacao`,
                                                             `data_alteracao`,
-                                                            `codigo_usuario`)
+                                                            `codigo_usuario`,
+                                                            `cnpj`,
+                                                            `nome_fantasia`,
+                                                            `data_fundacao`,
+                                                            `numero_funcionarios`)
                                                             VALUES
                                                             (default,
                                                             @razao_social,
                                                             CURRENT_TIMESTAMP,
                                                             CURRENT_TIMESTAMP,
-                                                            @codigo_usuario);";
+                                                            @codigo_usuario,
+                                                            @cnpj,
+                                                            @nome_fantasia,
+                                                            @data_fundacao,
+                                                            @numero_funcionarios);";
 
         public const string OBTER_EMPRESA_POR_CODIGO_USUARIO = @"SELECT * FROM heroku_93ac2d8811d872a.empresa 
                                                     WHERE codigo_usuario = @codigo_usuario;";

@@ -10,5 +10,9 @@ namespace Refugiados.BFF.Models
         public string EmailContato { get; set; }
         public DateTime DataCriacao { get; set; }
         public DateTime DataAlteracao { get; set; }
+        public string CNPJ { get; set; }
+        public string NomeFantasia { get; set; }
+        public DateTime? DataFundacao { get; set; }
+        public int? NumeroFuncionarios { get; set; }
     }
 }

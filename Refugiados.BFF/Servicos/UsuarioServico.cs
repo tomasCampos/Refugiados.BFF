@@ -5,6 +5,7 @@ using Refugiados.BFF.Servicos.Model;
 using Refugiados.BFF.Util;
 using Repositorio.Dtos;
 using Repositorio.Repositorios;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,14 +87,14 @@ namespace Refugiados.BFF.Servicos
             return resultadoCadastroUsuario;
         }
 
-        public async Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioEmpresa(string emailUsuario, string senhaUsuario, string razaoSocial)
+        public async Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioEmpresa(string emailUsuario, string senhaUsuario, string cnpj, string razaoSocial, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
         {
             var resultadoCadastroUsuario = await CadastrarUsuario(emailUsuario, senhaUsuario, (int)PerfilUsuario.Empresa);
 
             if (resultadoCadastroUsuario.SituacaoCadastro == CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.NomeDeUsuarioJaUtilizado)
                 return resultadoCadastroUsuario;
 
-            await _empresaServico.CadastrarEmpresa(razaoSocial, resultadoCadastroUsuario.CodigoUsuarioCadastrado);
+            await _empresaServico.CadastrarEmpresa(razaoSocial, resultadoCadastroUsuario.CodigoUsuarioCadastrado, cnpj, nomeFantasia, dataFundacao, numeroFuncionarios);
 
             return resultadoCadastroUsuario;
         }
@@ -151,7 +152,7 @@ namespace Refugiados.BFF.Servicos
         Task<List<UsuarioModel>> ListarUsuarios(int? codigoUsuario, string email);
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario = null);
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioColaborador(string emailUsuario, string senhaUsuario, string nomeColaborador);
-        Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioEmpresa(string emailUsuario, string senhaUsuario, string razaoSocial);
+        Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioEmpresa(string emailUsuario, string senhaUsuario, string razaoSocial, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios);
         Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
         Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario);
     }

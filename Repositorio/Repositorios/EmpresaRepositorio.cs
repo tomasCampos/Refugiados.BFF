@@ -25,9 +25,9 @@ namespace Repositorio.Repositorios
             }
         }
 
-        public async Task CadastrarEmpresa(string razaoSocial, int codigoUsuario)
+        public async Task CadastrarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
         {
-            await _db.ExecutarAsync(AppConstants.CADASTRAR_EMPRESA, new { codigo_usuario = codigoUsuario, razao_social = razaoSocial});
+            await _db.ExecutarAsync(AppConstants.CADASTRAR_EMPRESA, new { codigo_usuario = codigoUsuario, razao_social = razaoSocial, cnpj = cnpj, nome_fantasia = nomeFantasia, data_fundacao = dataFundacao, numero_funcionarios = numeroFuncionarios});
         }
 
         public async Task<List<EmpresaDto>> ListarEmpresas()

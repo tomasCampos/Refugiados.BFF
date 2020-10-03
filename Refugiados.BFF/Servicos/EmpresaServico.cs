@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Refugiados.BFF.Models;
@@ -16,9 +17,9 @@ namespace Refugiados.BFF.Servicos
             _empresaRepositorio = empresaRepositorio;
         }
 
-        public async Task CadastrarEmpresa(string razaoSocial, int codigoUsuario)
+        public async Task CadastrarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
         {
-            await _empresaRepositorio.CadastrarEmpresa(razaoSocial, codigoUsuario);
+            await _empresaRepositorio.CadastrarEmpresa(razaoSocial, codigoUsuario, cnpj, nomeFantasia, dataFundacao, numeroFuncionarios);
         }
 
         public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario)

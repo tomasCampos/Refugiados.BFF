@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace Refugiados.BFF.Models.Requisicoes.Usuario
 {
@@ -8,6 +10,10 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
         public string RazaoSocial { get; set; }
         public string EmailUsuario { get; set; }
         public string SenhaUsuario { get; set; }
+        public string CNPJ { get; set; }
+        public string NomeFantasia { get; set; }
+        public DateTime? DataFundacao { get; set; }
+        public int? NumeroFuncionarios { get; set; }
 
         public ValidacaoRequisicaoModel Validar()
         {
@@ -21,6 +27,23 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
                 erros.Add("O campo razão social deve ser preenchido");
 
             return new ValidacaoRequisicaoModel { Erros = erros, Valido = !erros.Any() };
+        }
+
+        public EmpresaModel CriarEmpresa()
+        {
+            if (Validar().Valido)
+            {
+                return new EmpresaModel
+                {
+                    RazaoSocial = RazaoSocial,
+                    CNPJ = CNPJ,
+                    NomeFantasia = NomeFantasia,
+                    DataFundacao = DataFundacao,
+                    NumeroFuncionarios = NumeroFuncionarios
+                };
+            }
+            else
+                throw new InvalidDataException("Colaborador inválido. Não pode ser instanciado");
         }
     }
 }
