@@ -1,5 +1,6 @@
 ﻿using Refugiados.BFF.Models;
 using Repositorio.Repositorios;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,10 +21,12 @@ namespace Refugiados.BFF.Servicos
             await _colaboradorRepositorio.AtualizarColaborador(nome,codigoUsuario);
         }
 
-        public async Task<int> CadastrarColaborador(string nome, int codigoUsuario)
+        public async Task<int> CadastrarColaborador(ColaboradorModel colaborador)
         {
-            await _colaboradorRepositorio.CadastrarColaborador(nome, codigoUsuario);
-            var colaboradorCadastrado = await ObterColaboradorPorCodigoUsuario(codigoUsuario);
+            await _colaboradorRepositorio.CadastrarColaborador(colaborador.NomeColaborador, colaborador.CodigoUsuario, colaborador.Nacionalidade, colaborador.DataNascimento,
+                colaborador.DataChegadaBrasil, colaborador.AreaFormacao, colaborador.Escolaridade);
+
+            var colaboradorCadastrado = await ObterColaboradorPorCodigoUsuario(colaborador.CodigoUsuario);
 
             return colaboradorCadastrado.CodigoColaborador;
         }
@@ -66,7 +69,7 @@ namespace Refugiados.BFF.Servicos
 
     public interface IColaboradorSerivico
     {
-        Task<int> CadastrarColaborador(string nome, int codigoUsuario);
+        Task<int> CadastrarColaborador(ColaboradorModel colaborador);
         Task<ColaboradorModel> ObterColaboradorPorCodigoUsuario(int codigoUsuario);
         Task<List<ColaboradorModel>> ListarColaboradores();
         Task AtualizarColaborador(string nome, int codigoUsuario);

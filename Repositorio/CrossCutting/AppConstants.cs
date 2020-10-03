@@ -84,12 +84,22 @@
                                                     `nome_colaborador`,
                                                     `data_criacao`,
                                                     `data_alteracao`,
+                                                    `nacionalidade`,
+                                                    `data_nascimento`,
+                                                    `data_chegada_brasil`,
+                                                    `area_formacao`,
+                                                    `escolaridade`,
                                                     `codigo_usuario`)
                                                     VALUES
                                                     (default,
                                                     @nome_colaborador,
                                                     CURRENT_TIMESTAMP,
                                                     CURRENT_TIMESTAMP,
+                                                    @nacionalidade,
+                                                    @data_nascimento,
+                                                    @data_chegada_brasil,
+                                                    @area_formacao,
+                                                    @escolaridade,
                                                     @codigo_usuario);";
 
         public const string ATUALIZAR_NOME_COLABORADOR = @"UPDATE `heroku_93ac2d8811d872a`.`colaborador`

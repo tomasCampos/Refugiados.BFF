@@ -82,8 +82,8 @@ namespace Refugiados.BFF.Controllers
                     Mensagem = validacao.MensagemDeErro
                 });
             }
-
-            var resultadoCadastro = await _usuarioServico.CadastrarUsuarioColaborador(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.NomeColaborador);
+            var colaborador = requisicao.CriarColaborador();
+            var resultadoCadastro = await _usuarioServico.CadastrarUsuarioColaborador(requisicao.EmailUsuario, requisicao.SenhaUsuario, colaborador);
             return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro);
         }
 
