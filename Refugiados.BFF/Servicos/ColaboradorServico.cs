@@ -55,7 +55,12 @@ namespace Refugiados.BFF.Servicos
                 CodigoColaborador = colab.codigo_colaborador,
                 CodigoUsuario = colab.codigo_usuario,
                 NomeColaborador = colab.nome_colaborador,
-                EmailContato = colab.email_usuario
+                EmailContato = colab.email_usuario,
+                Nacionalidade = colab.nacionalidade,
+                DataChegadaBrasil = colab.data_chegada_brasil,
+                DataNascimento = colab.data_nascimento,
+                Escolaridade = colab.escolaridade,
+                AreaFormacao = colab.area_formacao
             }).ToList();
 
             return colaboradores;
@@ -75,7 +80,12 @@ namespace Refugiados.BFF.Servicos
                 NomeColaborador = colaborador.nome_colaborador,
                 DataAlteracao = colaborador.data_alteracao,
                 DataCriacao = colaborador.data_criacao,
-                EmailContato = colaborador.email_usuario
+                EmailContato = colaborador.email_usuario,
+                Nacionalidade = colaborador.nacionalidade,
+                DataChegadaBrasil = colaborador.data_chegada_brasil,
+                DataNascimento = colaborador.data_nascimento,
+                Escolaridade = colaborador.escolaridade,
+                AreaFormacao = colaborador.area_formacao
             };
         }
     }
