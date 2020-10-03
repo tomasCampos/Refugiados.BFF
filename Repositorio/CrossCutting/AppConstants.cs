@@ -102,11 +102,16 @@
                                                     @escolaridade,
                                                     @codigo_usuario);";
 
-        public const string ATUALIZAR_NOME_COLABORADOR = @"UPDATE `heroku_93ac2d8811d872a`.`colaborador`
-                                                      SET
-                                                      `nome_colaborador` = @nome_colaborador,
-                                                      `data_alteracao` = CURRENT_TIMESTAMP
-                                                      WHERE `codigo_usuario` = @codigo_usuario;";
+        public const string ATUALIZAR_COLABORADOR = @"UPDATE `heroku_93ac2d8811d872a`.`colaborador`
+                                                    SET
+                                                    `nome_colaborador` = @nome_colaborador,
+                                                    `data_alteracao` = CURRENT_TIMESTAMP,
+                                                    `nacionalidade` = @nacionalidade,
+                                                    `data_nascimento` = @data_nascimento,
+                                                    `data_chegada_brasil` = @data_chegada_brasil,
+                                                    `area_formacao` = @area_formacao,
+                                                    `escolaridade` = @escolaridade
+                                                     WHERE `codigo_usuario` = @codigo_usuario;";
 
         public enum PerfilUsuario 
         {

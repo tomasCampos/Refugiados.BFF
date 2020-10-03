@@ -16,9 +16,22 @@ namespace Refugiados.BFF.Servicos
             _colaboradorRepositorio = colaboradorRepositorio;
         }
 
-        public async Task AtualizarColaborador(string nome, int codigoUsuario)
+        public async Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, int codigoUsuario)
         {
-            await _colaboradorRepositorio.AtualizarColaborador(nome,codigoUsuario);
+            var colaborador = await ObterColaboradorPorCodigoUsuario(codigoUsuario);
+
+            if (colaborador == null)
+                return;
+
+            colaborador.NomeColaborador = string.IsNullOrEmpty(nome) ? colaborador.NomeColaborador : nome;
+            colaborador.Nacionalidade = string.IsNullOrEmpty(nacionalidade) ? colaborador.Nacionalidade : nacionalidade;
+            colaborador.DataNascimento = !dataNascimento.HasValue ? colaborador.DataNascimento : dataNascimento;
+            colaborador.DataChegadaBrasil = !dataChegadaBrasil.HasValue ? colaborador.DataChegadaBrasil : dataChegadaBrasil;            
+            colaborador.AreaFormacao = string.IsNullOrEmpty(areaFormacao) ? colaborador.AreaFormacao : areaFormacao;
+            colaborador.Escolaridade = string.IsNullOrEmpty(escolaridade) ? colaborador.Escolaridade : escolaridade;
+
+            await _colaboradorRepositorio.AtualizarColaborador(colaborador.NomeColaborador, colaborador.CodigoUsuario, colaborador.Nacionalidade, colaborador.DataNascimento, 
+                colaborador.DataChegadaBrasil, colaborador.AreaFormacao, colaborador.Escolaridade);
         }
 
         public async Task<int> CadastrarColaborador(ColaboradorModel colaborador)
@@ -72,6 +85,6 @@ namespace Refugiados.BFF.Servicos
         Task<int> CadastrarColaborador(ColaboradorModel colaborador);
         Task<ColaboradorModel> ObterColaboradorPorCodigoUsuario(int codigoUsuario);
         Task<List<ColaboradorModel>> ListarColaboradores();
-        Task AtualizarColaborador(string nome, int codigoUsuario);
+        Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, int codigoUsuario);
     }
 }

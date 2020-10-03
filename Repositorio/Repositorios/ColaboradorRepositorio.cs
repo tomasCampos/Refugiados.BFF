@@ -18,11 +18,19 @@ namespace Repositorio.Repositorios
             _dataBase = new DataBaseConnector();
         }
 
-        public async Task AtualizarColaborador(string nome,int codigoUsuario)
+        public async Task AtualizarColaborador(string nome,int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade)
         {
             if (!string.IsNullOrWhiteSpace(nome))
-                await _dataBase.ExecutarAsync(AppConstants.ATUALIZAR_NOME_COLABORADOR, new { nome_colaborador = nome, codigo_usuario = codigoUsuario });
-            
+                await _dataBase.ExecutarAsync(AppConstants.ATUALIZAR_COLABORADOR, new 
+                { 
+                    nome_colaborador = nome,
+                    nacionalidade,
+                    data_nascimento = dataNascimento,
+                    data_chegada_brasil = dataChegadaBrasil,
+                    area_formacao = areaFormacao,
+                    escolaridade,
+                    codigo_usuario = codigoUsuario
+                });            
         }
 
         public async Task CadastrarColaborador(string nome, int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade)
@@ -57,6 +65,6 @@ namespace Repositorio.Repositorios
         Task CadastrarColaborador(string nome, int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaformacao, string escolaridade);
         Task<ColaboradorDto> ObterColaboradorPorCodigoUsuario(int codigoUsuario);
         Task<List<ColaboradorDto>> ListarColaboradores();
-        Task AtualizarColaborador(string nome, int codigoUsuario);
+        Task AtualizarColaborador(string nome, int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade);
     }
 }
