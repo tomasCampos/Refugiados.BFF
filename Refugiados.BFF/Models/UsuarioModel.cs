@@ -8,6 +8,8 @@ namespace Refugiados.BFF.Models
         public string Email { get; set; }
         public string Senha { get; set; }
         public int? PerfilUsuario { get; set; }
+        public bool Entrevistado { get; set; }
+        public bool Inativo { get; set; }
         public DateTime DataCriacao { get; set; }
         public DateTime DataAlteracao { get; set; }
     }

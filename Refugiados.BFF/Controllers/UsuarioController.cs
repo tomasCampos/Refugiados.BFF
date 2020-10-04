@@ -135,7 +135,7 @@ namespace Refugiados.BFF.Controllers
                 });
             }
 
-            var resultadoCadastro = await _usuarioServico.AtualizarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, codigoUsuario);
+            var resultadoCadastro = await _usuarioServico.AtualizarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.Entrevistado, codigoUsuario);
             return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro, false);
         }
 

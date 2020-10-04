@@ -55,7 +55,9 @@ namespace Refugiados.BFF.Servicos
                     Senha = usuario.senha_usuario,
                     DataCriacao = usuario.data_criacao,
                     DataAlteracao = usuario.data_alteracao,
-                    PerfilUsuario = usuario.perfil_usuario
+                    PerfilUsuario = usuario.perfil_usuario,
+                    Entrevistado = usuario.entrevistado,
+                    Inativo = usuario.usuario_inativo
                 });
             }
 
@@ -100,7 +102,7 @@ namespace Refugiados.BFF.Servicos
             return resultadoCadastroUsuario;
         }
 
-        public async Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario)
+        public async Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, bool? entrevistado, int codigoUsuario)
         {
             if(!string.IsNullOrWhiteSpace(emailUsuario))
             {
@@ -113,7 +115,17 @@ namespace Refugiados.BFF.Servicos
             if (!string.IsNullOrWhiteSpace(senhaUsuario))
                 senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
 
-            await _usuarioRepositorio.AtualizarUsuario(emailUsuario, senhaCifrada, codigoUsuario);
+            var usuarios = await ListarUsuarios(codigoUsuario, null);
+            var usuarioAtual = usuarios.FirstOrDefault();
+
+            if (usuarioAtual != null)
+            {
+                usuarioAtual.Email = !string.IsNullOrEmpty(emailUsuario) ? emailUsuario : usuarioAtual.Email;
+                usuarioAtual.Senha = !string.IsNullOrEmpty(senhaCifrada) ? senhaCifrada : usuarioAtual.Senha;
+                usuarioAtual.Entrevistado = entrevistado.HasValue ? entrevistado.Value : usuarioAtual.Entrevistado;
+                await _usuarioRepositorio.AtualizarUsuario(usuarioAtual.Email, usuarioAtual.Senha, usuarioAtual.Entrevistado, codigoUsuario);                         
+            }
+
             return new CadastrarAtualizarUsuarioServiceModel(CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.UsuarioCadastrado, codigoUsuario);
         }
 
@@ -154,7 +166,7 @@ namespace Refugiados.BFF.Servicos
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario = null);
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioColaborador(string emailUsuario, string senhaUsuario, ColaboradorModel colaborador);
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioEmpresa(string emailUsuario, string senhaUsuario, string razaoSocial, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios);
-        Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
+        Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, bool? entrevistado, int codigoUsuario);
         Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario);
     }
 }

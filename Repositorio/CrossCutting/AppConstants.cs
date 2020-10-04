@@ -29,18 +29,7 @@
                                                     SET
                                                     `email_usuario` = @email_usuario,
                                                     `senha_usuario` = @senha_usuario,
-                                                    `data_alteracao` = CURRENT_TIMESTAMP
-                                                    WHERE `codigo_usuario` = @codigo_usuario;";
-
-        public const string ATUALIZAR_SENHA_USUARIO = @"UPDATE `heroku_93ac2d8811d872a`.`usuario`
-                                                    SET
-                                                    `senha_usuario` = @senha_usuario,
-                                                    `data_alteracao` = CURRENT_TIMESTAMP
-                                                    WHERE `codigo_usuario` = @codigo_usuario;";
-
-        public const string ATUALIZAR_EMAIL_USUARIO = @"UPDATE `heroku_93ac2d8811d872a`.`usuario`
-                                                    SET
-                                                    `email_usuario` = @email_usuario,
+                                                    `entrevistado` = @entrevistado,
                                                     `data_alteracao` = CURRENT_TIMESTAMP
                                                     WHERE `codigo_usuario` = @codigo_usuario;";
 
