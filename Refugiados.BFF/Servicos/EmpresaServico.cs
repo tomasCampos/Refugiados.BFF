@@ -22,9 +22,20 @@ namespace Refugiados.BFF.Servicos
             await _empresaRepositorio.CadastrarEmpresa(razaoSocial, codigoUsuario, cnpj, nomeFantasia, dataFundacao, numeroFuncionarios);
         }
 
-        public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario)
+        public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
         {
-            await _empresaRepositorio.AtualizarEmpresa(razaoSocial, codigoUsuario);
+            var empresa = await ObterEmpresaPorCodigoUsuario(codigoUsuario);
+
+            if (empresa == null)
+                return;
+
+            empresa.RazaoSocial = string.IsNullOrEmpty(razaoSocial) ? empresa.RazaoSocial : razaoSocial;
+            empresa.CNPJ = string.IsNullOrEmpty(cnpj) ? empresa.CNPJ : cnpj;
+            empresa.NomeFantasia = string.IsNullOrEmpty(nomeFantasia) ? empresa.NomeFantasia : nomeFantasia;
+            empresa.DataFundacao = dataFundacao.HasValue ? dataFundacao : empresa.DataFundacao;
+            empresa.NumeroFuncionarios = numeroFuncionarios.HasValue ? numeroFuncionarios : empresa.NumeroFuncionarios;
+
+            await _empresaRepositorio.AtualizarEmpresa(empresa.RazaoSocial, codigoUsuario, empresa.CNPJ, empresa.NomeFantasia, empresa.DataFundacao, empresa.NumeroFuncionarios);
         }
 
         public async Task<EmpresaModel> ObterEmpresaPorCodigoUsuario(int codigoUsuario)

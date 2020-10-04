@@ -44,9 +44,13 @@
                                                     `data_alteracao` = CURRENT_TIMESTAMP
                                                     WHERE `codigo_usuario` = @codigo_usuario;";
 
-        public const string ATUALIZAR_RAZAO_SOCIAL_EMPRESA = @"UPDATE `heroku_93ac2d8811d872a`.`empresa`
+        public const string ATUALIZAR_EMPRESA = @"UPDATE `heroku_93ac2d8811d872a`.`empresa`
                                                     SET
                                                     `razao_social` = @razao_social,
+                                                    `cnpj` = @cnpj,
+                                                    `nome_fantasia` = @nome_fantasia,
+                                                    `data_fundacao` = @data_fundacao,
+                                                    `numero_funcionarios` = @numero_funcionarios,
                                                     `data_alteracao` = CURRENT_TIMESTAMP
                                                     WHERE `codigo_usuario` = @codigo_usuario;";
 
