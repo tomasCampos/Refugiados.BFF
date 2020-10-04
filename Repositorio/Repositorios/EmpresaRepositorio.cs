@@ -23,7 +23,7 @@ namespace Repositorio.Repositorios
             {
                 await _db.ExecutarAsync(AppConstants.ATUALIZAR_EMPRESA, new { razao_social = razaoSocial,
                                                                               codigo_usuario = codigoUsuario,
-                                                                              cnpj = cnpj,
+                                                                              cnpj,
                                                                               nome_fantasia = nomeFantasia,
                                                                               data_fundacao = dataFundacao,
                                                                               numero_funcionarios = numeroFuncionarios });
@@ -34,7 +34,8 @@ namespace Repositorio.Repositorios
         {
             await _db.ExecutarAsync(AppConstants.CADASTRAR_EMPRESA, new { codigo_usuario = codigoUsuario,
                                                                           razao_social = razaoSocial,
-                                                                          cnpj = cnpj, nome_fantasia = nomeFantasia,
+                                                                          cnpj, 
+                                                                          nome_fantasia = nomeFantasia,
                                                                           data_fundacao = dataFundacao,
                                                                           numero_funcionarios = numeroFuncionarios});
         }

@@ -53,7 +53,9 @@ namespace Refugiados.BFF.Servicos
                     NomeFantasia = empresa.nome_fantasia,
                     DataFundacao = empresa.data_fundacao,
                     NumeroFuncionarios = empresa.numero_funcionarios,
-                    EmailContato = empresa.email_usuario
+                    EmailContato = empresa.email_usuario,
+                    DataCriacao = empresa.data_criacao,
+                    DataAlteracao = empresa.data_alteracao
                 };
             }
             else
@@ -68,12 +70,16 @@ namespace Refugiados.BFF.Servicos
 
             var colaboradores = lista.Select(empresa => new EmpresaModel
             {
-                DataAlteracao = empresa.data_alteracao,
-                DataCriacao = empresa.data_criacao,
                 CodigoEmpresa = empresa.codigo_empresa,
                 CodigoUsuario = empresa.codigo_usuario,
                 RazaoSocial = empresa.razao_social,
-                EmailContato = empresa.email_usuario
+                CNPJ = empresa.cnpj,
+                NomeFantasia = empresa.nome_fantasia,
+                DataFundacao = empresa.data_fundacao,
+                NumeroFuncionarios = empresa.numero_funcionarios,
+                EmailContato = empresa.email_usuario,
+                DataCriacao = empresa.data_criacao,
+                DataAlteracao = empresa.data_alteracao
             }).ToList();
 
             return colaboradores;
