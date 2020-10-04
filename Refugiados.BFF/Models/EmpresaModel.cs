@@ -14,5 +14,6 @@ namespace Refugiados.BFF.Models
         public string NomeFantasia { get; set; }
         public DateTime? DataFundacao { get; set; }
         public int? NumeroFuncionarios { get; set; }
+        public bool Entrevistado { get; set; }
     }
 }

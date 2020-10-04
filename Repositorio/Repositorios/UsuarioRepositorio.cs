@@ -42,20 +42,14 @@ namespace Repositorio.Repositorios
             await _dataBase.ExecutarAsync(AppConstants.CADASTRAR_USUARIO, new { email_usuario = email, senha_usuario = senha, perfil_usuario = perfil });
         }
 
-        public async Task AtualizarUsuario(string email, string senha, int codigo)
+        public async Task AtualizarUsuario(string email, string senha, bool entrevistado, int codigo)
         {
-            if (string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(senha))
-            {
-                await _dataBase.ExecutarAsync(AppConstants.ATUALIZAR_SENHA_USUARIO, new { senha_usuario = senha, codigo_usuario = codigo });
-            }
-            else if (string.IsNullOrWhiteSpace(senha) && !string.IsNullOrWhiteSpace(email))
-            {
-                await _dataBase.ExecutarAsync(AppConstants.ATUALIZAR_EMAIL_USUARIO, new { email_usuario = email, codigo_usuario = codigo });
-            }
-            else if (!string.IsNullOrWhiteSpace(senha) && !string.IsNullOrWhiteSpace(email))
-            {
-                await _dataBase.ExecutarAsync(AppConstants.ATUALIZAR_USUARIO, new { email_usuario = email, senha_usuario = senha, codigo_usuario = codigo });
-            }
+            await _dataBase.ExecutarAsync(AppConstants.ATUALIZAR_USUARIO, new { email_usuario = email, senha_usuario = senha, entrevistado = entrevistado, codigo_usuario = codigo });            
+        }
+
+        public async Task DeletarUsuario(int codigoUsuario)
+        {
+            await _dataBase.ExecutarAsync(AppConstants.DELETAR_USUARIO, new { codigo_usuario = codigoUsuario });
         }
     }
 
@@ -65,6 +59,7 @@ namespace Repositorio.Repositorios
         Task<List<UsuarioDto>> ListarUsuarios(int codigo);
         Task<List<UsuarioDto>> ListarUsuarios(string email);
         Task CadastrarUsuario(string email, string senha, int? perfil);
-        Task AtualizarUsuario(string email, string senha, int codigo);
+        Task AtualizarUsuario(string email, string senha, bool entrevistado, int codigo);
+        Task DeletarUsuario(int codigoUsuario);
     }
 }

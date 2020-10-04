@@ -135,7 +135,7 @@ namespace Refugiados.BFF.Controllers
                 });
             }
 
-            var resultadoCadastro = await _usuarioServico.AtualizarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, codigoUsuario);
+            var resultadoCadastro = await _usuarioServico.AtualizarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.Entrevistado, codigoUsuario);
             return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro, false);
         }
 
@@ -155,7 +155,8 @@ namespace Refugiados.BFF.Controllers
                 });
             }
 
-            var resultadoAutenticacao = await _usuarioServico.AutenticarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
+            var resultadoAutenticacao = await _usuarioServico.
+                AutenticarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
 
             if (resultadoAutenticacao.SituacaoAutenticacao == AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.NomeDeUsuarioInvalido)
             {
@@ -177,6 +178,16 @@ namespace Refugiados.BFF.Controllers
                 });
             }
 
+            if (resultadoAutenticacao.SituacaoAutenticacao == AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.UsuarioAindaNaoEntrevistado)
+            {
+                return Ok(new RespostaModel
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Sucesso = false,
+                    Mensagem = "A entrevista com a ACNUR ainda não foi feita. Aguarde para que seu acesso seja liberado."
+                });
+            }
+
             return Ok(new RespostaModel 
             {
                 StatusCode = HttpStatusCode.OK,
@@ -184,6 +195,53 @@ namespace Refugiados.BFF.Controllers
                 Corpo = new { resultadoAutenticacao.CodigoUsuario, resultadoAutenticacao.PerfilUsuario }
             });
         }
+
+        [HttpDelete("{codigoUsuario}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> DeletarUsuario(int codigoUsuario)
+        {
+            if (codigoUsuario <= 0)
+            {
+                return BadRequest(new RespostaModel
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Sucesso = false,
+                    Mensagem = "Código inválido"
+                });
+            }
+
+            var resposta = await _usuarioServico.DeletarUsuario(codigoUsuario);
+
+            if(resposta.SituacaoDelecao == DeletarUsuarioServiceModel.SituacaoDelecaoUsuario.UsuarioInexistente)
+            {
+                return NotFound(new RespostaModel 
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Sucesso = false,
+                    Mensagem = "Usuário não existente"
+                });
+            }
+
+            if (resposta.SituacaoDelecao == DeletarUsuarioServiceModel.SituacaoDelecaoUsuario.UsuarioAdmin)
+            {
+                return Unauthorized(new RespostaModel
+                {
+                    StatusCode = HttpStatusCode.Unauthorized,
+                    Sucesso = false,
+                    Mensagem = "Ação não permitida"
+                });
+            }
+
+            return Ok(new RespostaModel 
+            {
+                StatusCode = HttpStatusCode.OK,
+                Sucesso = true                
+            });
+        }
+
 
         #region Metodos privados
 

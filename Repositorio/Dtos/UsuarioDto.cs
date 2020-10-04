@@ -12,5 +12,6 @@ namespace Repositorio.Dtos
         public DateTime data_criacao { get; set; }
         public DateTime data_alteracao { get; set; }
         public int? perfil_usuario { get; set; }
+        public bool entrevistado { get; set; }
     }
 }

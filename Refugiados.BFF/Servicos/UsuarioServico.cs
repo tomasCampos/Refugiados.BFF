@@ -55,7 +55,8 @@ namespace Refugiados.BFF.Servicos
                     Senha = usuario.senha_usuario,
                     DataCriacao = usuario.data_criacao,
                     DataAlteracao = usuario.data_alteracao,
-                    PerfilUsuario = usuario.perfil_usuario
+                    PerfilUsuario = usuario.perfil_usuario,
+                    Entrevistado = usuario.entrevistado
                 });
             }
 
@@ -100,7 +101,7 @@ namespace Refugiados.BFF.Servicos
             return resultadoCadastroUsuario;
         }
 
-        public async Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario)
+        public async Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, bool? entrevistado, int codigoUsuario)
         {
             if(!string.IsNullOrWhiteSpace(emailUsuario))
             {
@@ -113,26 +114,52 @@ namespace Refugiados.BFF.Servicos
             if (!string.IsNullOrWhiteSpace(senhaUsuario))
                 senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
 
-            await _usuarioRepositorio.AtualizarUsuario(emailUsuario, senhaCifrada, codigoUsuario);
+            var usuarios = await ListarUsuarios(codigoUsuario, null);
+            var usuarioAtual = usuarios.FirstOrDefault();
+
+            if (usuarioAtual != null)
+            {
+                usuarioAtual.Email = !string.IsNullOrEmpty(emailUsuario) ? emailUsuario : usuarioAtual.Email;
+                usuarioAtual.Senha = !string.IsNullOrEmpty(senhaCifrada) ? senhaCifrada : usuarioAtual.Senha;
+                usuarioAtual.Entrevistado = entrevistado.HasValue ? entrevistado.Value : usuarioAtual.Entrevistado;
+                await _usuarioRepositorio.AtualizarUsuario(usuarioAtual.Email, usuarioAtual.Senha, usuarioAtual.Entrevistado, codigoUsuario);                         
+            }
+
             return new CadastrarAtualizarUsuarioServiceModel(CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.UsuarioCadastrado, codigoUsuario);
         }
 
         public async Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario)
         {
-            var usuarios = await ListarUsuarios(null, emailUsuario);            
-            if (usuarios.FirstOrDefault() == null)
-            {
-                return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.NomeDeUsuarioInvalido, 0, 0);
-            }
+            var usuarios = await ListarUsuarios(null, emailUsuario);
+            var usuario = usuarios.FirstOrDefault();
+
+            if (usuario == null)            
+                return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.NomeDeUsuarioInvalido, 0, 0);            
+
+            if (usuario.PerfilUsuario.HasValue && usuario.Entrevistado == false)
+                return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.UsuarioAindaNaoEntrevistado, 0, 0);
 
             var senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
 
-            if (!string.Equals(usuarios.FirstOrDefault().Senha, senhaCifrada))
-            {
-                return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.SenhaInvalida, 0, 0);
-            }
+            if (!string.Equals(usuario.Senha, senhaCifrada))            
+                return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.SenhaInvalida, 0, 0);            
 
-            return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.UsuarioAutenticado, usuarios.FirstOrDefault().Codigo, usuarios.FirstOrDefault().PerfilUsuario);
+            return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.UsuarioAutenticado, usuario.Codigo, usuario.PerfilUsuario);
+        }
+
+        public async Task<DeletarUsuarioServiceModel> DeletarUsuario(int codigoUsuario)
+        {
+            var listaUsuarios = await ListarUsuarios(codigoUsuario, null);
+            var usuario = listaUsuarios.FirstOrDefault();
+
+            if (usuario == null)
+                return new DeletarUsuarioServiceModel(DeletarUsuarioServiceModel.SituacaoDelecaoUsuario.UsuarioInexistente);
+
+            if (usuario.PerfilUsuario == null)
+                return new DeletarUsuarioServiceModel(DeletarUsuarioServiceModel.SituacaoDelecaoUsuario.UsuarioAdmin);
+
+            await _usuarioRepositorio.DeletarUsuario(codigoUsuario);
+            return new DeletarUsuarioServiceModel(DeletarUsuarioServiceModel.SituacaoDelecaoUsuario.UsuarioDeletado);
         }
 
         #region METODOS PRIVADOS
@@ -154,7 +181,8 @@ namespace Refugiados.BFF.Servicos
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, int? perfilUsuario = null);
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioColaborador(string emailUsuario, string senhaUsuario, ColaboradorModel colaborador);
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioEmpresa(string emailUsuario, string senhaUsuario, string razaoSocial, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios);
-        Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, int codigoUsuario);
+        Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, bool? entrevistado, int codigoUsuario);
         Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario);
+        Task<DeletarUsuarioServiceModel> DeletarUsuario(int codigoUsuario);
     }
 }

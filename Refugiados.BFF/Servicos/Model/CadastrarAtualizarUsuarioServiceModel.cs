@@ -11,7 +11,7 @@
         public enum SituacaoCadastroUsuario
         {
             UsuarioCadastrado,
-            NomeDeUsuarioJaUtilizado
+            NomeDeUsuarioJaUtilizado            
         };
 
         public SituacaoCadastroUsuario SituacaoCadastro { get; private set; }

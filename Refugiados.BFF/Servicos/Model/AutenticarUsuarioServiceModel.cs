@@ -16,6 +16,7 @@ namespace Refugiados.BFF.Servicos.Model
             UsuarioAutenticado,
             NomeDeUsuarioInvalido,
             SenhaInvalida,
+            UsuarioAindaNaoEntrevistado
         };
 
         public SituacaoAutenticacaoUsuario SituacaoAutenticacao { get; private set; }
