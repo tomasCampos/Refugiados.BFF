@@ -60,7 +60,8 @@ namespace Refugiados.BFF.Servicos
                 DataChegadaBrasil = colab.data_chegada_brasil,
                 DataNascimento = colab.data_nascimento,
                 Escolaridade = colab.escolaridade,
-                AreaFormacao = colab.area_formacao
+                AreaFormacao = colab.area_formacao,
+                Entrevistado = colab.entrevistado
             }).ToList();
 
             return colaboradores;
@@ -85,7 +86,8 @@ namespace Refugiados.BFF.Servicos
                 DataChegadaBrasil = colaborador.data_chegada_brasil,
                 DataNascimento = colaborador.data_nascimento,
                 Escolaridade = colaborador.escolaridade,
-                AreaFormacao = colaborador.area_formacao
+                AreaFormacao = colaborador.area_formacao,
+                Entrevistado = colaborador.entrevistado
             };
         }
     }

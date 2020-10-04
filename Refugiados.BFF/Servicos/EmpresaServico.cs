@@ -55,7 +55,8 @@ namespace Refugiados.BFF.Servicos
                     NumeroFuncionarios = empresa.numero_funcionarios,
                     EmailContato = empresa.email_usuario,
                     DataCriacao = empresa.data_criacao,
-                    DataAlteracao = empresa.data_alteracao
+                    DataAlteracao = empresa.data_alteracao,
+                    Entrevistado = empresa.entrevistado
                 };
             }
             else
@@ -79,7 +80,8 @@ namespace Refugiados.BFF.Servicos
                 NumeroFuncionarios = empresa.numero_funcionarios,
                 EmailContato = empresa.email_usuario,
                 DataCriacao = empresa.data_criacao,
-                DataAlteracao = empresa.data_alteracao
+                DataAlteracao = empresa.data_alteracao,
+                Entrevistado = empresa.entrevistado
             }).ToList();
 
             return colaboradores;

@@ -14,6 +14,7 @@ namespace Refugiados.BFF.Models
         public DateTime? DataNascimento { get; set; }
         public DateTime DataCriacao { get; set; }
         public DateTime DataAlteracao { get; set; }
-        public int CodigoUsuario { get; set; }        
+        public int CodigoUsuario { get; set; }
+        public bool Entrevistado { get; set; }
     }
 }
