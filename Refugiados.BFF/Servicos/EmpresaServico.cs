@@ -48,7 +48,12 @@ namespace Refugiados.BFF.Servicos
                 {
                     CodigoEmpresa = empresa.codigo_empresa,
                     CodigoUsuario = empresa.codigo_usuario,
-                    RazaoSocial = empresa.razao_social
+                    RazaoSocial = empresa.razao_social,
+                    CNPJ = empresa.cnpj,
+                    NomeFantasia = empresa.nome_fantasia,
+                    DataFundacao = empresa.data_fundacao,
+                    NumeroFuncionarios = empresa.numero_funcionarios,
+                    EmailContato = empresa.email_usuario
                 };
             }
             else
