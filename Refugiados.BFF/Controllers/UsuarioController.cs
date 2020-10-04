@@ -178,6 +178,16 @@ namespace Refugiados.BFF.Controllers
                 });
             }
 
+            if (resultadoAutenticacao.SituacaoAutenticacao == AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.UsuarioAindaNaoEntrevistado)
+            {
+                return Ok(new RespostaModel
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Sucesso = false,
+                    Mensagem = "A entrevista com a ACNUR ainda não foi feita. Aguarde para que seu acesso seja liberado."
+                });
+            }
+
             return Ok(new RespostaModel 
             {
                 StatusCode = HttpStatusCode.OK,
