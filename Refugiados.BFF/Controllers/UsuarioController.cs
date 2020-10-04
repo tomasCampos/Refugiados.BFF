@@ -155,7 +155,8 @@ namespace Refugiados.BFF.Controllers
                 });
             }
 
-            var resultadoAutenticacao = await _usuarioServico.AutenticarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
+            var resultadoAutenticacao = await _usuarioServico.
+                AutenticarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
 
             if (resultadoAutenticacao.SituacaoAutenticacao == AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.NomeDeUsuarioInvalido)
             {
@@ -198,7 +199,7 @@ namespace Refugiados.BFF.Controllers
                 {
                     StatusCode = HttpStatusCode.BadRequest,
                     Sucesso = false,
-                    Mensagem = "Código invalido"
+                    Mensagem = "Código inválido"
                 });
             }
 
@@ -210,7 +211,7 @@ namespace Refugiados.BFF.Controllers
                 {
                     StatusCode = HttpStatusCode.NotFound,
                     Sucesso = false,
-                    Mensagem = "Usuario não existe"
+                    Mensagem = "Usuário não existente"
                 });
             }
 

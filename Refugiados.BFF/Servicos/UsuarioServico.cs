@@ -130,20 +130,24 @@ namespace Refugiados.BFF.Servicos
 
         public async Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario)
         {
-            var usuarios = await ListarUsuarios(null, emailUsuario);            
-            if (usuarios.FirstOrDefault() == null)
+            var usuarios = await ListarUsuarios(null, emailUsuario);
+            var usuario = usuarios.FirstOrDefault();
+            if (usuario == null)
             {
                 return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.NomeDeUsuarioInvalido, 0, 0);
             }
 
+            if (usuario.Entrevistado == false)
+                return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.UsuarioAindaNaoEntrevistado, 0, 0);
+
             var senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
 
-            if (!string.Equals(usuarios.FirstOrDefault().Senha, senhaCifrada))
+            if (!string.Equals(usuario.Senha, senhaCifrada))
             {
                 return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.SenhaInvalida, 0, 0);
             }
 
-            return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.UsuarioAutenticado, usuarios.FirstOrDefault().Codigo, usuarios.FirstOrDefault().PerfilUsuario);
+            return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.UsuarioAutenticado, usuario.Codigo, usuario.PerfilUsuario);
         }
 
         public async Task<DeletarUsuarioServiceModel> DeletarUsuario(int codigoUsuario)
