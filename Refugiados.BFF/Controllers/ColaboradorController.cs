@@ -85,7 +85,8 @@ namespace Refugiados.BFF.Controllers
                 });
             }
 
-            await _colaboradorServico.AtualizarColaborador(colaborador.NomeColaborador, codigoUsuario);
+            await _colaboradorServico.AtualizarColaborador(colaborador.NomeColaborador, colaborador.Nacionalidade, colaborador.DataNascimento, colaborador.DataChegadaBrasil,
+                colaborador.AreaFormacao, colaborador.Escolaridade, codigoUsuario);
 
             return Ok(new RespostaModel 
             {
