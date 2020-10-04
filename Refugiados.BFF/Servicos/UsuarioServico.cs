@@ -56,8 +56,7 @@ namespace Refugiados.BFF.Servicos
                     DataCriacao = usuario.data_criacao,
                     DataAlteracao = usuario.data_alteracao,
                     PerfilUsuario = usuario.perfil_usuario,
-                    Entrevistado = usuario.entrevistado,
-                    Inativo = usuario.usuario_inativo
+                    Entrevistado = usuario.entrevistado
                 });
             }
 
