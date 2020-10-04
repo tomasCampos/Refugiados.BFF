@@ -17,17 +17,27 @@ namespace Repositorio.Repositorios
         {
             _db = new DataBaseConnector();
         }
-        public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario)
+        public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
         {
             if (!string.IsNullOrWhiteSpace(razaoSocial))
             {
-                await _db.ExecutarAsync(AppConstants.ATUALIZAR_RAZAO_SOCIAL_EMPRESA, new { razao_social = razaoSocial, codigo_usuario = codigoUsuario });
+                await _db.ExecutarAsync(AppConstants.ATUALIZAR_EMPRESA, new { razao_social = razaoSocial,
+                                                                              codigo_usuario = codigoUsuario,
+                                                                              cnpj,
+                                                                              nome_fantasia = nomeFantasia,
+                                                                              data_fundacao = dataFundacao,
+                                                                              numero_funcionarios = numeroFuncionarios });
             }
         }
 
-        public async Task CadastrarEmpresa(string razaoSocial, int codigoUsuario)
+        public async Task CadastrarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
         {
-            await _db.ExecutarAsync(AppConstants.CADASTRAR_EMPRESA, new { codigo_usuario = codigoUsuario, razao_social = razaoSocial});
+            await _db.ExecutarAsync(AppConstants.CADASTRAR_EMPRESA, new { codigo_usuario = codigoUsuario,
+                                                                          razao_social = razaoSocial,
+                                                                          cnpj, 
+                                                                          nome_fantasia = nomeFantasia,
+                                                                          data_fundacao = dataFundacao,
+                                                                          numero_funcionarios = numeroFuncionarios});
         }
 
         public async Task<List<EmpresaDto>> ListarEmpresas()

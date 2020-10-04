@@ -44,9 +44,13 @@
                                                     `data_alteracao` = CURRENT_TIMESTAMP
                                                     WHERE `codigo_usuario` = @codigo_usuario;";
 
-        public const string ATUALIZAR_RAZAO_SOCIAL_EMPRESA = @"UPDATE `heroku_93ac2d8811d872a`.`empresa`
+        public const string ATUALIZAR_EMPRESA = @"UPDATE `heroku_93ac2d8811d872a`.`empresa`
                                                     SET
                                                     `razao_social` = @razao_social,
+                                                    `cnpj` = @cnpj,
+                                                    `nome_fantasia` = @nome_fantasia,
+                                                    `data_fundacao` = @data_fundacao,
+                                                    `numero_funcionarios` = @numero_funcionarios,
                                                     `data_alteracao` = CURRENT_TIMESTAMP
                                                     WHERE `codigo_usuario` = @codigo_usuario;";
 
@@ -55,16 +59,26 @@
                                                             `razao_social`,
                                                             `data_criacao`,
                                                             `data_alteracao`,
-                                                            `codigo_usuario`)
+                                                            `codigo_usuario`,
+                                                            `cnpj`,
+                                                            `nome_fantasia`,
+                                                            `data_fundacao`,
+                                                            `numero_funcionarios`)
                                                             VALUES
                                                             (default,
                                                             @razao_social,
                                                             CURRENT_TIMESTAMP,
                                                             CURRENT_TIMESTAMP,
-                                                            @codigo_usuario);";
+                                                            @codigo_usuario,
+                                                            @cnpj,
+                                                            @nome_fantasia,
+                                                            @data_fundacao,
+                                                            @numero_funcionarios);";
 
-        public const string OBTER_EMPRESA_POR_CODIGO_USUARIO = @"SELECT * FROM heroku_93ac2d8811d872a.empresa 
-                                                    WHERE codigo_usuario = @codigo_usuario;";
+        public const string OBTER_EMPRESA_POR_CODIGO_USUARIO = @"SELECT e.codigo_empresa, e.razao_social, e.codigo_usuario, e.data_alteracao, e.data_criacao, u.email_usuario, e.cnpj, e.nome_fantasia, e.data_fundacao, e.numero_funcionarios
+                                                               FROM heroku_93ac2d8811d872a.empresa AS e
+                                                               INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON e.codigo_usuario = u.codigo_usuario
+                                                               WHERE e.codigo_usuario = @codigo_usuario;";
 
         public const string OBTER_COLABORADOR_POR_CODIGO_USUARIO_SQL = @"SELECT c.codigo_colaborador, c.nome_colaborador, c.codigo_usuario, c.data_alteracao, c.data_criacao, u.email_usuario,
                                                                         c.nacionalidade, c.data_nascimento, c.data_chegada_brasil, c.area_formacao, c.escolaridade
@@ -77,7 +91,7 @@
                                                         FROM heroku_93ac2d8811d872a.colaborador AS c
                                                         INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON c.codigo_usuario = u.codigo_usuario;";
 
-        public const string LISTAR_EMPRESAS_SQL = @"SELECT e.codigo_empresa, e.razao_social, e.codigo_usuario, e.data_alteracao, e.data_criacao, u.email_usuario 
+        public const string LISTAR_EMPRESAS_SQL = @"SELECT e.codigo_empresa, e.razao_social, e.codigo_usuario, e.data_alteracao, e.data_criacao, u.email_usuario, e.cnpj, e.nome_fantasia, e.data_fundacao, e.numero_funcionarios
                                                     FROM heroku_93ac2d8811d872a.empresa AS e
                                                     INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON e.codigo_usuario = u.codigo_usuario;";
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Repositorio.Dtos;
 
@@ -8,7 +9,7 @@ namespace Repositorio.Repositorios.Interfaces
     {
         public Task<EmpresaDto> ObterEmpresaPorCodigoUsuario(int codigoUsuario);
         public Task<List<EmpresaDto>> ListarEmpresas();
-        public Task CadastrarEmpresa(string razaoSocial, int codigoUsuario);
-        public Task AtualizarEmpresa(string razaoSocial, int codigoUsuario);
+        public Task CadastrarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios);
+        public Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios);
     }
 }

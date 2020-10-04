@@ -104,7 +104,7 @@ namespace Refugiados.BFF.Controllers
                 });
             }
 
-            var resultadoCadastro = await _usuarioServico.CadastrarUsuarioEmpresa(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.RazaoSocial);
+            var resultadoCadastro = await _usuarioServico.CadastrarUsuarioEmpresa(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.RazaoSocial, requisicao.CNPJ, requisicao.NomeFantasia, requisicao.DataFundacao, requisicao.NumeroFuncionarios);
             return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro);
         }
 
