@@ -46,6 +46,11 @@ namespace Repositorio.Repositorios
         {
             await _dataBase.ExecutarAsync(AppConstants.ATUALIZAR_USUARIO, new { email_usuario = email, senha_usuario = senha, entrevistado = entrevistado, codigo_usuario = codigo });            
         }
+
+        public async Task DeletarUsuario(int codigoUsuario)
+        {
+            await _dataBase.ExecutarAsync(AppConstants.DELETAR_USUARIO, new { codigo_usuario = codigoUsuario });
+        }
     }
 
     public interface IUsuarioRepositorio 
@@ -55,5 +60,6 @@ namespace Repositorio.Repositorios
         Task<List<UsuarioDto>> ListarUsuarios(string email);
         Task CadastrarUsuario(string email, string senha, int? perfil);
         Task AtualizarUsuario(string email, string senha, bool entrevistado, int codigo);
+        Task DeletarUsuario(int codigoUsuario);
     }
 }

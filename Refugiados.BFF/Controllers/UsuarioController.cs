@@ -185,6 +185,53 @@ namespace Refugiados.BFF.Controllers
             });
         }
 
+        [HttpDelete("{codigoUsuario}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> DeletarUsuario(int codigoUsuario)
+        {
+            if (codigoUsuario <= 0)
+            {
+                return BadRequest(new RespostaModel
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Sucesso = false,
+                    Mensagem = "Código invalido"
+                });
+            }
+
+            var resposta = await _usuarioServico.DeletarUsuario(codigoUsuario);
+
+            if(resposta.SituacaoDelecao == DeletarUsuarioServiceModel.SituacaoDelecaoUsuario.UsuarioInexistente)
+            {
+                return NotFound(new RespostaModel 
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Sucesso = false,
+                    Mensagem = "Usuario não existe"
+                });
+            }
+
+            if (resposta.SituacaoDelecao == DeletarUsuarioServiceModel.SituacaoDelecaoUsuario.UsuarioAdmin)
+            {
+                return Unauthorized(new RespostaModel
+                {
+                    StatusCode = HttpStatusCode.Unauthorized,
+                    Sucesso = false,
+                    Mensagem = "Ação não permitida"
+                });
+            }
+
+            return Ok(new RespostaModel 
+            {
+                StatusCode = HttpStatusCode.OK,
+                Sucesso = true                
+            });
+        }
+
+
         #region Metodos privados
 
         private IActionResult FormatarResultadoCadastroOuAtualizacaoUsuario(CadastrarAtualizarUsuarioServiceModel resultadoCadastro, bool cadastro = true )

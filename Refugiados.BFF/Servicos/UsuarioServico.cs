@@ -146,6 +146,21 @@ namespace Refugiados.BFF.Servicos
             return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.UsuarioAutenticado, usuarios.FirstOrDefault().Codigo, usuarios.FirstOrDefault().PerfilUsuario);
         }
 
+        public async Task<DeletarUsuarioServiceModel> DeletarUsuario(int codigoUsuario)
+        {
+            var listaUsuarios = await ListarUsuarios(codigoUsuario, null);
+            var usuario = listaUsuarios.FirstOrDefault();
+
+            if (usuario == null)
+                return new DeletarUsuarioServiceModel(DeletarUsuarioServiceModel.SituacaoDelecaoUsuario.UsuarioInexistente);
+
+            if (usuario.PerfilUsuario == null)
+                return new DeletarUsuarioServiceModel(DeletarUsuarioServiceModel.SituacaoDelecaoUsuario.UsuarioAdmin);
+
+            await _usuarioRepositorio.DeletarUsuario(codigoUsuario);
+            return new DeletarUsuarioServiceModel(DeletarUsuarioServiceModel.SituacaoDelecaoUsuario.UsuarioDeletado);
+        }
+
         #region METODOS PRIVADOS
 
         private string CifrarSenhaUsuario(string senha)
@@ -167,5 +182,6 @@ namespace Refugiados.BFF.Servicos
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioEmpresa(string emailUsuario, string senhaUsuario, string razaoSocial, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios);
         Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, bool? entrevistado, int codigoUsuario);
         Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario);
+        Task<DeletarUsuarioServiceModel> DeletarUsuario(int codigoUsuario);
     }
 }

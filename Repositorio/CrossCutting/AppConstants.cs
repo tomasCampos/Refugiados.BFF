@@ -10,6 +10,8 @@
 
         public const string OBTER_USUARIO_POR_EMAIL_SQL = @"SELECT * FROM heroku_93ac2d8811d872a.usuario WHERE email_usuario = @email_usuario AND usuario_inativo = 0;";
 
+        public const string DELETAR_USUARIO = @"UPDATE usuario SET usuario_inativo = 1 WHERE codigo_usuario = @codigo_usuario;";
+
         public const string CADASTRAR_USUARIO = @"INSERT INTO `heroku_93ac2d8811d872a`.`usuario`
                                                     (`codigo_usuario`,
                                                     `email_usuario`,
