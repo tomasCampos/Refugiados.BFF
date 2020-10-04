@@ -1,5 +1,6 @@
 ﻿using Refugiados.BFF.Models;
 using Repositorio.Repositorios;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,15 +16,30 @@ namespace Refugiados.BFF.Servicos
             _colaboradorRepositorio = colaboradorRepositorio;
         }
 
-        public async Task AtualizarColaborador(string nome, int codigoUsuario)
+        public async Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, int codigoUsuario)
         {
-            await _colaboradorRepositorio.AtualizarColaborador(nome,codigoUsuario);
+            var colaborador = await ObterColaboradorPorCodigoUsuario(codigoUsuario);
+
+            if (colaborador == null)
+                return;
+
+            colaborador.NomeColaborador = string.IsNullOrEmpty(nome) ? colaborador.NomeColaborador : nome;
+            colaborador.Nacionalidade = string.IsNullOrEmpty(nacionalidade) ? colaborador.Nacionalidade : nacionalidade;
+            colaborador.DataNascimento = !dataNascimento.HasValue ? colaborador.DataNascimento : dataNascimento;
+            colaborador.DataChegadaBrasil = !dataChegadaBrasil.HasValue ? colaborador.DataChegadaBrasil : dataChegadaBrasil;            
+            colaborador.AreaFormacao = string.IsNullOrEmpty(areaFormacao) ? colaborador.AreaFormacao : areaFormacao;
+            colaborador.Escolaridade = string.IsNullOrEmpty(escolaridade) ? colaborador.Escolaridade : escolaridade;
+
+            await _colaboradorRepositorio.AtualizarColaborador(colaborador.NomeColaborador, colaborador.CodigoUsuario, colaborador.Nacionalidade, colaborador.DataNascimento, 
+                colaborador.DataChegadaBrasil, colaborador.AreaFormacao, colaborador.Escolaridade);
         }
 
-        public async Task<int> CadastrarColaborador(string nome, int codigoUsuario)
+        public async Task<int> CadastrarColaborador(ColaboradorModel colaborador)
         {
-            await _colaboradorRepositorio.CadastrarColaborador(nome, codigoUsuario);
-            var colaboradorCadastrado = await ObterColaboradorPorCodigoUsuario(codigoUsuario);
+            await _colaboradorRepositorio.CadastrarColaborador(colaborador.NomeColaborador, colaborador.CodigoUsuario, colaborador.Nacionalidade, colaborador.DataNascimento,
+                colaborador.DataChegadaBrasil, colaborador.AreaFormacao, colaborador.Escolaridade);
+
+            var colaboradorCadastrado = await ObterColaboradorPorCodigoUsuario(colaborador.CodigoUsuario);
 
             return colaboradorCadastrado.CodigoColaborador;
         }
@@ -39,7 +55,12 @@ namespace Refugiados.BFF.Servicos
                 CodigoColaborador = colab.codigo_colaborador,
                 CodigoUsuario = colab.codigo_usuario,
                 NomeColaborador = colab.nome_colaborador,
-                EmailContato = colab.email_usuario
+                EmailContato = colab.email_usuario,
+                Nacionalidade = colab.nacionalidade,
+                DataChegadaBrasil = colab.data_chegada_brasil,
+                DataNascimento = colab.data_nascimento,
+                Escolaridade = colab.escolaridade,
+                AreaFormacao = colab.area_formacao
             }).ToList();
 
             return colaboradores;
@@ -59,16 +80,21 @@ namespace Refugiados.BFF.Servicos
                 NomeColaborador = colaborador.nome_colaborador,
                 DataAlteracao = colaborador.data_alteracao,
                 DataCriacao = colaborador.data_criacao,
-                EmailContato = colaborador.email_usuario
+                EmailContato = colaborador.email_usuario,
+                Nacionalidade = colaborador.nacionalidade,
+                DataChegadaBrasil = colaborador.data_chegada_brasil,
+                DataNascimento = colaborador.data_nascimento,
+                Escolaridade = colaborador.escolaridade,
+                AreaFormacao = colaborador.area_formacao
             };
         }
     }
 
     public interface IColaboradorSerivico
     {
-        Task<int> CadastrarColaborador(string nome, int codigoUsuario);
+        Task<int> CadastrarColaborador(ColaboradorModel colaborador);
         Task<ColaboradorModel> ObterColaboradorPorCodigoUsuario(int codigoUsuario);
         Task<List<ColaboradorModel>> ListarColaboradores();
-        Task AtualizarColaborador(string nome, int codigoUsuario);
+        Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, int codigoUsuario);
     }
 }

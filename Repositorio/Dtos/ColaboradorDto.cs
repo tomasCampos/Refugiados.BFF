@@ -8,6 +8,11 @@ namespace Repositorio.Dtos
     {
         public int codigo_colaborador { get; set; }
         public string nome_colaborador { get; set; }
+        public string nacionalidade { get; set; }
+        public string area_formacao { get; set; }
+        public DateTime? data_nascimento { get; set; }
+        public DateTime? data_chegada_brasil { get; set; }
+        public string escolaridade { get; set; }
         public DateTime data_criacao { get; set; }
         public DateTime data_alteracao { get; set; }
         public int codigo_usuario { get; set; }
