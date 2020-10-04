@@ -87,7 +87,7 @@ namespace Refugiados.BFF.Servicos
             return resultadoCadastroUsuario;
         }
 
-        public async Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioEmpresa(string emailUsuario, string senhaUsuario, string cnpj, string razaoSocial, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
+        public async Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioEmpresa(string emailUsuario, string senhaUsuario, string razaoSocial, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
         {
             var resultadoCadastroUsuario = await CadastrarUsuario(emailUsuario, senhaUsuario, (int)PerfilUsuario.Empresa);
 
