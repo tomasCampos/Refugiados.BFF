@@ -53,7 +53,7 @@ namespace Refugiados.BFF.Servicos
                     NomeFantasia = empresa.nome_fantasia,
                     DataFundacao = empresa.data_fundacao,
                     NumeroFuncionarios = empresa.numero_funcionarios,
-                    EmailContato = empresa.email_usuario,
+                    EmailUsuario = empresa.email_usuario,
                     DataCriacao = empresa.data_criacao,
                     DataAlteracao = empresa.data_alteracao,
                     Entrevistado = empresa.entrevistado
@@ -78,7 +78,7 @@ namespace Refugiados.BFF.Servicos
                 NomeFantasia = empresa.nome_fantasia,
                 DataFundacao = empresa.data_fundacao,
                 NumeroFuncionarios = empresa.numero_funcionarios,
-                EmailContato = empresa.email_usuario,
+                EmailUsuario = empresa.email_usuario,
                 DataCriacao = empresa.data_criacao,
                 DataAlteracao = empresa.data_alteracao,
                 Entrevistado = empresa.entrevistado

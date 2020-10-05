@@ -5,7 +5,7 @@ namespace Refugiados.BFF.Models
     public class ColaboradorModel
     {
         public int CodigoColaborador { get; set; }
-        public string EmailContato { get; set; }
+        public string EmailUsuario { get; set; }
         public string NomeColaborador { get; set; }
         public string Escolaridade { get; set; }
         public string Nacionalidade { get; set; }

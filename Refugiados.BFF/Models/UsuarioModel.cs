@@ -4,9 +4,9 @@ namespace Refugiados.BFF.Models
 {
     public class UsuarioModel
     {
-        public int Codigo { get; set; }
-        public string Email { get; set; }
-        public string Senha { get; set; }
+        public int CodigoUsuario { get; set; }
+        public string EmailUsuario { get; set; }
+        public string SenhaUsuario { get; set; }
         public int? PerfilUsuario { get; set; }
         public bool Entrevistado { get; set; }
         public DateTime DataCriacao { get; set; }

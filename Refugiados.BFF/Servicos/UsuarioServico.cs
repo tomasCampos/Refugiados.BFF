@@ -50,9 +50,9 @@ namespace Refugiados.BFF.Servicos
             {
                 ListaDeUsuarios.Add(new UsuarioModel 
                 {
-                    Codigo = usuario.codigo_usuario,
-                    Email = usuario.email_usuario,
-                    Senha = usuario.senha_usuario,
+                    CodigoUsuario = usuario.codigo_usuario,
+                    EmailUsuario = usuario.email_usuario,
+                    SenhaUsuario = usuario.senha_usuario,
                     DataCriacao = usuario.data_criacao,
                     DataAlteracao = usuario.data_alteracao,
                     PerfilUsuario = usuario.perfil_usuario,
@@ -73,7 +73,7 @@ namespace Refugiados.BFF.Servicos
             await _usuarioRepositorio.CadastrarUsuario(emailUsuario, senhaCifrada, perfilUsuario);
             var usuarioCadastrado = await ListarUsuarios(null, emailUsuario);
 
-            return new CadastrarAtualizarUsuarioServiceModel(CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.UsuarioCadastrado, usuarioCadastrado.FirstOrDefault().Codigo);
+            return new CadastrarAtualizarUsuarioServiceModel(CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.UsuarioCadastrado, usuarioCadastrado.FirstOrDefault().CodigoUsuario);
         }
 
         public async Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioColaborador(string emailUsuario, string senhaUsuario, ColaboradorModel colaborador) 
@@ -119,10 +119,10 @@ namespace Refugiados.BFF.Servicos
 
             if (usuarioAtual != null)
             {
-                usuarioAtual.Email = !string.IsNullOrEmpty(emailUsuario) ? emailUsuario : usuarioAtual.Email;
-                usuarioAtual.Senha = !string.IsNullOrEmpty(senhaCifrada) ? senhaCifrada : usuarioAtual.Senha;
+                usuarioAtual.EmailUsuario = !string.IsNullOrEmpty(emailUsuario) ? emailUsuario : usuarioAtual.EmailUsuario;
+                usuarioAtual.SenhaUsuario = !string.IsNullOrEmpty(senhaCifrada) ? senhaCifrada : usuarioAtual.SenhaUsuario;
                 usuarioAtual.Entrevistado = entrevistado.HasValue ? entrevistado.Value : usuarioAtual.Entrevistado;
-                await _usuarioRepositorio.AtualizarUsuario(usuarioAtual.Email, usuarioAtual.Senha, usuarioAtual.Entrevistado, codigoUsuario);                         
+                await _usuarioRepositorio.AtualizarUsuario(usuarioAtual.EmailUsuario, usuarioAtual.SenhaUsuario, usuarioAtual.Entrevistado, codigoUsuario);                         
             }
 
             return new CadastrarAtualizarUsuarioServiceModel(CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.UsuarioCadastrado, codigoUsuario);
@@ -141,10 +141,10 @@ namespace Refugiados.BFF.Servicos
 
             var senhaCifrada = CifrarSenhaUsuario(senhaUsuario);
 
-            if (!string.Equals(usuario.Senha, senhaCifrada))            
+            if (!string.Equals(usuario.SenhaUsuario, senhaCifrada))            
                 return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.SenhaInvalida, 0, 0);            
 
-            return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.UsuarioAutenticado, usuario.Codigo, usuario.PerfilUsuario);
+            return new AutenticarUsuarioServiceModel(AutenticarUsuarioServiceModel.SituacaoAutenticacaoUsuario.UsuarioAutenticado, usuario.CodigoUsuario, usuario.PerfilUsuario);
         }
 
         public async Task<DeletarUsuarioServiceModel> DeletarUsuario(int codigoUsuario)
