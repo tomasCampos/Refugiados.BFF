@@ -12,6 +12,8 @@
 
         public const string DELETAR_USUARIO = @"UPDATE usuario SET usuario_inativo = 1 WHERE codigo_usuario = @codigo_usuario;";
 
+        public const string LISTAR_IDIOMA = @"select codigo_idioma, nome_idioma from idioma;";
+
         public const string CADASTRAR_USUARIO = @"INSERT INTO `heroku_93ac2d8811d872a`.`usuario`
                                                     (`codigo_usuario`,
                                                     `email_usuario`,
