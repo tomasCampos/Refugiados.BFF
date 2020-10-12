@@ -18,9 +18,8 @@ namespace Repositorio.Repositorios
             _dataBase = new DataBaseConnector();
         }
 
-        public async Task AtualizarColaborador(string nome,int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade)
-        {
-            if (!string.IsNullOrWhiteSpace(nome))
+        public async Task AtualizarColaborador(string nome, int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade)
+        {            
                 await _dataBase.ExecutarAsync(AppConstants.ATUALIZAR_COLABORADOR, new 
                 { 
                     nome_colaborador = nome,
