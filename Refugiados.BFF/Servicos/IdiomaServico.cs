@@ -25,7 +25,7 @@ namespace Refugiados.BFF.Servicos
                 DescricaoIdioma = idioma.nome_idioma
             });
 
-            return idiomas.ToList().OrderBy(i => i.DescricaoIdioma);
+            return idiomas.OrderBy(i => i.DescricaoIdioma).ToList();
         }
 
         public async Task<IEnumerable<IdiomaModel>> ListarIdiomaColaborador(int codigoColaborador)
@@ -38,7 +38,7 @@ namespace Refugiados.BFF.Servicos
                 DescricaoIdioma = idioma.nome_idioma
             });
 
-            return idiomas.ToList().OrderBy(i => i.DescricaoIdioma);
+            return idiomas.OrderBy(i => i.DescricaoIdioma).ToList();
         }
 
         public async Task CadastrarIdiomaColaborador(int codigoColaborador, List<IdiomaModel> Idiomas)
@@ -54,6 +54,15 @@ namespace Refugiados.BFF.Servicos
                 await _idiomaRepositorio.CadastrarIdiomaColaborador(codigoColaborador, idioma);
             }
         }
+
+        public async Task AtualizarIdiomaColaborador(int codigoColaborador, List<IdiomaModel> Idiomas)
+        {
+            if (Idiomas.Any())
+            {
+                var codigosIdiomas = Idiomas.Select(i => i.CodigoIdioma).ToList();
+                await _idiomaRepositorio.AtualizarIdiomaColaborador(codigoColaborador, codigosIdiomas);
+            }
+        }
     }
 
     public interface IIdiomaServico 
@@ -61,5 +70,6 @@ namespace Refugiados.BFF.Servicos
         Task<IEnumerable<IdiomaModel>> ListarIdioma();
         Task<IEnumerable<IdiomaModel>> ListarIdiomaColaborador(int codigoColaborador);
         Task CadastrarIdiomaColaborador(int codigoColaborador, List<IdiomaModel> codigosIdioma);
+        Task AtualizarIdiomaColaborador(int codigoColaborador, List<IdiomaModel> Idiomas);
     }
 }

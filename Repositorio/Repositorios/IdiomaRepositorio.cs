@@ -2,6 +2,7 @@
 using Repositorio.Dtos;
 using Repositorio.Insfraestrutura;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Repositorio.Repositorios
@@ -32,6 +33,18 @@ namespace Repositorio.Repositorios
             var linhasAfetadas = await _dataBase.ExecutarAsync(AppConstants.CADASTRAR_IDIOMA_COLABORADOR, new { codigo_colaborador = codigoColaborador, codigo_idioma = codigoIdioma });
             return linhasAfetadas;
         }
+
+        public async Task<int> AtualizarIdiomaColaborador(int codigoColaborador, List<int> codigosIdiomas)
+        {
+            var linhasAfetadas = await _dataBase.ExecutarAsync(AppConstants.EXCLUIR_IDIOMA_COLABORADOR, new { codigo_colaborador = codigoColaborador });
+
+            foreach (var codigoIdioma in codigosIdiomas)
+            {
+                await CadastrarIdiomaColaborador(codigoColaborador, codigoIdioma);
+            }
+
+            return linhasAfetadas;
+        }
     }
 
     public interface IIdiomaRepositorio
@@ -39,5 +52,6 @@ namespace Repositorio.Repositorios
         Task<IEnumerable<IdiomaDto>> ListarIdioma();
         Task<IEnumerable<IdiomaDto>> ListarIdiomaColaborador(int codigoColaborador);
         Task<int> CadastrarIdiomaColaborador(int codigoColaborador, int codigoIdioma);
+        Task<int> AtualizarIdiomaColaborador(int codigoColaborador, List<int> codigosIdiomas);
     }
 }

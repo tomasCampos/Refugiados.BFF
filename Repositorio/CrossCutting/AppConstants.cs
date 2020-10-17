@@ -139,6 +139,8 @@
                                                         INNER JOIN idioma AS i ON ci.codigo_idioma = i.codigo_idioma
                                                         WHERE codigo_colaborador = @codigo_colaborador;";
 
+        public const string EXCLUIR_IDIOMA_COLABORADOR = @"DELETE FROM colaborador_idioma WHERE codigo_colaborador = @codigo_colaborador";
+
         public enum PerfilUsuario 
         {
             Colaborador = 1,
