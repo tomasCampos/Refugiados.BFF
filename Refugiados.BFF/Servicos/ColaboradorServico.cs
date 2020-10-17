@@ -68,12 +68,20 @@ namespace Refugiados.BFF.Servicos
                 Entrevistado = colab.entrevistado
             }).ToList();
 
+            foreach (var colaborador in colaboradores)
+            {
+                var idiomasColaborador = await _idiomaServico.ListarIdiomaColaborador(colaborador.CodigoColaborador);
+                colaborador.Idiomas = idiomasColaborador.ToList();
+            }
+
             return colaboradores;
         }
 
         public async Task<ColaboradorModel> ObterColaboradorPorCodigoUsuario(int codigoUsuario)
         {
             var colaborador = await _colaboradorRepositorio.ObterColaboradorPorCodigoUsuario(codigoUsuario);
+
+            var idiomasColaborador = await _idiomaServico.ListarIdiomaColaborador(colaborador.codigo_colaborador);
 
             if (colaborador == null)
                 return null;
@@ -91,7 +99,8 @@ namespace Refugiados.BFF.Servicos
                 DataNascimento = colaborador.data_nascimento,
                 Escolaridade = colaborador.escolaridade,
                 AreaFormacao = colaborador.area_formacao,
-                Entrevistado = colaborador.entrevistado
+                Entrevistado = colaborador.entrevistado,
+                Idiomas = idiomasColaborador.ToList()
             };
         }
     }
