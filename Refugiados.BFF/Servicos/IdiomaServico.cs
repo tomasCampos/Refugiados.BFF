@@ -41,27 +41,12 @@ namespace Refugiados.BFF.Servicos
             return idiomas.OrderBy(i => i.DescricaoIdioma).ToList();
         }
 
-        public async Task CadastrarIdiomaColaborador(int codigoColaborador, List<IdiomaModel> Idiomas)
+        public async Task CadastrarAtualizarIdiomaColaborador(int codigoColaborador, List<IdiomaModel> Idiomas)
         {
-            var idiomasJaCadastrados = await ListarIdiomaColaborador(codigoColaborador);
             var idiomasValidos = await ListarIdioma();
+            var idiomasParaCadastrar = Idiomas.Select(i => i.CodigoIdioma).Intersect(idiomasValidos.Select(iv => iv.CodigoIdioma));
 
-            var idiomasParaCadastrar = Idiomas.Select(i => i.CodigoIdioma).Except(idiomasJaCadastrados.Select(ijc => ijc.CodigoIdioma))
-                                        .Intersect(idiomasValidos.Select(iv => iv.CodigoIdioma));
-
-            foreach (var idioma in idiomasParaCadastrar)
-            {
-                await _idiomaRepositorio.CadastrarIdiomaColaborador(codigoColaborador, idioma);
-            }
-        }
-
-        public async Task AtualizarIdiomaColaborador(int codigoColaborador, List<IdiomaModel> Idiomas)
-        {
-            if (Idiomas.Any())
-            {
-                var codigosIdiomas = Idiomas.Select(i => i.CodigoIdioma).ToList();
-                await _idiomaRepositorio.AtualizarIdiomaColaborador(codigoColaborador, codigosIdiomas);
-            }
+            await _idiomaRepositorio.CadastrarAtualizarIdiomaColaborador(codigoColaborador, idiomasParaCadastrar.ToList());
         }
     }
 
@@ -69,7 +54,6 @@ namespace Refugiados.BFF.Servicos
     {
         Task<IEnumerable<IdiomaModel>> ListarIdioma();
         Task<IEnumerable<IdiomaModel>> ListarIdiomaColaborador(int codigoColaborador);
-        Task CadastrarIdiomaColaborador(int codigoColaborador, List<IdiomaModel> codigosIdioma);
-        Task AtualizarIdiomaColaborador(int codigoColaborador, List<IdiomaModel> Idiomas);
+        Task CadastrarAtualizarIdiomaColaborador(int codigoColaborador, List<IdiomaModel> codigosIdioma);
     }
 }

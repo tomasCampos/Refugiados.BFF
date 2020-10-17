@@ -28,13 +28,7 @@ namespace Repositorio.Repositorios
             return idiomas;
         }
 
-        public async Task<int> CadastrarIdiomaColaborador(int codigoColaborador, int codigoIdioma)
-        {
-            var linhasAfetadas = await _dataBase.ExecutarAsync(AppConstants.CADASTRAR_IDIOMA_COLABORADOR, new { codigo_colaborador = codigoColaborador, codigo_idioma = codigoIdioma });
-            return linhasAfetadas;
-        }
-
-        public async Task<int> AtualizarIdiomaColaborador(int codigoColaborador, List<int> codigosIdiomas)
+        public async Task<int> CadastrarAtualizarIdiomaColaborador(int codigoColaborador, List<int> codigosIdiomas)
         {
             var linhasAfetadas = await _dataBase.ExecutarAsync(AppConstants.EXCLUIR_IDIOMA_COLABORADOR, new { codigo_colaborador = codigoColaborador });
 
@@ -45,13 +39,22 @@ namespace Repositorio.Repositorios
 
             return linhasAfetadas;
         }
+
+        #region Metodos privados
+
+        private async Task<int> CadastrarIdiomaColaborador(int codigoColaborador, int codigoIdioma)
+        {
+            var linhasAfetadas = await _dataBase.ExecutarAsync(AppConstants.CADASTRAR_IDIOMA_COLABORADOR, new { codigo_colaborador = codigoColaborador, codigo_idioma = codigoIdioma });
+            return linhasAfetadas;
+        }
+
+        #endregion
     }
 
     public interface IIdiomaRepositorio
     {
         Task<IEnumerable<IdiomaDto>> ListarIdioma();
         Task<IEnumerable<IdiomaDto>> ListarIdiomaColaborador(int codigoColaborador);
-        Task<int> CadastrarIdiomaColaborador(int codigoColaborador, int codigoIdioma);
-        Task<int> AtualizarIdiomaColaborador(int codigoColaborador, List<int> codigosIdiomas);
+        Task<int> CadastrarAtualizarIdiomaColaborador(int codigoColaborador, List<int> codigosIdiomas);
     }
 }
