@@ -15,6 +15,7 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
         public string AreaFormacao { get; set; }
         public DateTime? DataChegadaBrasil { get; set; }
         public DateTime? DataNascimento { get; set; }
+        public List<int> Idiomas { get; set; }
 
         public ValidacaoRequisicaoModel Validar()
         {
@@ -34,15 +35,23 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
         {
             if (Validar().Valido)
             {
-                return new ColaboradorModel
+                var colaborador = new ColaboradorModel
                 {
                     NomeColaborador = NomeColaborador,
                     DataNascimento = DataNascimento,
                     DataChegadaBrasil = DataChegadaBrasil,
                     Escolaridade = Escolaridade,
                     Nacionalidade = Nacionalidade,
-                    AreaFormacao = AreaFormacao
+                    AreaFormacao = AreaFormacao,
+                    Idiomas = new List<IdiomaModel>()
                 };
+
+                foreach (var codigoIdioma in Idiomas)
+                {
+                    colaborador.Idiomas.Add(new IdiomaModel { CodigoIdioma = codigoIdioma });
+                }
+
+                return colaborador;
             }
             else
                 throw new InvalidDataException("Colaborador inválido. Não pode ser instanciado");

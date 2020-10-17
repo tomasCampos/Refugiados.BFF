@@ -126,6 +126,21 @@
                                                     `escolaridade` = @escolaridade
                                                      WHERE `codigo_usuario` = @codigo_usuario;";
 
+        public const string CADASTRAR_IDIOMA_COLABORADOR = @"INSERT INTO `heroku_93ac2d8811d872a`.`colaborador_idioma`
+                                                            (`codigo_colaborador_idioma`,
+                                                            `codigo_colaborador`,
+                                                            `codigo_idioma`)
+                                                            VALUES
+                                                            (default,
+                                                            @codigo_colaborador,
+                                                            @codigo_idioma);";
+
+        public const string LISTAR_IDIOMA_COLABORADOR = @"SELECT i.codigo_idioma, i.nome_idioma FROM colaborador_idioma AS ci
+                                                        INNER JOIN idioma AS i ON ci.codigo_idioma = i.codigo_idioma
+                                                        WHERE codigo_colaborador = @codigo_colaborador;";
+
+        public const string EXCLUIR_IDIOMA_COLABORADOR = @"DELETE FROM colaborador_idioma WHERE codigo_colaborador = @codigo_colaborador";
+
         public enum PerfilUsuario 
         {
             Colaborador = 1,
