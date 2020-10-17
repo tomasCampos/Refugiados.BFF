@@ -20,10 +20,24 @@ namespace Repositorio.Repositorios
             var idiomas = await _dataBase.SelecionarAsync<IdiomaDto>(AppConstants.LISTAR_IDIOMA);
             return idiomas;
         }
+
+        public async Task<IEnumerable<IdiomaDto>> ListarIdiomaColaborador(int codigoColaborador)
+        {
+            var idiomas = await _dataBase.SelecionarAsync<IdiomaDto>(AppConstants.LISTAR_IDIOMA_COLABORADOR, new { codigo_colaborador = codigoColaborador });
+            return idiomas;
+        }
+
+        public async Task<int> CadastrarIdiomaColaborador(int codigoColaborador, int codigoIdioma)
+        {
+            var linhasAfetadas = await _dataBase.ExecutarAsync(AppConstants.CADASTRAR_IDIOMA_COLABORADOR, new { codigo_colaborador = codigoColaborador, codigo_idioma = codigoIdioma });
+            return linhasAfetadas;
+        }
     }
 
     public interface IIdiomaRepositorio
     {
         Task<IEnumerable<IdiomaDto>> ListarIdioma();
+        Task<IEnumerable<IdiomaDto>> ListarIdiomaColaborador(int codigoColaborador);
+        Task<int> CadastrarIdiomaColaborador(int codigoColaborador, int codigoIdioma);
     }
 }

@@ -10,10 +10,12 @@ namespace Refugiados.BFF.Servicos
     public class ColaboradorServico : IColaboradorSerivico
     {
         private readonly IColaboradorRepositorio _colaboradorRepositorio;
+        private readonly IIdiomaServico _idiomaServico;
 
-        public ColaboradorServico(IColaboradorRepositorio colaboradorRepositorio)
+        public ColaboradorServico(IColaboradorRepositorio colaboradorRepositorio, IIdiomaServico idiomaServico)
         {
             _colaboradorRepositorio = colaboradorRepositorio;
+            _idiomaServico = idiomaServico;
         }
 
         public async Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, int codigoUsuario)
@@ -40,6 +42,8 @@ namespace Refugiados.BFF.Servicos
                 colaborador.DataChegadaBrasil, colaborador.AreaFormacao, colaborador.Escolaridade);
 
             var colaboradorCadastrado = await ObterColaboradorPorCodigoUsuario(colaborador.CodigoUsuario);
+
+            await _idiomaServico.CadastrarIdiomaColaborador(colaboradorCadastrado.CodigoColaborador, colaborador.Idiomas);
 
             return colaboradorCadastrado.CodigoColaborador;
         }

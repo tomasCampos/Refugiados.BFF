@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Refugiados.BFF.Models
 {
@@ -16,5 +17,6 @@ namespace Refugiados.BFF.Models
         public DateTime DataAlteracao { get; set; }
         public int CodigoUsuario { get; set; }
         public bool Entrevistado { get; set; }
+        public List<IdiomaModel> Idiomas { get; set; }
     }
 }
