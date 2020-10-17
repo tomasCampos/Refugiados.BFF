@@ -18,7 +18,8 @@ namespace Refugiados.BFF.Servicos
             _idiomaServico = idiomaServico;
         }
 
-        public async Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, int codigoUsuario)
+        public async Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, 
+            int codigoUsuario, List<int> codigosIdiomas)
         {
             var colaborador = await ObterColaboradorPorCodigoUsuario(codigoUsuario);
 
@@ -34,6 +35,17 @@ namespace Refugiados.BFF.Servicos
 
             await _colaboradorRepositorio.AtualizarColaborador(colaborador.NomeColaborador, colaborador.CodigoUsuario, colaborador.Nacionalidade, colaborador.DataNascimento, 
                 colaborador.DataChegadaBrasil, colaborador.AreaFormacao, colaborador.Escolaridade);
+
+            if (codigosIdiomas != null && codigosIdiomas.Any())
+            {
+                var listaIdiomas = new List<IdiomaModel>();
+                foreach (var codigo in codigosIdiomas)
+                {
+                    listaIdiomas.Add(new IdiomaModel { CodigoIdioma = codigo });
+                }
+
+                await _idiomaServico.CadastrarAtualizarIdiomaColaborador(colaborador.CodigoColaborador, listaIdiomas);
+            }
         }
 
         public async Task<int> CadastrarColaborador(ColaboradorModel colaborador)
@@ -110,6 +122,6 @@ namespace Refugiados.BFF.Servicos
         Task<int> CadastrarColaborador(ColaboradorModel colaborador);
         Task<ColaboradorModel> ObterColaboradorPorCodigoUsuario(int codigoUsuario);
         Task<List<ColaboradorModel>> ListarColaboradores();
-        Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, int codigoUsuario);
+        Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, int codigoUsuario, List<int> codigosIdiomas);
     }
 }
