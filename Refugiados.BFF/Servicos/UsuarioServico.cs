@@ -53,6 +53,7 @@ namespace Refugiados.BFF.Servicos
                     CodigoUsuario = usuario.codigo_usuario,
                     EmailUsuario = usuario.email_usuario,
                     SenhaUsuario = usuario.senha_usuario,
+                    TelefoneUsuario = usuario.telefone_usuario,
                     DataCriacao = usuario.data_criacao,
                     DataAlteracao = usuario.data_alteracao,
                     PerfilUsuario = usuario.perfil_usuario,

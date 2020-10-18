@@ -77,7 +77,8 @@ namespace Refugiados.BFF.Servicos
                 DataNascimento = colab.data_nascimento,
                 Escolaridade = colab.escolaridade,
                 AreaFormacao = colab.area_formacao,
-                Entrevistado = colab.entrevistado
+                Entrevistado = colab.entrevistado,
+                TelefoneUsuario = colab.telefone_usuario
             }).ToList();
 
             foreach (var colaborador in colaboradores)
@@ -112,6 +113,7 @@ namespace Refugiados.BFF.Servicos
                 Escolaridade = colaborador.escolaridade,
                 AreaFormacao = colaborador.area_formacao,
                 Entrevistado = colaborador.entrevistado,
+                TelefoneUsuario = colaborador.telefone_usuario,
                 Idiomas = idiomasColaborador.ToList()
             };
         }

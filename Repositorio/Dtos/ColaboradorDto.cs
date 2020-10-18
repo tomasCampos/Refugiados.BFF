@@ -17,6 +17,7 @@ namespace Repositorio.Dtos
         public DateTime data_alteracao { get; set; }
         public int codigo_usuario { get; set; }
         public string email_usuario { get; set; }
+        public string telefone_usuario { get; set; }
         public bool entrevistado { get; set; }
     }
 }
