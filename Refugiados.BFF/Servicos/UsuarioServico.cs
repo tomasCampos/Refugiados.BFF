@@ -102,7 +102,7 @@ namespace Refugiados.BFF.Servicos
             return resultadoCadastroUsuario;
         }
 
-        public async Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, bool? entrevistado, int codigoUsuario)
+        public async Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, bool? entrevistado, string telfoneUsuario, int codigoUsuario)
         {
             if(!string.IsNullOrWhiteSpace(emailUsuario))
             {
@@ -122,8 +122,9 @@ namespace Refugiados.BFF.Servicos
             {
                 usuarioAtual.EmailUsuario = !string.IsNullOrEmpty(emailUsuario) ? emailUsuario : usuarioAtual.EmailUsuario;
                 usuarioAtual.SenhaUsuario = !string.IsNullOrEmpty(senhaCifrada) ? senhaCifrada : usuarioAtual.SenhaUsuario;
+                usuarioAtual.TelefoneUsuario = !string.IsNullOrEmpty(telfoneUsuario) ? telfoneUsuario : usuarioAtual.TelefoneUsuario;
                 usuarioAtual.Entrevistado = entrevistado.HasValue ? entrevistado.Value : usuarioAtual.Entrevistado;
-                await _usuarioRepositorio.AtualizarUsuario(usuarioAtual.EmailUsuario, usuarioAtual.SenhaUsuario, usuarioAtual.Entrevistado, codigoUsuario);                         
+                await _usuarioRepositorio.AtualizarUsuario(usuarioAtual.EmailUsuario, usuarioAtual.SenhaUsuario, usuarioAtual.Entrevistado, usuarioAtual.TelefoneUsuario, codigoUsuario);                         
             }
 
             return new CadastrarAtualizarUsuarioServiceModel(CadastrarAtualizarUsuarioServiceModel.SituacaoCadastroUsuario.UsuarioCadastrado, codigoUsuario);
@@ -182,7 +183,7 @@ namespace Refugiados.BFF.Servicos
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuario(string emailUsuario, string senhaUsuario, string telefoneUsuario, int? perfilUsuario = null);
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioColaborador(string emailUsuario, string senhaUsuario, string telefoneUsuario, ColaboradorModel colaborador);
         Task<CadastrarAtualizarUsuarioServiceModel> CadastrarUsuarioEmpresa(string emailUsuario, string senhaUsuario, string telefoneUsuario, string razaoSocial, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios);
-        Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, bool? entrevistado, int codigoUsuario);
+        Task<CadastrarAtualizarUsuarioServiceModel> AtualizarUsuario(string emailUsuario, string senhaUsuario, bool? entrevistado, string telefoneUsuario, int codigoUsuario);
         Task<AutenticarUsuarioServiceModel> AutenticarUsuario(string emailUsuario, string senhaUsuario);
         Task<DeletarUsuarioServiceModel> DeletarUsuario(int codigoUsuario);
     }

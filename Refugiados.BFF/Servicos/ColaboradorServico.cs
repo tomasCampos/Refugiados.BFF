@@ -94,10 +94,10 @@ namespace Refugiados.BFF.Servicos
         {
             var colaborador = await _colaboradorRepositorio.ObterColaboradorPorCodigoUsuario(codigoUsuario);
 
-            var idiomasColaborador = await _idiomaServico.ListarIdiomaColaborador(colaborador.codigo_colaborador);
-
             if (colaborador == null)
                 return null;
+
+            var idiomasColaborador = await _idiomaServico.ListarIdiomaColaborador(colaborador.codigo_colaborador);
 
             return new ColaboradorModel
             {
