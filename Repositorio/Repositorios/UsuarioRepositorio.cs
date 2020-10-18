@@ -37,14 +37,14 @@ namespace Repositorio.Repositorios
             return result.ToList();
         }
 
-        public async Task CadastrarUsuario(string email, string senha, int? perfil) 
+        public async Task CadastrarUsuario(string email, string senha, string telefoneUsuario, int? perfil) 
         {
-            await _dataBase.ExecutarAsync(AppConstants.CADASTRAR_USUARIO, new { email_usuario = email, senha_usuario = senha, perfil_usuario = perfil });
+            await _dataBase.ExecutarAsync(AppConstants.CADASTRAR_USUARIO, new { email_usuario = email, senha_usuario = senha, telefone_usuario = telefoneUsuario, perfil_usuario = perfil });
         }
 
-        public async Task AtualizarUsuario(string email, string senha, bool entrevistado, int codigo)
+        public async Task AtualizarUsuario(string email, string senha, bool entrevistado, string telefone, int codigo)
         {
-            await _dataBase.ExecutarAsync(AppConstants.ATUALIZAR_USUARIO, new { email_usuario = email, senha_usuario = senha, entrevistado = entrevistado, codigo_usuario = codigo });            
+            await _dataBase.ExecutarAsync(AppConstants.ATUALIZAR_USUARIO, new { email_usuario = email, senha_usuario = senha, telefone_usuario = telefone, entrevistado = entrevistado, codigo_usuario = codigo });            
         }
 
         public async Task DeletarUsuario(int codigoUsuario)
@@ -58,8 +58,8 @@ namespace Repositorio.Repositorios
         Task<List<UsuarioDto>> ListarUsuarios();
         Task<List<UsuarioDto>> ListarUsuarios(int codigo);
         Task<List<UsuarioDto>> ListarUsuarios(string email);
-        Task CadastrarUsuario(string email, string senha, int? perfil);
-        Task AtualizarUsuario(string email, string senha, bool entrevistado, int codigo);
+        Task CadastrarUsuario(string email, string senha, string telefoneUsuario, int? perfil);
+        Task AtualizarUsuario(string email, string senha, bool entrevistado, string telefone, int codigo);
         Task DeletarUsuario(int codigoUsuario);
     }
 }

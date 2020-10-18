@@ -9,6 +9,7 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
     {
         public string NomeColaborador { get; set; }
         public string EmailUsuario { get; set; }
+        public string TefoneUsuario { get; set; }
         public string SenhaUsuario { get; set; }
         public string Escolaridade { get; set; }
         public string Nacionalidade { get; set; }

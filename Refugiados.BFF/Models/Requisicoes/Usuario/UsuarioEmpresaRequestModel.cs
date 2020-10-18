@@ -10,6 +10,7 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
         public string RazaoSocial { get; set; }
         public string EmailUsuario { get; set; }
         public string SenhaUsuario { get; set; }
+        public string TelefoneUsuario { get; set; }
         public string CNPJ { get; set; }
         public string NomeFantasia { get; set; }
         public DateTime? DataFundacao { get; set; }

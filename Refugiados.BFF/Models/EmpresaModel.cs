@@ -8,6 +8,7 @@ namespace Refugiados.BFF.Models
         public int CodigoUsuario { get; set; }
         public string RazaoSocial { get; set; }
         public string EmailUsuario { get; set; }
+        public string TelefoneUsuario { get; set; }
         public DateTime DataCriacao { get; set; }
         public DateTime DataAlteracao { get; set; }
         public string CNPJ { get; set; }

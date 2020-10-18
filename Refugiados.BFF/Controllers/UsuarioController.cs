@@ -62,7 +62,7 @@ namespace Refugiados.BFF.Controllers
                 });
             }
 
-            var resultadoCadastro = await _usuarioServico.CadastrarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario);
+            var resultadoCadastro = await _usuarioServico.CadastrarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, null);
             return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro);
         }
 
@@ -83,7 +83,7 @@ namespace Refugiados.BFF.Controllers
                 });
             }
             var colaborador = requisicao.CriarColaborador();
-            var resultadoCadastro = await _usuarioServico.CadastrarUsuarioColaborador(requisicao.EmailUsuario, requisicao.SenhaUsuario, colaborador);
+            var resultadoCadastro = await _usuarioServico.CadastrarUsuarioColaborador(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.TefoneUsuario, colaborador);
             return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro);
         }
 
@@ -104,7 +104,7 @@ namespace Refugiados.BFF.Controllers
                 });
             }
 
-            var resultadoCadastro = await _usuarioServico.CadastrarUsuarioEmpresa(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.RazaoSocial, requisicao.CNPJ, requisicao.NomeFantasia, requisicao.DataFundacao, requisicao.NumeroFuncionarios);
+            var resultadoCadastro = await _usuarioServico.CadastrarUsuarioEmpresa(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.TelefoneUsuario, requisicao.RazaoSocial, requisicao.CNPJ, requisicao.NomeFantasia, requisicao.DataFundacao, requisicao.NumeroFuncionarios);
             return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro);
         }
 
@@ -135,7 +135,7 @@ namespace Refugiados.BFF.Controllers
                 });
             }
 
-            var resultadoCadastro = await _usuarioServico.AtualizarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.Entrevistado, codigoUsuario);
+            var resultadoCadastro = await _usuarioServico.AtualizarUsuario(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.Entrevistado, requisicao.TelefoneUsuario, codigoUsuario);
             return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro, false);
         }
 
