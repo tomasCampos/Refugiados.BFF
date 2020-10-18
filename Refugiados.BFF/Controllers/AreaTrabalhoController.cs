@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Refugiados.BFF.Controllers
 {
     [ApiController]
-    [Route("areastrabalho")]
+    [Route("areas-trabalho")]
     public class AreaTrabalhoController : ControllerBase
     {
         private readonly IAreaTrabalhoServico _areaTrabalhoServico;
