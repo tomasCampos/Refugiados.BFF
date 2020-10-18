@@ -18,6 +18,7 @@
                                                     (`codigo_usuario`,
                                                     `email_usuario`,
                                                     `senha_usuario`,
+                                                    `telefone_usuario`,
                                                     `perfil_usuario`,
                                                     `data_criacao`,
                                                     `data_alteracao`)
@@ -25,6 +26,7 @@
                                                     (default,
                                                     @email_usuario,
                                                     @senha_Usuario,
+                                                    @telefone_usuario,
                                                     @perfil_usuario,
                                                     default,
                                                     CURRENT_TIMESTAMP);";
