@@ -2,9 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Refugiados.BFF.Models.Respostas;
 using Refugiados.BFF.Servicos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Refugiados.BFF.Controllers
