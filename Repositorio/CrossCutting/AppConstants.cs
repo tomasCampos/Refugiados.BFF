@@ -144,6 +144,8 @@
 
         public const string EXCLUIR_IDIOMA_COLABORADOR = @"DELETE FROM colaborador_idioma WHERE codigo_colaborador = @codigo_colaborador";
 
+        public const string LISTAR_AREA_TRABALHO = "SELECT * FROM area_trabalho";
+
         public enum PerfilUsuario 
         {
             Colaborador = 1,
