@@ -21,7 +21,7 @@ namespace Refugiados.BFF.Servicos
         }
 
         public async Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, 
-            int codigoUsuario, List<int> codigosIdiomas)
+            int codigoUsuario, List<int> codigosIdiomas, List<int> codigosAreasTrabalho)
         {
             var colaborador = await ObterColaboradorPorCodigoUsuario(codigoUsuario);
 
@@ -47,6 +47,17 @@ namespace Refugiados.BFF.Servicos
                 }
 
                 await _idiomaServico.CadastrarAtualizarIdiomaColaborador(colaborador.CodigoColaborador, listaIdiomas);
+            }
+
+            if (codigosAreasTrabalho != null && codigosAreasTrabalho.Any())
+            {
+                var listaAreasTrabalho = new List<AreaTrabalhoModel>();
+                foreach (var codigo in codigosAreasTrabalho)
+                {
+                    listaAreasTrabalho.Add(new AreaTrabalhoModel { CodigoAreaTrabalho = codigo });
+                }
+
+                await _areaTrabalhoServico.CadastrarAtualizarAreaTrabalhoColaborador(colaborador.CodigoColaborador, listaAreasTrabalho);
             }
         }
 
@@ -132,6 +143,6 @@ namespace Refugiados.BFF.Servicos
         Task<int> CadastrarColaborador(ColaboradorModel colaborador);
         Task<ColaboradorModel> ObterColaboradorPorCodigoUsuario(int codigoUsuario);
         Task<List<ColaboradorModel>> ListarColaboradores();
-        Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, int codigoUsuario, List<int> codigosIdiomas);
+        Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, int codigoUsuario, List<int> codigosIdiomas, List<int> codigosAreasTrabalho);
     }
 }

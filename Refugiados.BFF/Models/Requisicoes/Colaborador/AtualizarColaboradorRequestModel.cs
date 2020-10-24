@@ -14,12 +14,13 @@ namespace Refugiados.BFF.Models.Colaborador.Requisicoes
         public DateTime? DataChegadaBrasil { get; set; }
         public DateTime? DataNascimento { get; set; }
         public List<int> Idiomas { get; set; }
+        public List<int> AreasTrabalho { get; set; }
 
         public ValidacaoRequisicaoModel Validar()
         {
             var erros = new List<string>();
             if (string.IsNullOrWhiteSpace(NomeColaborador) && string.IsNullOrWhiteSpace(Escolaridade) && string.IsNullOrWhiteSpace(Nacionalidade) && string.IsNullOrWhiteSpace(AreaFormacao) &&
-                !DataChegadaBrasil.HasValue && !DataNascimento.HasValue && !Idiomas.Any()) 
+                !DataChegadaBrasil.HasValue && !DataNascimento.HasValue && Idiomas == null && AreasTrabalho == null) 
             {
                 erros.Add("Nenhum dado para atualizar");
             }
