@@ -11,18 +11,27 @@ namespace Refugiados.BFF.Servicos
     public class EmpresaServico : IEmpresaServico
     {
         private readonly IEmpresaRepositorio _empresaRepositorio;
+        private readonly IAreaTrabalhoServico _areaTrabalhoServico;
 
-        public EmpresaServico(IEmpresaRepositorio empresaRepositorio)
+        public EmpresaServico(IEmpresaRepositorio empresaRepositorio, IAreaTrabalhoServico areaTrabalhoServico)
         {
             _empresaRepositorio = empresaRepositorio;
+            _areaTrabalhoServico = areaTrabalhoServico;
         }
 
-        public async Task CadastrarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
+        public async Task<int> CadastrarEmpresa(EmpresaModel empresa)
         {
-            await _empresaRepositorio.CadastrarEmpresa(razaoSocial, codigoUsuario, cnpj, nomeFantasia, dataFundacao, numeroFuncionarios);
+            await _empresaRepositorio.CadastrarEmpresa(empresa.RazaoSocial, empresa.CodigoUsuario, empresa.CNPJ, empresa.NomeFantasia, empresa.DataFundacao, empresa.NumeroFuncionarios);
+
+            var empresaCadastrada = await ObterEmpresaPorCodigoUsuario(empresa.CodigoUsuario);
+
+            if(empresa.AreasTrabalho.Any())
+                await _areaTrabalhoServico.CadastrarAtualizarAreaTrabalhoEmpresa(empresaCadastrada.CodigoEmpresa, empresa.AreasTrabalho);
+
+            return empresaCadastrada.CodigoEmpresa;
         }
 
-        public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
+        public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios, List<int> codigosAreasTrabalho)
         {
             var empresa = await ObterEmpresaPorCodigoUsuario(codigoUsuario);
 
@@ -36,41 +45,51 @@ namespace Refugiados.BFF.Servicos
             empresa.NumeroFuncionarios = numeroFuncionarios.HasValue ? numeroFuncionarios : empresa.NumeroFuncionarios;
 
             await _empresaRepositorio.AtualizarEmpresa(empresa.RazaoSocial, codigoUsuario, empresa.CNPJ, empresa.NomeFantasia, empresa.DataFundacao, empresa.NumeroFuncionarios);
+
+            if (codigosAreasTrabalho != null)
+            {
+                var listaAreasTrabalho = new List<AreaTrabalhoModel>();
+                foreach (var codigo in codigosAreasTrabalho)
+                {
+                    listaAreasTrabalho.Add(new AreaTrabalhoModel { CodigoAreaTrabalho = codigo });
+                }
+
+                await _areaTrabalhoServico.CadastrarAtualizarAreaTrabalhoEmpresa(empresa.CodigoEmpresa, listaAreasTrabalho);
+            }
         }
 
         public async Task<EmpresaModel> ObterEmpresaPorCodigoUsuario(int codigoUsuario)
         {
             var empresa = await _empresaRepositorio.ObterEmpresaPorCodigoUsuario(codigoUsuario);
 
-            if (empresa != null)
-            {
-                return new EmpresaModel
-                {
-                    CodigoEmpresa = empresa.codigo_empresa,
-                    CodigoUsuario = empresa.codigo_usuario,
-                    RazaoSocial = empresa.razao_social,
-                    CNPJ = empresa.cnpj,
-                    NomeFantasia = empresa.nome_fantasia,
-                    DataFundacao = empresa.data_fundacao,
-                    NumeroFuncionarios = empresa.numero_funcionarios,
-                    EmailUsuario = empresa.email_usuario,
-                    DataCriacao = empresa.data_criacao,
-                    DataAlteracao = empresa.data_alteracao,
-                    Entrevistado = empresa.entrevistado,
-                    TelefoneUsuario = empresa.telefone_usuario
-                };
-            }
-            else
-            {
+            if (empresa == null)
                 return null;
-            }
+
+            var areasTrabalhoEmpresa = await _areaTrabalhoServico.ListarAreasTrabalhoEmpresa(empresa.codigo_empresa);
+
+            return new EmpresaModel
+            {
+                CodigoEmpresa = empresa.codigo_empresa,
+                CodigoUsuario = empresa.codigo_usuario,
+                RazaoSocial = empresa.razao_social,
+                CNPJ = empresa.cnpj,
+                NomeFantasia = empresa.nome_fantasia,
+                DataFundacao = empresa.data_fundacao,
+                NumeroFuncionarios = empresa.numero_funcionarios,
+                EmailUsuario = empresa.email_usuario,
+                DataCriacao = empresa.data_criacao,
+                DataAlteracao = empresa.data_alteracao,
+                Entrevistado = empresa.entrevistado,
+                TelefoneUsuario = empresa.telefone_usuario,
+                AreasTrabalho = areasTrabalhoEmpresa.ToList()
+            };            
         }
 
         public async Task<List<EmpresaModel>> ListarEmpresas()
         {
             var lista = await _empresaRepositorio.ListarEmpresas();
 
-            var colaboradores = lista.Select(empresa => new EmpresaModel
+            var empresas = lista.Select(empresa => new EmpresaModel
             {
                 CodigoEmpresa = empresa.codigo_empresa,
                 CodigoUsuario = empresa.codigo_usuario,
@@ -86,7 +105,13 @@ namespace Refugiados.BFF.Servicos
                 TelefoneUsuario = empresa.telefone_usuario
             }).ToList();
 
-            return colaboradores;
+            foreach (var empresa in empresas)
+            {
+                var areasTrabalhoEmpresa = await _areaTrabalhoServico.ListarAreasTrabalhoEmpresa(empresa.CodigoEmpresa);
+                empresa.AreasTrabalho = areasTrabalhoEmpresa.ToList();
+            }
+
+            return empresas;
         }
     }
 }

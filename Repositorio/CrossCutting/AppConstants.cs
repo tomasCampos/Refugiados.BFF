@@ -146,11 +146,17 @@
 
         public const string EXCLUIR_AREA_TRABALHO_COLABORADOR = @"DELETE FROM colaborador_area_trabalho WHERE codigo_colaborador = @codigo_colaborador";
 
+        public const string EXCLUIR_AREA_TRABALHO_EMPRESA = @"DELETE FROM empresa_area_trabalho WHERE codigo_empresa = @codigo_empresa";
+
         public const string LISTAR_AREA_TRABALHO = "SELECT * FROM area_trabalho";
 
-        public const string LISTAR_AREA_TRABALHO_COLABORADOR = @"SELECT * FROM colaborador_area_trabalho AS cat
+        public const string LISTAR_AREA_TRABALHO_COLABORADOR = @"SELECT at.codigo_area_trabalho, at.nome_area_trabalho FROM colaborador_area_trabalho AS cat
                                                                 INNER JOIN area_trabalho AS at ON cat.codigo_area_trabalho = at.codigo_area_trabalho
-                                                                WHERE cat.codigo_colaborador = @codigo_colaborador;";
+                                                                WHERE cat.codigo_colaborador =  @codigo_colaborador;";
+
+        public const string LISTAR_AREA_TRABALHO_EMPRESA = @"SELECT at.codigo_area_trabalho, at.nome_area_trabalho FROM empresa_area_trabalho AS eat
+                                                                INNER JOIN area_trabalho AS at ON eat.codigo_area_trabalho = at.codigo_area_trabalho
+                                                                WHERE eat.codigo_empresa =  @codigo_empresa;";
 
         public const string CADASTRAR_AREA_TRABALHO_COLABORADOR = @"INSERT INTO `heroku_93ac2d8811d872a`.`colaborador_area_trabalho`
                                                                     (`codigo_colaborador_area_trabalho`,
@@ -160,6 +166,15 @@
                                                                     (default,
                                                                     @codigo_colaborador,
                                                                     @codigo_area_trabalho);";
+
+        public const string CADASTRAR_AREA_TRABALHO_EMPRESA = @"INSERT INTO `heroku_93ac2d8811d872a`.`empresa_area_trabalho`
+                                                                (`codigo_empresa_area_trabalho`,
+                                                                `codigo_empresa`,
+                                                                `codigo_area_trabalho`)
+                                                                VALUES
+                                                                (default,
+                                                                @codigo_empresa,
+                                                                @codigo_area_trabalho);";
 
         public enum PerfilUsuario 
         {

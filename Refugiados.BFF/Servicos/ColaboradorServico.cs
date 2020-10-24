@@ -38,7 +38,7 @@ namespace Refugiados.BFF.Servicos
             await _colaboradorRepositorio.AtualizarColaborador(colaborador.NomeColaborador, colaborador.CodigoUsuario, colaborador.Nacionalidade, colaborador.DataNascimento, 
                 colaborador.DataChegadaBrasil, colaborador.AreaFormacao, colaborador.Escolaridade);
 
-            if (codigosIdiomas != null && codigosIdiomas.Any())
+            if (codigosIdiomas != null)
             {
                 var listaIdiomas = new List<IdiomaModel>();
                 foreach (var codigo in codigosIdiomas)
@@ -49,7 +49,7 @@ namespace Refugiados.BFF.Servicos
                 await _idiomaServico.CadastrarAtualizarIdiomaColaborador(colaborador.CodigoColaborador, listaIdiomas);
             }
 
-            if (codigosAreasTrabalho != null && codigosAreasTrabalho.Any())
+            if (codigosAreasTrabalho != null)
             {
                 var listaAreasTrabalho = new List<AreaTrabalhoModel>();
                 foreach (var codigo in codigosAreasTrabalho)
@@ -68,8 +68,10 @@ namespace Refugiados.BFF.Servicos
 
             var colaboradorCadastrado = await ObterColaboradorPorCodigoUsuario(colaborador.CodigoUsuario);
 
-            await _idiomaServico.CadastrarAtualizarIdiomaColaborador(colaboradorCadastrado.CodigoColaborador, colaborador.Idiomas);
-            await _areaTrabalhoServico.CadastrarAtualizarAreaTrabalhoColaborador(colaboradorCadastrado.CodigoColaborador, colaborador.AreasTrabalho);
+            if(colaborador.Idiomas.Any())
+                await _idiomaServico.CadastrarAtualizarIdiomaColaborador(colaboradorCadastrado.CodigoColaborador, colaborador.Idiomas);
+            if(colaborador.AreasTrabalho.Any())
+                await _areaTrabalhoServico.CadastrarAtualizarAreaTrabalhoColaborador(colaboradorCadastrado.CodigoColaborador, colaborador.AreasTrabalho);
 
             return colaboradorCadastrado.CodigoColaborador;
         }

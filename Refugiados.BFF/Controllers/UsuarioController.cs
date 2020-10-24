@@ -103,8 +103,8 @@ namespace Refugiados.BFF.Controllers
                     Mensagem = validacao.MensagemDeErro
                 });
             }
-
-            var resultadoCadastro = await _usuarioServico.CadastrarUsuarioEmpresa(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.TelefoneUsuario, requisicao.RazaoSocial, requisicao.CNPJ, requisicao.NomeFantasia, requisicao.DataFundacao, requisicao.NumeroFuncionarios);
+            var empresa = requisicao.CriarEmpresa();
+            var resultadoCadastro = await _usuarioServico.CadastrarUsuarioEmpresa(requisicao.EmailUsuario, requisicao.SenhaUsuario, requisicao.TelefoneUsuario, empresa);
             return FormatarResultadoCadastroOuAtualizacaoUsuario(resultadoCadastro);
         }
 

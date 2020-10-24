@@ -15,6 +15,7 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
         public string NomeFantasia { get; set; }
         public DateTime? DataFundacao { get; set; }
         public int? NumeroFuncionarios { get; set; }
+        public List<int> AreasTrabalho { get; set; }
 
         public ValidacaoRequisicaoModel Validar()
         {
@@ -34,14 +35,22 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
         {
             if (Validar().Valido)
             {
-                return new EmpresaModel
+                var empresa = new EmpresaModel
                 {
                     RazaoSocial = RazaoSocial,
                     CNPJ = CNPJ,
                     NomeFantasia = NomeFantasia,
                     DataFundacao = DataFundacao,
-                    NumeroFuncionarios = NumeroFuncionarios
+                    NumeroFuncionarios = NumeroFuncionarios,
+                    AreasTrabalho = new List<AreaTrabalhoModel>()
                 };
+
+                foreach (var codigoAreaTrabalho in AreasTrabalho)
+                {
+                    empresa.AreasTrabalho.Add(new AreaTrabalhoModel { CodigoAreaTrabalho = codigoAreaTrabalho });
+                }
+
+                return empresa;
             }
             else
                 throw new InvalidDataException("Colaborador inválido. Não pode ser instanciado");
