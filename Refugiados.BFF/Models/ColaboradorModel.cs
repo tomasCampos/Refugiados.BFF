@@ -19,5 +19,6 @@ namespace Refugiados.BFF.Models
         public string TelefoneUsuario { get; set; }
         public bool Entrevistado { get; set; }
         public List<IdiomaModel> Idiomas { get; set; }
+        public List<AreaTrabalhoModel> AreasTrabalho { get; set; }
     }
 }

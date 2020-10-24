@@ -23,10 +23,17 @@ namespace Repositorio.Repositorios
 
             return retorno;
         }
+
+        public async Task<IEnumerable<AreaTrabalhoDto>> ListarAreasTrabalhoColaborador(int codigoColaborador)
+        {
+            var areasTrabalho = await _dataBase.SelecionarAsync<AreaTrabalhoDto>(AppConstants.LISTAR_AREA_TRABALHO_COLABORADOR, new { codigo_colaborador = codigoColaborador });
+            return areasTrabalho;
+        }
     }
 
     public interface IAreaTrabalhoRepositorio
     {
-        public Task<IEnumerable<AreaTrabalhoDto>> ListarAreasTrabalho();
+        Task<IEnumerable<AreaTrabalhoDto>> ListarAreasTrabalho();
+        Task<IEnumerable<AreaTrabalhoDto>> ListarAreasTrabalhoColaborador(int codigoColaborador);
     }
 }

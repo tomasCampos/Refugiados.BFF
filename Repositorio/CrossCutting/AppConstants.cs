@@ -146,6 +146,10 @@
 
         public const string LISTAR_AREA_TRABALHO = "SELECT * FROM area_trabalho";
 
+        public const string LISTAR_AREA_TRABALHO_COLABORADOR = @"SELECT * FROM colaborador_area_trabalho AS cat
+                                                                INNER JOIN area_trabalho AS at ON cat.codigo_area_trabalho = at.codigo_area_trabalho
+                                                                WHERE cat.codigo_colaborador = @codigo_colaborador;";
+
         public enum PerfilUsuario 
         {
             Colaborador = 1,

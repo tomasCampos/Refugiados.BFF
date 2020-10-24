@@ -27,10 +27,24 @@ namespace Refugiados.BFF.Servicos
 
             return resultado;
         }
+
+        public async Task<IEnumerable<AreaTrabalhoModel>> ListarAreasTrabalhoColaborador(int codigoColaborador)
+        {
+            var lista = await _areaTrabalhoRepositorio.ListarAreasTrabalhoColaborador(codigoColaborador);
+
+            var areasTrabaho = lista.Select(at => new AreaTrabalhoModel 
+            {
+                CodigoAreaTrabalho = at.codigo_area_trabalho,
+                NomeAreaTrabalho = at.nome_area_trabalho
+            }).ToList();
+
+            return areasTrabaho;
+        }
     }
 
     public interface IAreaTrabalhoServico
     {
-        public Task<IEnumerable<AreaTrabalhoModel>> ListarAreasTrabalho();
+        Task<IEnumerable<AreaTrabalhoModel>> ListarAreasTrabalho();
+        Task<IEnumerable<AreaTrabalhoModel>> ListarAreasTrabalhoColaborador(int codigoColaborador);
     }
 }

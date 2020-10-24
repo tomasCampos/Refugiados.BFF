@@ -11,11 +11,13 @@ namespace Refugiados.BFF.Servicos
     {
         private readonly IColaboradorRepositorio _colaboradorRepositorio;
         private readonly IIdiomaServico _idiomaServico;
+        private readonly IAreaTrabalhoServico _areaTrabalhoServico;
 
-        public ColaboradorServico(IColaboradorRepositorio colaboradorRepositorio, IIdiomaServico idiomaServico)
+        public ColaboradorServico(IColaboradorRepositorio colaboradorRepositorio, IIdiomaServico idiomaServico, IAreaTrabalhoServico areaTrabalhoServico)
         {
             _colaboradorRepositorio = colaboradorRepositorio;
             _idiomaServico = idiomaServico;
+            _areaTrabalhoServico = areaTrabalhoServico;
         }
 
         public async Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, 
@@ -85,6 +87,9 @@ namespace Refugiados.BFF.Servicos
             {
                 var idiomasColaborador = await _idiomaServico.ListarIdiomaColaborador(colaborador.CodigoColaborador);
                 colaborador.Idiomas = idiomasColaborador.ToList();
+
+                var areasTrabalhoColaborador = await _areaTrabalhoServico.ListarAreasTrabalhoColaborador(colaborador.CodigoColaborador);
+                colaborador.AreasTrabalho = areasTrabalhoColaborador.ToList();
             }
 
             return colaboradores;
@@ -98,6 +103,7 @@ namespace Refugiados.BFF.Servicos
                 return null;
 
             var idiomasColaborador = await _idiomaServico.ListarIdiomaColaborador(colaborador.codigo_colaborador);
+            var areasTrabalhoColaborador = await _areaTrabalhoServico.ListarAreasTrabalhoColaborador(colaborador.codigo_colaborador);
 
             return new ColaboradorModel
             {
@@ -114,7 +120,8 @@ namespace Refugiados.BFF.Servicos
                 AreaFormacao = colaborador.area_formacao,
                 Entrevistado = colaborador.entrevistado,
                 TelefoneUsuario = colaborador.telefone_usuario,
-                Idiomas = idiomasColaborador.ToList()
+                Idiomas = idiomasColaborador.ToList(),
+                AreasTrabalho = areasTrabalhoColaborador.ToList()
             };
         }
     }
