@@ -31,7 +31,7 @@ namespace Refugiados.BFF.Servicos
             return empresaCadastrada.CodigoEmpresa;
         }
 
-        public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
+        public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios, List<int> codigosAreasTrabalho)
         {
             var empresa = await ObterEmpresaPorCodigoUsuario(codigoUsuario);
 
@@ -45,6 +45,17 @@ namespace Refugiados.BFF.Servicos
             empresa.NumeroFuncionarios = numeroFuncionarios.HasValue ? numeroFuncionarios : empresa.NumeroFuncionarios;
 
             await _empresaRepositorio.AtualizarEmpresa(empresa.RazaoSocial, codigoUsuario, empresa.CNPJ, empresa.NomeFantasia, empresa.DataFundacao, empresa.NumeroFuncionarios);
+
+            if (codigosAreasTrabalho != null)
+            {
+                var listaAreasTrabalho = new List<AreaTrabalhoModel>();
+                foreach (var codigo in codigosAreasTrabalho)
+                {
+                    listaAreasTrabalho.Add(new AreaTrabalhoModel { CodigoAreaTrabalho = codigo });
+                }
+
+                await _areaTrabalhoServico.CadastrarAtualizarAreaTrabalhoEmpresa(empresa.CodigoEmpresa, listaAreasTrabalho);
+            }
         }
 
         public async Task<EmpresaModel> ObterEmpresaPorCodigoUsuario(int codigoUsuario)

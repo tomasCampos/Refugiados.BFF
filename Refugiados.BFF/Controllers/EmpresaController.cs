@@ -83,7 +83,7 @@ namespace Refugiados.BFF.Controllers
                 });
             }
 
-            await _empresaServico.AtualizarEmpresa(request.RazaoSocial, codigoUsuario, request.CNPJ, request.NomeFantasia, request.DataFundacao, request.NumeroFuncionarios);
+            await _empresaServico.AtualizarEmpresa(request.RazaoSocial, codigoUsuario, request.CNPJ, request.NomeFantasia, request.DataFundacao, request.NumeroFuncionarios, request.AreasTrabalho);
 
             return Ok(new RespostaModel
             {
