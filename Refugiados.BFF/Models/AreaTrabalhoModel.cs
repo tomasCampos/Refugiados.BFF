@@ -8,6 +8,6 @@ namespace Refugiados.BFF.Models
     public class AreaTrabalhoModel
     {
         public int CodigoAreaTrabalho { get; set; }
-        public string NomeAreaTrabalho { get; set; }
+        public string DescricaoAreaTrabalho { get; set; }
     }
 }

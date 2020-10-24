@@ -17,6 +17,7 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
         public DateTime? DataChegadaBrasil { get; set; }
         public DateTime? DataNascimento { get; set; }
         public List<int> Idiomas { get; set; }
+        public List<int> AreasTrabalho { get; set; }
 
         public ValidacaoRequisicaoModel Validar()
         {
@@ -44,12 +45,18 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
                     Escolaridade = Escolaridade,
                     Nacionalidade = Nacionalidade,
                     AreaFormacao = AreaFormacao,
-                    Idiomas = new List<IdiomaModel>()
+                    Idiomas = new List<IdiomaModel>(),
+                    AreasTrabalho = new List<AreaTrabalhoModel>()
                 };
 
                 foreach (var codigoIdioma in Idiomas)
                 {
                     colaborador.Idiomas.Add(new IdiomaModel { CodigoIdioma = codigoIdioma });
+                }
+
+                foreach (var codigoAreaTrabalho in AreasTrabalho)
+                {
+                    colaborador.AreasTrabalho.Add(new AreaTrabalhoModel { CodigoAreaTrabalho = codigoAreaTrabalho });
                 }
 
                 return colaborador;

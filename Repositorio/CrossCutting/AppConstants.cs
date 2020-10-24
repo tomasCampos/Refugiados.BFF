@@ -144,11 +144,22 @@
 
         public const string EXCLUIR_IDIOMA_COLABORADOR = @"DELETE FROM colaborador_idioma WHERE codigo_colaborador = @codigo_colaborador";
 
+        public const string EXCLUIR_AREA_TRABALHO_COLABORADOR = @"DELETE FROM colaborador_area_trabalho WHERE codigo_colaborador = @codigo_colaborador";
+
         public const string LISTAR_AREA_TRABALHO = "SELECT * FROM area_trabalho";
 
         public const string LISTAR_AREA_TRABALHO_COLABORADOR = @"SELECT * FROM colaborador_area_trabalho AS cat
                                                                 INNER JOIN area_trabalho AS at ON cat.codigo_area_trabalho = at.codigo_area_trabalho
                                                                 WHERE cat.codigo_colaborador = @codigo_colaborador;";
+
+        public const string CADASTRAR_AREA_TRABALHO_COLABORADOR = @"INSERT INTO `heroku_93ac2d8811d872a`.`colaborador_area_trabalho`
+                                                                    (`codigo_colaborador_area_trabalho`,
+                                                                    `codigo_colaborador`,
+                                                                    `codigo_area_trabalho`)
+                                                                    VALUES
+                                                                    (default,
+                                                                    @codigo_colaborador,
+                                                                    @codigo_area_trabalho);";
 
         public enum PerfilUsuario 
         {

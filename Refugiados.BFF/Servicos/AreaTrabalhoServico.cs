@@ -22,7 +22,7 @@ namespace Refugiados.BFF.Servicos
             var resultado = areasTrabalho.Select(at => new AreaTrabalhoModel 
             {
                 CodigoAreaTrabalho = at.codigo_area_trabalho,
-                NomeAreaTrabalho = at.nome_area_trabalho
+                DescricaoAreaTrabalho = at.nome_area_trabalho
             }).ToList();
 
             return resultado;
@@ -35,10 +35,18 @@ namespace Refugiados.BFF.Servicos
             var areasTrabaho = lista.Select(at => new AreaTrabalhoModel 
             {
                 CodigoAreaTrabalho = at.codigo_area_trabalho,
-                NomeAreaTrabalho = at.nome_area_trabalho
+                DescricaoAreaTrabalho = at.nome_area_trabalho
             }).ToList();
 
             return areasTrabaho;
+        }
+
+        public async Task CadastrarAtualizarAreaTrabalhoColaborador(int codigoColaborador, List<AreaTrabalhoModel> codigosAreaTrabalho)
+        {
+            var areasTrabalhoValidas = await ListarAreasTrabalho();
+            var areasTrabalhoParaCadastrar = codigosAreaTrabalho.Select(at => at.CodigoAreaTrabalho).Intersect(areasTrabalhoValidas.Select(atv => atv.CodigoAreaTrabalho));
+
+            await _areaTrabalhoRepositorio.CadastrarAtualizarAreaTrabalhoColaborador(codigoColaborador, areasTrabalhoParaCadastrar.ToList());
         }
     }
 
@@ -46,5 +54,6 @@ namespace Refugiados.BFF.Servicos
     {
         Task<IEnumerable<AreaTrabalhoModel>> ListarAreasTrabalho();
         Task<IEnumerable<AreaTrabalhoModel>> ListarAreasTrabalhoColaborador(int codigoColaborador);
+        Task CadastrarAtualizarAreaTrabalhoColaborador(int codigoColaborador, List<AreaTrabalhoModel> codigosAreaTrabalho);
     }
 }

@@ -41,10 +41,10 @@ namespace Refugiados.BFF.Servicos
             return idiomas.OrderBy(i => i.DescricaoIdioma).ToList();
         }
 
-        public async Task CadastrarAtualizarIdiomaColaborador(int codigoColaborador, List<IdiomaModel> Idiomas)
+        public async Task CadastrarAtualizarIdiomaColaborador(int codigoColaborador, List<IdiomaModel> codigosIdioma)
         {
             var idiomasValidos = await ListarIdioma();
-            var idiomasParaCadastrar = Idiomas.Select(i => i.CodigoIdioma).Intersect(idiomasValidos.Select(iv => iv.CodigoIdioma));
+            var idiomasParaCadastrar = codigosIdioma.Select(i => i.CodigoIdioma).Intersect(idiomasValidos.Select(iv => iv.CodigoIdioma));
 
             await _idiomaRepositorio.CadastrarAtualizarIdiomaColaborador(codigoColaborador, idiomasParaCadastrar.ToList());
         }

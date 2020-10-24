@@ -58,6 +58,7 @@ namespace Refugiados.BFF.Servicos
             var colaboradorCadastrado = await ObterColaboradorPorCodigoUsuario(colaborador.CodigoUsuario);
 
             await _idiomaServico.CadastrarAtualizarIdiomaColaborador(colaboradorCadastrado.CodigoColaborador, colaborador.Idiomas);
+            await _areaTrabalhoServico.CadastrarAtualizarAreaTrabalhoColaborador(colaboradorCadastrado.CodigoColaborador, colaborador.AreasTrabalho);
 
             return colaboradorCadastrado.CodigoColaborador;
         }
