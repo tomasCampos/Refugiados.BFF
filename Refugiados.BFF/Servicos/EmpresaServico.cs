@@ -11,10 +11,12 @@ namespace Refugiados.BFF.Servicos
     public class EmpresaServico : IEmpresaServico
     {
         private readonly IEmpresaRepositorio _empresaRepositorio;
+        private readonly IAreaTrabalhoServico _areaTrabalhoServico;
 
-        public EmpresaServico(IEmpresaRepositorio empresaRepositorio)
+        public EmpresaServico(IEmpresaRepositorio empresaRepositorio, IAreaTrabalhoServico areaTrabalhoServico)
         {
             _empresaRepositorio = empresaRepositorio;
+            _areaTrabalhoServico = areaTrabalhoServico;
         }
 
         public async Task CadastrarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
@@ -42,35 +44,34 @@ namespace Refugiados.BFF.Servicos
         {
             var empresa = await _empresaRepositorio.ObterEmpresaPorCodigoUsuario(codigoUsuario);
 
-            if (empresa != null)
-            {
-                return new EmpresaModel
-                {
-                    CodigoEmpresa = empresa.codigo_empresa,
-                    CodigoUsuario = empresa.codigo_usuario,
-                    RazaoSocial = empresa.razao_social,
-                    CNPJ = empresa.cnpj,
-                    NomeFantasia = empresa.nome_fantasia,
-                    DataFundacao = empresa.data_fundacao,
-                    NumeroFuncionarios = empresa.numero_funcionarios,
-                    EmailUsuario = empresa.email_usuario,
-                    DataCriacao = empresa.data_criacao,
-                    DataAlteracao = empresa.data_alteracao,
-                    Entrevistado = empresa.entrevistado,
-                    TelefoneUsuario = empresa.telefone_usuario
-                };
-            }
-            else
-            {
+            if (empresa == null)
                 return null;
-            }
+
+            var areasTrabalhoEmpresa = await _areaTrabalhoServico.ListarAreasTrabalhoEmpresa(empresa.codigo_empresa);
+
+            return new EmpresaModel
+            {
+                CodigoEmpresa = empresa.codigo_empresa,
+                CodigoUsuario = empresa.codigo_usuario,
+                RazaoSocial = empresa.razao_social,
+                CNPJ = empresa.cnpj,
+                NomeFantasia = empresa.nome_fantasia,
+                DataFundacao = empresa.data_fundacao,
+                NumeroFuncionarios = empresa.numero_funcionarios,
+                EmailUsuario = empresa.email_usuario,
+                DataCriacao = empresa.data_criacao,
+                DataAlteracao = empresa.data_alteracao,
+                Entrevistado = empresa.entrevistado,
+                TelefoneUsuario = empresa.telefone_usuario,
+                AreasTrabalho = areasTrabalhoEmpresa.ToList()
+            };            
         }
 
         public async Task<List<EmpresaModel>> ListarEmpresas()
         {
             var lista = await _empresaRepositorio.ListarEmpresas();
 
-            var colaboradores = lista.Select(empresa => new EmpresaModel
+            var empresas = lista.Select(empresa => new EmpresaModel
             {
                 CodigoEmpresa = empresa.codigo_empresa,
                 CodigoUsuario = empresa.codigo_usuario,
@@ -86,7 +87,13 @@ namespace Refugiados.BFF.Servicos
                 TelefoneUsuario = empresa.telefone_usuario
             }).ToList();
 
-            return colaboradores;
+            foreach (var empresa in empresas)
+            {
+                var areasTrabalhoEmpresa = await _areaTrabalhoServico.ListarAreasTrabalhoEmpresa(empresa.CodigoEmpresa);
+                empresa.AreasTrabalho = areasTrabalhoEmpresa.ToList();
+            }
+
+            return empresas;
         }
     }
 }

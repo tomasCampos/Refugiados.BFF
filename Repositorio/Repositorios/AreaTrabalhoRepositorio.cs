@@ -42,6 +42,12 @@ namespace Repositorio.Repositorios
             return areasTrabalho;
         }
 
+        public async Task<IEnumerable<AreaTrabalhoDto>> ListarAreasTrabalhoEmpresa(int codigoEmpresa)
+        {
+            var areasTrabalho = await _dataBase.SelecionarAsync<AreaTrabalhoDto>(AppConstants.LISTAR_AREA_TRABALHO_EMPRESA, new { codigo_empresa = codigoEmpresa });
+            return areasTrabalho;
+        }
+
         #region Metodos Privados
 
         private async Task<int> CadastrarAreaTrabalhoColaborador(int codigoColaborador, int codigoAreaTrabalho)
@@ -57,6 +63,7 @@ namespace Repositorio.Repositorios
     {
         Task<IEnumerable<AreaTrabalhoDto>> ListarAreasTrabalho();
         Task<IEnumerable<AreaTrabalhoDto>> ListarAreasTrabalhoColaborador(int codigoColaborador);
+        Task<IEnumerable<AreaTrabalhoDto>> ListarAreasTrabalhoEmpresa(int codigoEmpresa);
         Task<int> CadastrarAtualizarAreaTrabalhoColaborador(int codigoColaborador, List<int> codigosAreasTrabalho);
     }
 }

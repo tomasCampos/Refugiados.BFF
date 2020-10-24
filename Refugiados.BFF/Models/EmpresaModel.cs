@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Refugiados.BFF.Models
 {
@@ -16,5 +17,6 @@ namespace Refugiados.BFF.Models
         public DateTime? DataFundacao { get; set; }
         public int? NumeroFuncionarios { get; set; }
         public bool Entrevistado { get; set; }
+        public List<AreaTrabalhoModel> AreasTrabalho { get; set; }
     }
 }
