@@ -61,6 +61,14 @@ namespace Refugiados.BFF.Servicos
 
             await _areaTrabalhoRepositorio.CadastrarAtualizarAreaTrabalhoColaborador(codigoColaborador, areasTrabalhoParaCadastrar.ToList());
         }
+
+        public async Task CadastrarAtualizarAreaTrabalhoEmpresa(int codigoEmpresa, List<AreaTrabalhoModel> codigosAreaTrabalho)
+        {
+            var areasTrabalhoValidas = await ListarAreasTrabalho();
+            var areasTrabalhoParaCadastrar = codigosAreaTrabalho.Select(at => at.CodigoAreaTrabalho).Intersect(areasTrabalhoValidas.Select(atv => atv.CodigoAreaTrabalho));
+
+            await _areaTrabalhoRepositorio.CadastrarAtualizarAreaTrabalhoEmpresa(codigoEmpresa, areasTrabalhoParaCadastrar.ToList());
+        }
     }
 
     public interface IAreaTrabalhoServico
@@ -69,5 +77,6 @@ namespace Refugiados.BFF.Servicos
         Task<IEnumerable<AreaTrabalhoModel>> ListarAreasTrabalhoColaborador(int codigoColaborador);
         Task<IEnumerable<AreaTrabalhoModel>> ListarAreasTrabalhoEmpresa(int codigoEmpresa);
         Task CadastrarAtualizarAreaTrabalhoColaborador(int codigoColaborador, List<AreaTrabalhoModel> codigosAreaTrabalho);
+        Task CadastrarAtualizarAreaTrabalhoEmpresa(int codigoEmpresa, List<AreaTrabalhoModel> codigosAreaTrabalho);
     }
 }

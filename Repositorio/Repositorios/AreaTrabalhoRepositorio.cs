@@ -28,6 +28,18 @@ namespace Repositorio.Repositorios
             return linhasAfetadas;
         }
 
+        public async Task<int> CadastrarAtualizarAreaTrabalhoEmpresa(int codigoEmpresa, List<int> codigosAreasTrabalho)
+        {
+            var linhasAfetadas = await _dataBase.ExecutarAsync(AppConstants.EXCLUIR_AREA_TRABALHO_EMPRESA, new { codigo_empresa = codigoEmpresa });
+
+            foreach (var codigoAreaTrabalho in codigosAreasTrabalho)
+            {
+                await CadastrarAreaTrabalhoEmpresa(codigoEmpresa, codigoAreaTrabalho);
+            }
+
+            return linhasAfetadas;
+        }
+
         public async Task<IEnumerable<AreaTrabalhoDto>> ListarAreasTrabalho()
         {
             var areasTrabalho = await _dataBase.SelecionarAsync<AreaTrabalhoDto>(AppConstants.LISTAR_AREA_TRABALHO);
@@ -56,6 +68,12 @@ namespace Repositorio.Repositorios
             return linhasAfetadas;
         }
 
+        private async Task<int> CadastrarAreaTrabalhoEmpresa(int codigoEmpresa, int codigoAreaTrabalho)
+        {
+            var linhasAfetadas = await _dataBase.ExecutarAsync(AppConstants.CADASTRAR_AREA_TRABALHO_EMPRESA, new { codigo_empresa = codigoEmpresa, codigo_area_trabalho = codigoAreaTrabalho });
+            return linhasAfetadas;
+        }
+
         #endregion
     }
 
@@ -65,5 +83,6 @@ namespace Repositorio.Repositorios
         Task<IEnumerable<AreaTrabalhoDto>> ListarAreasTrabalhoColaborador(int codigoColaborador);
         Task<IEnumerable<AreaTrabalhoDto>> ListarAreasTrabalhoEmpresa(int codigoEmpresa);
         Task<int> CadastrarAtualizarAreaTrabalhoColaborador(int codigoColaborador, List<int> codigosAreasTrabalho);
+        Task<int> CadastrarAtualizarAreaTrabalhoEmpresa(int codigoEmpresa, List<int> codigosAreasTrabalho);
     }
 }

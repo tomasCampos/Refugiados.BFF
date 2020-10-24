@@ -19,9 +19,16 @@ namespace Refugiados.BFF.Servicos
             _areaTrabalhoServico = areaTrabalhoServico;
         }
 
-        public async Task CadastrarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
+        public async Task<int> CadastrarEmpresa(EmpresaModel empresa)
         {
-            await _empresaRepositorio.CadastrarEmpresa(razaoSocial, codigoUsuario, cnpj, nomeFantasia, dataFundacao, numeroFuncionarios);
+            await _empresaRepositorio.CadastrarEmpresa(empresa.RazaoSocial, empresa.CodigoUsuario, empresa.CNPJ, empresa.NomeFantasia, empresa.DataFundacao, empresa.NumeroFuncionarios);
+
+            var empresaCadastrada = await ObterEmpresaPorCodigoUsuario(empresa.CodigoUsuario);
+
+            if(empresa.AreasTrabalho.Any())
+                await _areaTrabalhoServico.CadastrarAtualizarAreaTrabalhoEmpresa(empresaCadastrada.CodigoEmpresa, empresa.AreasTrabalho);
+
+            return empresaCadastrada.CodigoEmpresa;
         }
 
         public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
