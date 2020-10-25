@@ -29,7 +29,7 @@ namespace Refugiados.BFF.Servicos
 
             var empresaCadastrada = await ObterEmpresaPorCodigoUsuario(empresa.CodigoUsuario);
 
-            if(empresa.AreasTrabalho != null)
+            if(empresa.AreasTrabalho != null && empresa.AreasTrabalho.Any())
                 await _areaTrabalhoServico.CadastrarAtualizarAreaTrabalhoEmpresa(empresaCadastrada.CodigoEmpresa, empresa.AreasTrabalho);
 
             return empresaCadastrada.CodigoEmpresa;
