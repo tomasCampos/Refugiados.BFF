@@ -55,7 +55,7 @@ namespace Repositorio.Repositorios
                 rua_endereco = rua,
                 numero_endereco = numero,
                 complemento_endereco = complemento,
-                cep_enderco = cep,
+                cep_endereco = cep,
                 estado_endereco = estado,
                 codigo_endereco = codigoEndereco
             });

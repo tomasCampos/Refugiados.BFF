@@ -17,14 +17,15 @@ namespace Repositorio.Repositorios
         {
             _db = new DataBaseConnector();
         }
-        public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios)
+        public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios, int? codigoEndereco)
         {                     
             await _db.ExecutarAsync(AppConstants.ATUALIZAR_EMPRESA, new { razao_social = razaoSocial,
                                                                             codigo_usuario = codigoUsuario,
                                                                             cnpj,
                                                                             nome_fantasia = nomeFantasia,
                                                                             data_fundacao = dataFundacao,
-                                                                            numero_funcionarios = numeroFuncionarios });         
+                                                                            numero_funcionarios = numeroFuncionarios,
+                                                                            codigo_endereco = codigoEndereco});         
         }
 
         public async Task CadastrarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios, int? codigoEndereco)

@@ -35,20 +35,36 @@ namespace Refugiados.BFF.Servicos
             return empresaCadastrada.CodigoEmpresa;
         }
 
-        public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios, List<int> codigosAreasTrabalho)
+        public async Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios, 
+            List<int> codigosAreasTrabalho, EnderecoModel endereco)
         {
             var empresa = await ObterEmpresaPorCodigoUsuario(codigoUsuario);
 
             if (empresa == null)
                 return;
 
+            if (endereco != null)
+            {
+                if (empresa.Endereco != null)
+                {
+                    await _enderecoServico.AtualizarEndereco(empresa.Endereco.CodigoEndereco, endereco.CidadeEndereco, endereco.BairroEndereco, endereco.RuaEndereco, endereco.ComplementoEndereco,
+                        endereco.ComplementoEndereco, endereco.CepEndereco, endereco.EstadoEndereco);
+                }
+                else
+                {
+                    var codigoEnderecoCadastrado = await _enderecoServico.CadastrarEndereco(endereco);
+
+                    if (codigoEnderecoCadastrado.HasValue)                    
+                        empresa.Endereco = new EnderecoModel { CodigoEndereco = codigoEnderecoCadastrado.Value };                    
+                }
+            }
+
             empresa.RazaoSocial = string.IsNullOrEmpty(razaoSocial) ? empresa.RazaoSocial : razaoSocial;
             empresa.CNPJ = string.IsNullOrEmpty(cnpj) ? empresa.CNPJ : cnpj;
             empresa.NomeFantasia = string.IsNullOrEmpty(nomeFantasia) ? empresa.NomeFantasia : nomeFantasia;
             empresa.DataFundacao = dataFundacao.HasValue ? dataFundacao : empresa.DataFundacao;
-            empresa.NumeroFuncionarios = numeroFuncionarios.HasValue ? numeroFuncionarios : empresa.NumeroFuncionarios;
-
-            await _empresaRepositorio.AtualizarEmpresa(empresa.RazaoSocial, codigoUsuario, empresa.CNPJ, empresa.NomeFantasia, empresa.DataFundacao, empresa.NumeroFuncionarios);
+            empresa.NumeroFuncionarios = numeroFuncionarios.HasValue ? numeroFuncionarios : empresa.NumeroFuncionarios;            
+            await _empresaRepositorio.AtualizarEmpresa(empresa.RazaoSocial, codigoUsuario, empresa.CNPJ, empresa.NomeFantasia, empresa.DataFundacao, empresa.NumeroFuncionarios, empresa.Endereco?.CodigoEndereco);
 
             if (codigosAreasTrabalho != null)
             {
@@ -59,7 +75,7 @@ namespace Refugiados.BFF.Servicos
                 }
 
                 await _areaTrabalhoServico.CadastrarAtualizarAreaTrabalhoEmpresa(empresa.CodigoEmpresa, listaAreasTrabalho);
-            }
+            }           
         }
 
         public async Task<EmpresaModel> ObterEmpresaPorCodigoUsuario(int codigoUsuario)

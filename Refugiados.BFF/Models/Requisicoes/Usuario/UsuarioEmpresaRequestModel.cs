@@ -45,16 +45,7 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
                     DataFundacao = DataFundacao,
                     NumeroFuncionarios = NumeroFuncionarios,
                     AreasTrabalho = new List<AreaTrabalhoModel>(),
-                    Endereco = new EnderecoModel 
-                    {
-                        BairroEndereco = this.Endereco.BairroEndereco,
-                        CepEndereco = this.Endereco.CepEndereco,
-                        CidadeEndereco = this.Endereco.CidadeEndereco,
-                        ComplementoEndereco = this.Endereco.ComplementoEndereco,
-                        EstadoEndereco = this.Endereco.EstadoEndereco,
-                        NumeroEndereco = this.Endereco.NumeroEndereco,
-                        RuaEndereco = this.Endereco.RuaEndereco
-                    }
+                    Endereco = this.Endereco?.CriarEndereco()
                 };
 
                 foreach (var codigoAreaTrabalho in AreasTrabalho)

@@ -74,12 +74,12 @@ namespace Refugiados.BFF.Servicos
             var endereco = await ObterEndereco(codigoEndereco);
 
             endereco.CidadeEndereco = string.IsNullOrWhiteSpace(cidade) ? endereco.CidadeEndereco : cidade;
-            endereco.CidadeEndereco = string.IsNullOrWhiteSpace(bairro) ? endereco.CidadeEndereco : bairro;
-            endereco.CidadeEndereco = string.IsNullOrWhiteSpace(rua) ? endereco.CidadeEndereco : rua;
-            endereco.CidadeEndereco = string.IsNullOrWhiteSpace(numero) ? endereco.CidadeEndereco : numero;
-            endereco.CidadeEndereco = string.IsNullOrWhiteSpace(complemento) ? endereco.CidadeEndereco : cidade;
-            endereco.CidadeEndereco = string.IsNullOrWhiteSpace(cep) ? endereco.CidadeEndereco : cep;
-            endereco.CidadeEndereco = string.IsNullOrWhiteSpace(estado) ? endereco.CidadeEndereco : estado;
+            endereco.BairroEndereco = string.IsNullOrWhiteSpace(bairro) ? endereco.BairroEndereco : bairro;
+            endereco.RuaEndereco = string.IsNullOrWhiteSpace(rua) ? endereco.RuaEndereco : rua;
+            endereco.NumeroEndereco = string.IsNullOrWhiteSpace(numero) ? endereco.NumeroEndereco : numero;
+            endereco.ComplementoEndereco = string.IsNullOrWhiteSpace(complemento) ? endereco.ComplementoEndereco : complemento;
+            endereco.CepEndereco = string.IsNullOrWhiteSpace(cep) ? endereco.CepEndereco : cep;
+            endereco.EstadoEndereco = string.IsNullOrWhiteSpace(estado) ? endereco.EstadoEndereco : estado;
 
             await _enderecoRepositorio.AtualizarEndereco(codigoEndereco, endereco.CidadeEndereco, endereco.BairroEndereco, endereco.RuaEndereco, endereco.NumeroEndereco, 
                 endereco.ComplementoEndereco, endereco.CepEndereco, endereco.EstadoEndereco);

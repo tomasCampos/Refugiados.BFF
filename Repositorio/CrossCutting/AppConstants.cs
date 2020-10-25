@@ -47,7 +47,8 @@
                                                     `nome_fantasia` = @nome_fantasia,
                                                     `data_fundacao` = @data_fundacao,
                                                     `numero_funcionarios` = @numero_funcionarios,
-                                                    `data_alteracao` = CURRENT_TIMESTAMP
+                                                    `data_alteracao` = CURRENT_TIMESTAMP,
+                                                    `codigo_endereco` = @codigo_endereco
                                                     WHERE `codigo_usuario` = @codigo_usuario;";
 
         public const string CADASTRAR_EMPRESA = @"INSERT INTO `heroku_93ac2d8811d872a`.`empresa`

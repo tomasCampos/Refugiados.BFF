@@ -14,5 +14,19 @@ namespace Refugiados.BFF.Models.Requisicoes.Endereco
         public string ComplementoEndereco { get; set; }
         public string CepEndereco { get; set; }
         public string EstadoEndereco { get; set; }
+
+        public EnderecoModel CriarEndereco()
+        {
+            return new EnderecoModel 
+            {
+                BairroEndereco = BairroEndereco,
+                CepEndereco = CepEndereco,
+                CidadeEndereco = CidadeEndereco,
+                ComplementoEndereco = ComplementoEndereco,
+                EstadoEndereco = EstadoEndereco,
+                NumeroEndereco = NumeroEndereco,
+                RuaEndereco = RuaEndereco
+            };
+        }
     }
 }
