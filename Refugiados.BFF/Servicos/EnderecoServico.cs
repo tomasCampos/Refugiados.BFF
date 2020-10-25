@@ -1,5 +1,6 @@
 ﻿using Refugiados.BFF.Models;
 using Repositorio.Repositorios;
+using System;
 using System.Threading.Tasks;
 
 namespace Refugiados.BFF.Servicos
@@ -13,18 +14,21 @@ namespace Refugiados.BFF.Servicos
             _enderecoRepositorio = enderecoRepositorio;
         }
 
-        public async Task<int?> CadastrarEndereco(EnderecoModel endereco)
+        public async Task<int> CadastrarEndereco(EnderecoModel endereco)
         {
-            if (string.IsNullOrWhiteSpace(endereco.CepEndereco) || string.IsNullOrWhiteSpace(endereco.NumeroEndereco))
-                return null;
+            var chaveIdentificacaoEndereco = Guid.NewGuid().ToString();
 
-            await _enderecoRepositorio.CadastrarEndereco(endereco.CidadeEndereco, endereco.BairroEndereco, endereco.RuaEndereco, endereco.NumeroEndereco, endereco.ComplementoEndereco,
-                endereco.CepEndereco, endereco.EstadoEndereco);
+            if (endereco == null)
+            {
+                await _enderecoRepositorio.CadastrarEndereco(null, null, null, null, null, null, null, chaveIdentificacaoEndereco);
+            }
+            else
+            {
+                await _enderecoRepositorio.CadastrarEndereco(endereco.CidadeEndereco, endereco.BairroEndereco, endereco.RuaEndereco, endereco.NumeroEndereco, endereco.ComplementoEndereco,
+                    endereco.CepEndereco, endereco.EstadoEndereco, chaveIdentificacaoEndereco);
+            }
 
-            var enderecoCadastrado = await ObterEndereco(endereco.NumeroEndereco, endereco.CepEndereco);
-
-            if (enderecoCadastrado == null)
-                return null;
+            var enderecoCadastrado = await ObterEndereco(chaveIdentificacaoEndereco);
 
             return enderecoCadastrado.CodigoEndereco;
         }
@@ -49,9 +53,9 @@ namespace Refugiados.BFF.Servicos
             };
         }
 
-        public async Task<EnderecoModel> ObterEndereco(string numero, string cep)
+        public async Task<EnderecoModel> ObterEndereco(string chaveIdentificacaoEndereco)
         {
-            var endereco = await _enderecoRepositorio.ObterEndereco(numero, cep);
+            var endereco = await _enderecoRepositorio.ObterEndereco(chaveIdentificacaoEndereco);
 
             if (endereco == null)
                 return null;
@@ -88,9 +92,9 @@ namespace Refugiados.BFF.Servicos
 
     public interface IEnderecoServico
     {
-        Task<int?> CadastrarEndereco(EnderecoModel endereco);
+        Task<int> CadastrarEndereco(EnderecoModel endereco);
         Task<EnderecoModel> ObterEndereco(int codigoEndereco);
-        Task<EnderecoModel> ObterEndereco(string numero, string cep);
+        Task<EnderecoModel> ObterEndereco(string chaveIdentificacaoEndereco);
         Task AtualizarEndereco(int codigoEndereco, string cidade, string bairro, string rua, string numero, string complemento, string cep, string estado);
     }
 }

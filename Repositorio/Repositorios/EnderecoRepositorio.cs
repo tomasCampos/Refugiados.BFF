@@ -16,10 +16,11 @@ namespace Repositorio.Repositorios
             _dataBase = new DataBaseConnector();
         }
 
-        public async Task CadastrarEndereco(string cidade, string bairro, string rua, string numero, string complemento, string cep, string estado)
+        public async Task CadastrarEndereco(string cidade, string bairro, string rua, string numero, string complemento, string cep, string estado, string chaveIdentificacao)
         {
             await _dataBase.ExecutarAsync(AppConstants.CADASTRAR_ENDERECO, new 
             {
+                chave_identificacao_endereco = chaveIdentificacao,
                 cidade_endereco = cidade,
                 bairro_endereco = bairro,
                 rua_endereco = rua,
@@ -36,13 +37,9 @@ namespace Repositorio.Repositorios
             return endereco.FirstOrDefault();
         }
 
-        public async Task<EnderecoDto> ObterEndereco(string numero, string cep)
+        public async Task<EnderecoDto> ObterEndereco(string chaveIdentificacaoEndereco)
         {
-            var endereco = await _dataBase.SelecionarAsync<EnderecoDto>(AppConstants.OBTER_ENDERECO_POR_CEP_NUMERO_E_COMPLEMENTO, new 
-            {
-                numero_endereco = numero, 
-                cep_endereco = cep
-            });
+            var endereco = await _dataBase.SelecionarAsync<EnderecoDto>(AppConstants.OBTER_ENDERECO_POR_CEP_NUMERO_E_COMPLEMENTO, new { chave_identificacao_endereco = chaveIdentificacaoEndereco });
             return endereco.OrderByDescending(e => e.codigo_endereco).FirstOrDefault();
         }
 
@@ -64,9 +61,9 @@ namespace Repositorio.Repositorios
 
     public interface IEnderecoRepositorio
     {
-        Task CadastrarEndereco(string cidade, string bairro, string rua, string numero, string complemento, string cep, string estado);
+        Task CadastrarEndereco(string cidade, string bairro, string rua, string numero, string complemento, string cep, string estado, string chaveIdentificacao);
         Task<EnderecoDto> ObterEndereco(int codigoEndereco);
-        Task<EnderecoDto> ObterEndereco(string numero, string cep);
+        Task<EnderecoDto> ObterEndereco(string chaveIdentificacaoEndereco);
         Task AtualizarEndereco(int codigoEndereco, string cidade, string bairro, string rua, string numero, string complemento, string cep, string estado);
     }
 }

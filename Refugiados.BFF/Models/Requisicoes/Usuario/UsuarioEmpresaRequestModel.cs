@@ -48,9 +48,12 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
                     Endereco = this.Endereco?.CriarEndereco()
                 };
 
-                foreach (var codigoAreaTrabalho in AreasTrabalho)
+                if (AreasTrabalho != null)
                 {
-                    empresa.AreasTrabalho.Add(new AreaTrabalhoModel { CodigoAreaTrabalho = codigoAreaTrabalho });
+                    foreach (var codigoAreaTrabalho in AreasTrabalho)
+                    {
+                        empresa.AreasTrabalho.Add(new AreaTrabalhoModel { CodigoAreaTrabalho = codigoAreaTrabalho });
+                    }
                 }
 
                 return empresa;

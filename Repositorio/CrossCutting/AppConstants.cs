@@ -47,8 +47,7 @@
                                                     `nome_fantasia` = @nome_fantasia,
                                                     `data_fundacao` = @data_fundacao,
                                                     `numero_funcionarios` = @numero_funcionarios,
-                                                    `data_alteracao` = CURRENT_TIMESTAMP,
-                                                    `codigo_endereco` = @codigo_endereco
+                                                    `data_alteracao` = CURRENT_TIMESTAMP                                                    
                                                     WHERE `codigo_usuario` = @codigo_usuario;";
 
         public const string CADASTRAR_EMPRESA = @"INSERT INTO `heroku_93ac2d8811d872a`.`empresa`
@@ -181,6 +180,7 @@
 
         public const string CADASTRAR_ENDERECO = @"INSERT INTO `heroku_93ac2d8811d872a`.`endereco`
                                                     (`codigo_endereco`,
+                                                    `chave_identificacao_endereco`,
                                                     `cidade_endereco`,
                                                     `bairro_endereco`,
                                                     `rua_endereco`,
@@ -190,6 +190,7 @@
                                                     `estado_endereco`)
                                                     VALUES
                                                     (default,
+                                                    @chave_identificacao_endereco,
                                                     @cidade_endereco,
                                                     @bairro_endereco,
                                                     @rua_endereco,
@@ -201,8 +202,7 @@
         public const string OBTER_ENDERECO_POR_CODIGO = "SELECT * FROM endereco WHERE codigo_endereco = @codigo_endereco";
 
         public const string OBTER_ENDERECO_POR_CEP_NUMERO_E_COMPLEMENTO = @"SELECT * FROM endereco 
-                                                                          WHERE cep_endereco = @cep_endereco 
-                                                                          AND numero_endereco = @numero_endereco;";
+                                                                          WHERE chave_identificacao_endereco = @chave_identificacao_endereco;";
 
         public const string ALTERAR_ENDERECO = @"UPDATE `heroku_93ac2d8811d872a`.`endereco`
                                                 SET

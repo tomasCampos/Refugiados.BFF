@@ -49,14 +49,20 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
                     AreasTrabalho = new List<AreaTrabalhoModel>()
                 };
 
-                foreach (var codigoIdioma in Idiomas)
+                if (Idiomas != null)
                 {
-                    colaborador.Idiomas.Add(new IdiomaModel { CodigoIdioma = codigoIdioma });
+                    foreach (var codigoIdioma in Idiomas)
+                    {
+                        colaborador.Idiomas.Add(new IdiomaModel { CodigoIdioma = codigoIdioma });
+                    }
                 }
 
-                foreach (var codigoAreaTrabalho in AreasTrabalho)
+                if (AreasTrabalho != null)
                 {
-                    colaborador.AreasTrabalho.Add(new AreaTrabalhoModel { CodigoAreaTrabalho = codigoAreaTrabalho });
+                    foreach (var codigoAreaTrabalho in AreasTrabalho)
+                    {
+                        colaborador.AreasTrabalho.Add(new AreaTrabalhoModel { CodigoAreaTrabalho = codigoAreaTrabalho });
+                    }
                 }
 
                 return colaborador;
