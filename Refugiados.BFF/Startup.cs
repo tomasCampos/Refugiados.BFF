@@ -46,6 +46,7 @@ namespace Refugiados.BFF
             services.AddScoped<IIdiomaServico, IdiomaServico>();
             services.AddScoped<IAreaTrabalhoRepositorio, AreaTrabalhoRepositorio>();
             services.AddScoped<IAreaTrabalhoServico, AreaTrabalhoServico>();
+            services.AddScoped<IEnderecoRepositorio, EnderecoRepositorio>();
 
             services.AddCors(options =>
             {

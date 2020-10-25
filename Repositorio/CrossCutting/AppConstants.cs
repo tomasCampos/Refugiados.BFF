@@ -176,6 +176,25 @@
                                                                 @codigo_empresa,
                                                                 @codigo_area_trabalho);";
 
+        public const string CADASTRAR_ENDERECO = @"INSERT INTO `heroku_93ac2d8811d872a`.`endereco`
+                                                    (`codigo_endereco`,
+                                                    `cidade_endereco`,
+                                                    `bairro_endereco`,
+                                                    `rua_endereco`,
+                                                    `numero_endereco`,
+                                                    `complemento_endereco`,
+                                                    `cep_endereco`,
+                                                    `estado_endereco`)
+                                                    VALUES
+                                                    (default,
+                                                    @cidade_endereco,
+                                                    @bairro_endereco,
+                                                    @rua_endereco,
+                                                    @numero_endereco,
+                                                    @complemento_endereco,
+                                                    @cep_endereco,
+                                                    @estado_endereco);";
+
         public enum PerfilUsuario 
         {
             Colaborador = 1,
