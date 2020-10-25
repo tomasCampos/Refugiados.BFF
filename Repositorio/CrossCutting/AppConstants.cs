@@ -195,6 +195,24 @@
                                                     @cep_endereco,
                                                     @estado_endereco);";
 
+        public const string OBTER_ENDERECO_POR_CODIGO = "SELECT * FROM endereco WHERE codigo_endereco = @codigo_endereco";
+
+        public const string OBTER_ENDERECO_POR_CEP_NUMERO_E_COMPLEMENTO = @"SELECT * FROM endereco 
+                                                                          WHERE cep_endereco = @cep_endereco 
+                                                                          AND numero_endereco = @numero_endereco 
+                                                                          AND complemento_endereco = @complemento_endereco;";
+
+        public const string ALTERAR_ENDERECO = @"UPDATE `heroku_93ac2d8811d872a`.`endereco`
+                                                SET
+                                                `cidade_endereco` = @cidade_endereco,
+                                                `bairro_endereco` = @bairro_endereco,
+                                                `rua_endereco` = @rua_endereco,
+                                                `numero_endereco` = @numero_endereco,
+                                                `complemento_endereco` = @complemento_endereco,
+                                                `cep_endereco` = @cep_endereco,
+                                                `estado_endereco` = @estado_endereco
+                                                WHERE `codigo_endereco` = @codigo_endereco;";
+
         public enum PerfilUsuario 
         {
             Colaborador = 1,
