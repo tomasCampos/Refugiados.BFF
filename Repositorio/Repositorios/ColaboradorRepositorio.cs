@@ -32,7 +32,8 @@ namespace Repositorio.Repositorios
                 });            
         }
 
-        public async Task CadastrarColaborador(string nome, int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade)
+        public async Task CadastrarColaborador(string nome, int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, 
+            string escolaridade, int codigoEndereco)
         {
             await _dataBase.ExecutarAsync(AppConstants.CADASTRAR_COLABORADOR_SQL, new 
             { 
@@ -42,7 +43,8 @@ namespace Repositorio.Repositorios
                 data_nascimento = dataNascimento,
                 data_chegada_brasil = dataChegadaBrasil,
                 area_formacao = areaFormacao,
-                escolaridade
+                escolaridade,
+                codigo_endereco = codigoEndereco
             });
         }
 
@@ -61,7 +63,7 @@ namespace Repositorio.Repositorios
 
     public interface IColaboradorRepositorio
     {
-        Task CadastrarColaborador(string nome, int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaformacao, string escolaridade);
+        Task CadastrarColaborador(string nome, int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaformacao, string escolaridade, int codigoEndereco);
         Task<ColaboradorDto> ObterColaboradorPorCodigoUsuario(int codigoUsuario);
         Task<List<ColaboradorDto>> ListarColaboradores();
         Task AtualizarColaborador(string nome, int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade);

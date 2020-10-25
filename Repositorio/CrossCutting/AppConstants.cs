@@ -74,13 +74,13 @@
                                                             @codigo_endereco);";        
 
         public const string OBTER_COLABORADOR_POR_CODIGO_USUARIO_SQL = @"SELECT c.codigo_colaborador, c.nome_colaborador, c.codigo_usuario, c.data_alteracao, c.data_criacao, u.email_usuario,
-                                                                        c.nacionalidade, c.data_nascimento, c.data_chegada_brasil, c.area_formacao, c.escolaridade, u.entrevistado, u.telefone_usuario
+                                                                        c.nacionalidade, c.data_nascimento, c.data_chegada_brasil, c.area_formacao, c.escolaridade, u.entrevistado, u.telefone_usuario, c.codigo_endereco
                                                                         FROM heroku_93ac2d8811d872a.colaborador AS c
                                                                         INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON c.codigo_usuario = u.codigo_usuario
                                                                         WHERE c.codigo_usuario = @codigo_usuario AND u.usuario_inativo = 0;";
 
         public const string LISTAR_COLABORADORES_SQL = @"SELECT c.codigo_colaborador, c.nome_colaborador, c.codigo_usuario, c.data_alteracao, c.data_criacao, u.email_usuario, c.nacionalidade, 
-                                                        c.data_nascimento, c.data_chegada_brasil, c.area_formacao, c.escolaridade, u.entrevistado, u.telefone_usuario
+                                                        c.data_nascimento, c.data_chegada_brasil, c.area_formacao, c.escolaridade, u.entrevistado, u.telefone_usuario, c.codigo_endereco
                                                         FROM heroku_93ac2d8811d872a.colaborador AS c
                                                         INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON c.codigo_usuario = u.codigo_usuario
                                                         WHERE u.usuario_inativo = 0;";
@@ -107,7 +107,8 @@
                                                     `data_chegada_brasil`,
                                                     `area_formacao`,
                                                     `escolaridade`,
-                                                    `codigo_usuario`)
+                                                    `codigo_usuario`,
+                                                    `codigo_endereco`)
                                                     VALUES
                                                     (default,
                                                     @nome_colaborador,
@@ -118,7 +119,8 @@
                                                     @data_chegada_brasil,
                                                     @area_formacao,
                                                     @escolaridade,
-                                                    @codigo_usuario);";
+                                                    @codigo_usuario,
+                                                    @codigo_endereco);";
 
         public const string ATUALIZAR_COLABORADOR = @"UPDATE `heroku_93ac2d8811d872a`.`colaborador`
                                                     SET

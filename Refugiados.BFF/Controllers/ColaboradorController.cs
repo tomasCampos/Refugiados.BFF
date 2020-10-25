@@ -86,7 +86,7 @@ namespace Refugiados.BFF.Controllers
             }
 
             await _colaboradorServico.AtualizarColaborador(colaborador.NomeColaborador, colaborador.Nacionalidade, colaborador.DataNascimento, colaborador.DataChegadaBrasil,
-                colaborador.AreaFormacao, colaborador.Escolaridade, codigoUsuario, colaborador.Idiomas, colaborador.AreasTrabalho);
+                colaborador.AreaFormacao, colaborador.Escolaridade, codigoUsuario, colaborador.Idiomas, colaborador.AreasTrabalho, colaborador.Endereco?.CriarEndereco());
 
             return Ok(new RespostaModel 
             {

@@ -76,6 +76,7 @@ namespace Refugiados.BFF.Servicos
                 return null;
 
             var areasTrabalhoEmpresa = await _areaTrabalhoServico.ListarAreasTrabalhoEmpresa(empresa.codigo_empresa);
+            var endereco = await _enderecoServico.ObterEndereco(empresa.codigo_endereco);
 
             var resultado =  new EmpresaModel
             {
@@ -92,14 +93,8 @@ namespace Refugiados.BFF.Servicos
                 Entrevistado = empresa.entrevistado,
                 TelefoneUsuario = empresa.telefone_usuario,
                 AreasTrabalho = areasTrabalhoEmpresa.ToList(),
-                Endereco = new EnderecoModel { CodigoEndereco = empresa.codigo_endereco }
+                Endereco = endereco
             };
-
-            if (resultado.Endereco != null)
-            {
-                var endereco = await _enderecoServico.ObterEndereco(resultado.Endereco.CodigoEndereco);
-                resultado.Endereco = endereco;
-            }
 
             return resultado;
         }
@@ -130,11 +125,8 @@ namespace Refugiados.BFF.Servicos
                 var areasTrabalhoEmpresa = await _areaTrabalhoServico.ListarAreasTrabalhoEmpresa(empresa.CodigoEmpresa);
                 empresa.AreasTrabalho = areasTrabalhoEmpresa.ToList();
 
-                if (empresa.Endereco != null)
-                {
-                    var endereco = await _enderecoServico.ObterEndereco(empresa.Endereco.CodigoEndereco);
-                    empresa.Endereco = endereco;
-                }
+                var endereco = await _enderecoServico.ObterEndereco(empresa.Endereco.CodigoEndereco);
+                empresa.Endereco = endereco;
             }
 
             return empresas;

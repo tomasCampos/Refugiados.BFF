@@ -12,21 +12,29 @@ namespace Refugiados.BFF.Servicos
         private readonly IColaboradorRepositorio _colaboradorRepositorio;
         private readonly IIdiomaServico _idiomaServico;
         private readonly IAreaTrabalhoServico _areaTrabalhoServico;
+        private readonly IEnderecoServico _enderecoServico;
 
-        public ColaboradorServico(IColaboradorRepositorio colaboradorRepositorio, IIdiomaServico idiomaServico, IAreaTrabalhoServico areaTrabalhoServico)
+        public ColaboradorServico(IColaboradorRepositorio colaboradorRepositorio, IIdiomaServico idiomaServico, IAreaTrabalhoServico areaTrabalhoServico, IEnderecoServico enderecoServico)
         {
             _colaboradorRepositorio = colaboradorRepositorio;
             _idiomaServico = idiomaServico;
             _areaTrabalhoServico = areaTrabalhoServico;
+            _enderecoServico = enderecoServico;
         }
 
         public async Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, 
-            int codigoUsuario, List<int> codigosIdiomas, List<int> codigosAreasTrabalho)
+            int codigoUsuario, List<int> codigosIdiomas, List<int> codigosAreasTrabalho, EnderecoModel endereco)
         {
             var colaborador = await ObterColaboradorPorCodigoUsuario(codigoUsuario);
 
             if (colaborador == null)
                 return;
+
+            if (endereco != null)
+            {
+                await _enderecoServico.AtualizarEndereco(colaborador.Endereco.CodigoEndereco, endereco.CidadeEndereco, endereco.BairroEndereco, endereco.RuaEndereco, endereco.ComplementoEndereco,
+                    endereco.ComplementoEndereco, endereco.CepEndereco, endereco.EstadoEndereco);
+            }
 
             colaborador.NomeColaborador = string.IsNullOrEmpty(nome) ? colaborador.NomeColaborador : nome;
             colaborador.Nacionalidade = string.IsNullOrEmpty(nacionalidade) ? colaborador.Nacionalidade : nacionalidade;
@@ -63,13 +71,16 @@ namespace Refugiados.BFF.Servicos
 
         public async Task<int> CadastrarColaborador(ColaboradorModel colaborador)
         {
+            var codigoEnderecoCadastrado = await _enderecoServico.CadastrarEndereco(colaborador.Endereco);
+
             await _colaboradorRepositorio.CadastrarColaborador(colaborador.NomeColaborador, colaborador.CodigoUsuario, colaborador.Nacionalidade, colaborador.DataNascimento,
-                colaborador.DataChegadaBrasil, colaborador.AreaFormacao, colaborador.Escolaridade);
+                colaborador.DataChegadaBrasil, colaborador.AreaFormacao, colaborador.Escolaridade, codigoEnderecoCadastrado);
 
             var colaboradorCadastrado = await ObterColaboradorPorCodigoUsuario(colaborador.CodigoUsuario);
 
             if(colaborador.Idiomas != null && colaborador.Idiomas.Any())
                 await _idiomaServico.CadastrarAtualizarIdiomaColaborador(colaboradorCadastrado.CodigoColaborador, colaborador.Idiomas);
+
             if(colaborador.AreasTrabalho != null && colaborador.AreasTrabalho.Any())
                 await _areaTrabalhoServico.CadastrarAtualizarAreaTrabalhoColaborador(colaboradorCadastrado.CodigoColaborador, colaborador.AreasTrabalho);
 
@@ -94,7 +105,8 @@ namespace Refugiados.BFF.Servicos
                 Escolaridade = colab.escolaridade,
                 AreaFormacao = colab.area_formacao,
                 Entrevistado = colab.entrevistado,
-                TelefoneUsuario = colab.telefone_usuario
+                TelefoneUsuario = colab.telefone_usuario,
+                Endereco = new EnderecoModel { CodigoEndereco = colab.codigo_endereco }
             }).ToList();
 
             foreach (var colaborador in colaboradores)
@@ -104,6 +116,9 @@ namespace Refugiados.BFF.Servicos
 
                 var areasTrabalhoColaborador = await _areaTrabalhoServico.ListarAreasTrabalhoColaborador(colaborador.CodigoColaborador);
                 colaborador.AreasTrabalho = areasTrabalhoColaborador.ToList();
+
+                var endereco = await _enderecoServico.ObterEndereco(colaborador.Endereco.CodigoEndereco);
+                colaborador.Endereco = endereco;
             }
 
             return colaboradores;
@@ -118,8 +133,9 @@ namespace Refugiados.BFF.Servicos
 
             var idiomasColaborador = await _idiomaServico.ListarIdiomaColaborador(colaborador.codigo_colaborador);
             var areasTrabalhoColaborador = await _areaTrabalhoServico.ListarAreasTrabalhoColaborador(colaborador.codigo_colaborador);
+            var endereco = await _enderecoServico.ObterEndereco(colaborador.codigo_endereco);
 
-            return new ColaboradorModel
+            var resultado = new ColaboradorModel
             {
                 CodigoColaborador = colaborador.codigo_colaborador,
                 CodigoUsuario = colaborador.codigo_usuario,
@@ -135,8 +151,11 @@ namespace Refugiados.BFF.Servicos
                 Entrevistado = colaborador.entrevistado,
                 TelefoneUsuario = colaborador.telefone_usuario,
                 Idiomas = idiomasColaborador.ToList(),
-                AreasTrabalho = areasTrabalhoColaborador.ToList()
+                AreasTrabalho = areasTrabalhoColaborador.ToList(),
+                Endereco = endereco
             };
+
+            return resultado;
         }
     }
 
@@ -145,6 +164,6 @@ namespace Refugiados.BFF.Servicos
         Task<int> CadastrarColaborador(ColaboradorModel colaborador);
         Task<ColaboradorModel> ObterColaboradorPorCodigoUsuario(int codigoUsuario);
         Task<List<ColaboradorModel>> ListarColaboradores();
-        Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, int codigoUsuario, List<int> codigosIdiomas, List<int> codigosAreasTrabalho);
+        Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, int codigoUsuario, List<int> codigosIdiomas, List<int> codigosAreasTrabalho, EnderecoModel endereco);
     }
 }
