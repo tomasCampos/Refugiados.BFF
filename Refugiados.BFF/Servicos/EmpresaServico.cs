@@ -92,7 +92,7 @@ namespace Refugiados.BFF.Servicos
                 Entrevistado = empresa.entrevistado,
                 TelefoneUsuario = empresa.telefone_usuario,
                 AreasTrabalho = areasTrabalhoEmpresa.ToList(),
-                Endereco = empresa.codigo_endereco.HasValue ? new EnderecoModel { CodigoEndereco = empresa.codigo_endereco.Value } : null
+                Endereco = new EnderecoModel { CodigoEndereco = empresa.codigo_endereco }
             };
 
             if (resultado.Endereco != null)
@@ -122,7 +122,7 @@ namespace Refugiados.BFF.Servicos
                 DataAlteracao = empresa.data_alteracao,
                 Entrevistado = empresa.entrevistado,
                 TelefoneUsuario = empresa.telefone_usuario,
-                Endereco = empresa.codigo_endereco.HasValue ? new EnderecoModel { CodigoEndereco = empresa.codigo_endereco.Value } : null
+                Endereco = new EnderecoModel { CodigoEndereco = empresa.codigo_endereco }
             }).ToList();
 
             foreach (var empresa in empresas)
