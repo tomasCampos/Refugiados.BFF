@@ -12,6 +12,7 @@ namespace Refugiados.BFF.Models.Requisicoes.Empresa
         public DateTime? DataFundacao { get; set; }
         public int? NumeroFuncionarios { get; set; }
         public List<int> AreasTrabalho { get; set; }
+        public EnderecoModel Endereco { get; set; }
 
         public ValidacaoRequisicaoModel Validar()
         {

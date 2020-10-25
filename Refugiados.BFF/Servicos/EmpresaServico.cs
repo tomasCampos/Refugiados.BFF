@@ -12,16 +12,20 @@ namespace Refugiados.BFF.Servicos
     {
         private readonly IEmpresaRepositorio _empresaRepositorio;
         private readonly IAreaTrabalhoServico _areaTrabalhoServico;
+        private readonly IEnderecoServico _enderecoServico;
 
-        public EmpresaServico(IEmpresaRepositorio empresaRepositorio, IAreaTrabalhoServico areaTrabalhoServico)
+        public EmpresaServico(IEmpresaRepositorio empresaRepositorio, IAreaTrabalhoServico areaTrabalhoServico, IEnderecoServico enderecoServico)
         {
             _empresaRepositorio = empresaRepositorio;
             _areaTrabalhoServico = areaTrabalhoServico;
+            _enderecoServico = enderecoServico;
         }
 
         public async Task<int> CadastrarEmpresa(EmpresaModel empresa)
         {
-            await _empresaRepositorio.CadastrarEmpresa(empresa.RazaoSocial, empresa.CodigoUsuario, empresa.CNPJ, empresa.NomeFantasia, empresa.DataFundacao, empresa.NumeroFuncionarios);
+            var codigoEnderecoCadastrado = await _enderecoServico.CadastrarEndereco(empresa.Endereco);            
+
+            await _empresaRepositorio.CadastrarEmpresa(empresa.RazaoSocial, empresa.CodigoUsuario, empresa.CNPJ, empresa.NomeFantasia, empresa.DataFundacao, empresa.NumeroFuncionarios, codigoEnderecoCadastrado);
 
             var empresaCadastrada = await ObterEmpresaPorCodigoUsuario(empresa.CodigoUsuario);
 

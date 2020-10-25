@@ -21,13 +21,20 @@ namespace Refugiados.BFF.Servicos
             await _enderecoRepositorio.CadastrarEndereco(endereco.CidadeEndereco, endereco.BairroEndereco, endereco.RuaEndereco, endereco.NumeroEndereco, endereco.ComplementoEndereco,
                 endereco.CepEndereco, endereco.EstadoEndereco);
 
-            var enderecoCadastrado = await ObterEndereco(endereco.NumeroEndereco, endereco.CepEndereco, endereco.ComplementoEndereco);
+            var enderecoCadastrado = await ObterEndereco(endereco.NumeroEndereco, endereco.CepEndereco);
+
+            if (enderecoCadastrado == null)
+                return null;
+
             return enderecoCadastrado.CodigoEndereco;
         }
 
         public async Task<EnderecoModel> ObterEndereco(int codigoEndereco)
         {
             var endereco = await _enderecoRepositorio.ObterEndereco(codigoEndereco);
+
+            if (endereco == null)
+                return null;
 
             return new EnderecoModel
             {
@@ -42,9 +49,12 @@ namespace Refugiados.BFF.Servicos
             };
         }
 
-        public async Task<EnderecoModel> ObterEndereco(string numero, string cep, string complemento)
+        public async Task<EnderecoModel> ObterEndereco(string numero, string cep)
         {
-            var endereco = await _enderecoRepositorio.ObterEndereco(numero, cep, complemento);
+            var endereco = await _enderecoRepositorio.ObterEndereco(numero, cep);
+
+            if (endereco == null)
+                return null;
 
             return new EnderecoModel
             {
@@ -80,7 +90,7 @@ namespace Refugiados.BFF.Servicos
     {
         Task<int?> CadastrarEndereco(EnderecoModel endereco);
         Task<EnderecoModel> ObterEndereco(int codigoEndereco);
-        Task<EnderecoModel> ObterEndereco(string numero, string cep, string complemento);
+        Task<EnderecoModel> ObterEndereco(string numero, string cep);
         Task AtualizarEndereco(int codigoEndereco, string cidade, string bairro, string rua, string numero, string complemento, string cep, string estado);
     }
 }

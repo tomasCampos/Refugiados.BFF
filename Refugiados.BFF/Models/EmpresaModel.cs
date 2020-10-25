@@ -18,5 +18,6 @@ namespace Refugiados.BFF.Models
         public int? NumeroFuncionarios { get; set; }
         public bool Entrevistado { get; set; }
         public List<AreaTrabalhoModel> AreasTrabalho { get; set; }
+        public EnderecoModel Endereco { get; set; }
     }
 }

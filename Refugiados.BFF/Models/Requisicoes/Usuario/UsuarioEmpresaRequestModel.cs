@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using Refugiados.BFF.Models.Requisicoes.Endereco;
 
 namespace Refugiados.BFF.Models.Requisicoes.Usuario
 {
@@ -16,6 +17,7 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
         public DateTime? DataFundacao { get; set; }
         public int? NumeroFuncionarios { get; set; }
         public List<int> AreasTrabalho { get; set; }
+        public CadastrarAtualizarEnderecoRequestModel Endereco { get; set; }
 
         public ValidacaoRequisicaoModel Validar()
         {
@@ -42,7 +44,17 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
                     NomeFantasia = NomeFantasia,
                     DataFundacao = DataFundacao,
                     NumeroFuncionarios = NumeroFuncionarios,
-                    AreasTrabalho = new List<AreaTrabalhoModel>()
+                    AreasTrabalho = new List<AreaTrabalhoModel>(),
+                    Endereco = new EnderecoModel 
+                    {
+                        BairroEndereco = this.Endereco.BairroEndereco,
+                        CepEndereco = this.Endereco.CepEndereco,
+                        CidadeEndereco = this.Endereco.CidadeEndereco,
+                        ComplementoEndereco = this.Endereco.ComplementoEndereco,
+                        EstadoEndereco = this.Endereco.EstadoEndereco,
+                        NumeroEndereco = this.Endereco.NumeroEndereco,
+                        RuaEndereco = this.Endereco.RuaEndereco
+                    }
                 };
 
                 foreach (var codigoAreaTrabalho in AreasTrabalho)

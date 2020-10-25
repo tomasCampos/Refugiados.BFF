@@ -59,7 +59,8 @@
                                                             `cnpj`,
                                                             `nome_fantasia`,
                                                             `data_fundacao`,
-                                                            `numero_funcionarios`)
+                                                            `numero_funcionarios`,
+                                                            `codigo_endereco`)
                                                             VALUES
                                                             (default,
                                                             @razao_social,
@@ -69,7 +70,8 @@
                                                             @cnpj,
                                                             @nome_fantasia,
                                                             @data_fundacao,
-                                                            @numero_funcionarios);";        
+                                                            @numero_funcionarios,
+                                                            @codigo_endereco);";        
 
         public const string OBTER_COLABORADOR_POR_CODIGO_USUARIO_SQL = @"SELECT c.codigo_colaborador, c.nome_colaborador, c.codigo_usuario, c.data_alteracao, c.data_criacao, u.email_usuario,
                                                                         c.nacionalidade, c.data_nascimento, c.data_chegada_brasil, c.area_formacao, c.escolaridade, u.entrevistado, u.telefone_usuario
@@ -199,8 +201,7 @@
 
         public const string OBTER_ENDERECO_POR_CEP_NUMERO_E_COMPLEMENTO = @"SELECT * FROM endereco 
                                                                           WHERE cep_endereco = @cep_endereco 
-                                                                          AND numero_endereco = @numero_endereco 
-                                                                          AND complemento_endereco = @complemento_endereco;";
+                                                                          AND numero_endereco = @numero_endereco;";
 
         public const string ALTERAR_ENDERECO = @"UPDATE `heroku_93ac2d8811d872a`.`endereco`
                                                 SET

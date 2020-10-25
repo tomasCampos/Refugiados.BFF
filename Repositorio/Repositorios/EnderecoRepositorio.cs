@@ -25,7 +25,7 @@ namespace Repositorio.Repositorios
                 rua_endereco = rua,
                 numero_endereco = numero,
                 complemento_endereco = complemento,
-                cep_enderco = cep,
+                cep_endereco = cep,
                 estado_endereco = estado
             });            
         }
@@ -36,15 +36,14 @@ namespace Repositorio.Repositorios
             return endereco.FirstOrDefault();
         }
 
-        public async Task<EnderecoDto> ObterEndereco(string numero, string cep, string complemento)
+        public async Task<EnderecoDto> ObterEndereco(string numero, string cep)
         {
             var endereco = await _dataBase.SelecionarAsync<EnderecoDto>(AppConstants.OBTER_ENDERECO_POR_CEP_NUMERO_E_COMPLEMENTO, new 
             {
                 numero_endereco = numero, 
-                cep_endereco = cep,
-                complemento_endereco = complemento
+                cep_endereco = cep
             });
-            return endereco.FirstOrDefault();
+            return endereco.OrderByDescending(e => e.codigo_endereco).FirstOrDefault();
         }
 
         public async Task AtualizarEndereco(int codigoEndereco, string cidade, string bairro, string rua, string numero, string complemento, string cep, string estado)
@@ -67,7 +66,7 @@ namespace Repositorio.Repositorios
     {
         Task CadastrarEndereco(string cidade, string bairro, string rua, string numero, string complemento, string cep, string estado);
         Task<EnderecoDto> ObterEndereco(int codigoEndereco);
-        Task<EnderecoDto> ObterEndereco(string numero, string cep, string complemento);
+        Task<EnderecoDto> ObterEndereco(string numero, string cep);
         Task AtualizarEndereco(int codigoEndereco, string cidade, string bairro, string rua, string numero, string complemento, string cep, string estado);
     }
 }
