@@ -19,5 +19,6 @@ namespace Repositorio.Dtos
         public string email_usuario { get; set; }
         public string telefone_usuario { get; set; }
         public bool entrevistado { get; set; }
+        public int codigo_endereco { get; set; }
     }
 }

@@ -47,7 +47,7 @@
                                                     `nome_fantasia` = @nome_fantasia,
                                                     `data_fundacao` = @data_fundacao,
                                                     `numero_funcionarios` = @numero_funcionarios,
-                                                    `data_alteracao` = CURRENT_TIMESTAMP
+                                                    `data_alteracao` = CURRENT_TIMESTAMP                                                    
                                                     WHERE `codigo_usuario` = @codigo_usuario;";
 
         public const string CADASTRAR_EMPRESA = @"INSERT INTO `heroku_93ac2d8811d872a`.`empresa`
@@ -59,7 +59,8 @@
                                                             `cnpj`,
                                                             `nome_fantasia`,
                                                             `data_fundacao`,
-                                                            `numero_funcionarios`)
+                                                            `numero_funcionarios`,
+                                                            `codigo_endereco`)
                                                             VALUES
                                                             (default,
                                                             @razao_social,
@@ -69,28 +70,29 @@
                                                             @cnpj,
                                                             @nome_fantasia,
                                                             @data_fundacao,
-                                                            @numero_funcionarios);";        
+                                                            @numero_funcionarios,
+                                                            @codigo_endereco);";        
 
         public const string OBTER_COLABORADOR_POR_CODIGO_USUARIO_SQL = @"SELECT c.codigo_colaborador, c.nome_colaborador, c.codigo_usuario, c.data_alteracao, c.data_criacao, u.email_usuario,
-                                                                        c.nacionalidade, c.data_nascimento, c.data_chegada_brasil, c.area_formacao, c.escolaridade, u.entrevistado, u.telefone_usuario
+                                                                        c.nacionalidade, c.data_nascimento, c.data_chegada_brasil, c.area_formacao, c.escolaridade, u.entrevistado, u.telefone_usuario, c.codigo_endereco
                                                                         FROM heroku_93ac2d8811d872a.colaborador AS c
                                                                         INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON c.codigo_usuario = u.codigo_usuario
                                                                         WHERE c.codigo_usuario = @codigo_usuario AND u.usuario_inativo = 0;";
 
         public const string LISTAR_COLABORADORES_SQL = @"SELECT c.codigo_colaborador, c.nome_colaborador, c.codigo_usuario, c.data_alteracao, c.data_criacao, u.email_usuario, c.nacionalidade, 
-                                                        c.data_nascimento, c.data_chegada_brasil, c.area_formacao, c.escolaridade, u.entrevistado, u.telefone_usuario
+                                                        c.data_nascimento, c.data_chegada_brasil, c.area_formacao, c.escolaridade, u.entrevistado, u.telefone_usuario, c.codigo_endereco
                                                         FROM heroku_93ac2d8811d872a.colaborador AS c
                                                         INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON c.codigo_usuario = u.codigo_usuario
                                                         WHERE u.usuario_inativo = 0;";
 
         public const string OBTER_EMPRESA_POR_CODIGO_USUARIO = @"SELECT e.codigo_empresa, e.razao_social, e.codigo_usuario, e.data_alteracao, e.data_criacao, u.email_usuario,
-                                                               e.cnpj, e.nome_fantasia, e.data_fundacao, e.numero_funcionarios, u.entrevistado, u.telefone_usuario
+                                                               e.cnpj, e.nome_fantasia, e.data_fundacao, e.numero_funcionarios, u.entrevistado, u.telefone_usuario, e.codigo_endereco
                                                                FROM heroku_93ac2d8811d872a.empresa AS e
                                                                INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON e.codigo_usuario = u.codigo_usuario
                                                                WHERE e.codigo_usuario = @codigo_usuario AND u.usuario_inativo = 0;";
 
         public const string LISTAR_EMPRESAS_SQL = @"SELECT e.codigo_empresa, e.razao_social, e.codigo_usuario, e.data_alteracao, e.data_criacao, u.email_usuario, e.cnpj, 
-                                                    e.nome_fantasia, e.data_fundacao, e.numero_funcionarios, u.entrevistado, u.telefone_usuario
+                                                    e.nome_fantasia, e.data_fundacao, e.numero_funcionarios, u.entrevistado, u.telefone_usuario, e.codigo_endereco
                                                     FROM heroku_93ac2d8811d872a.empresa AS e
                                                     INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON e.codigo_usuario = u.codigo_usuario
                                                     WHERE u.usuario_inativo = 0;";
@@ -105,7 +107,8 @@
                                                     `data_chegada_brasil`,
                                                     `area_formacao`,
                                                     `escolaridade`,
-                                                    `codigo_usuario`)
+                                                    `codigo_usuario`,
+                                                    `codigo_endereco`)
                                                     VALUES
                                                     (default,
                                                     @nome_colaborador,
@@ -116,7 +119,8 @@
                                                     @data_chegada_brasil,
                                                     @area_formacao,
                                                     @escolaridade,
-                                                    @codigo_usuario);";
+                                                    @codigo_usuario,
+                                                    @codigo_endereco);";
 
         public const string ATUALIZAR_COLABORADOR = @"UPDATE `heroku_93ac2d8811d872a`.`colaborador`
                                                     SET
@@ -175,6 +179,43 @@
                                                                 (default,
                                                                 @codigo_empresa,
                                                                 @codigo_area_trabalho);";
+
+        public const string CADASTRAR_ENDERECO = @"INSERT INTO `heroku_93ac2d8811d872a`.`endereco`
+                                                    (`codigo_endereco`,
+                                                    `chave_identificacao_endereco`,
+                                                    `cidade_endereco`,
+                                                    `bairro_endereco`,
+                                                    `rua_endereco`,
+                                                    `numero_endereco`,
+                                                    `complemento_endereco`,
+                                                    `cep_endereco`,
+                                                    `estado_endereco`)
+                                                    VALUES
+                                                    (default,
+                                                    @chave_identificacao_endereco,
+                                                    @cidade_endereco,
+                                                    @bairro_endereco,
+                                                    @rua_endereco,
+                                                    @numero_endereco,
+                                                    @complemento_endereco,
+                                                    @cep_endereco,
+                                                    @estado_endereco);";
+
+        public const string OBTER_ENDERECO_POR_CODIGO = "SELECT * FROM endereco WHERE codigo_endereco = @codigo_endereco";
+
+        public const string OBTER_ENDERECO_POR_CEP_NUMERO_E_COMPLEMENTO = @"SELECT * FROM endereco 
+                                                                          WHERE chave_identificacao_endereco = @chave_identificacao_endereco;";
+
+        public const string ALTERAR_ENDERECO = @"UPDATE `heroku_93ac2d8811d872a`.`endereco`
+                                                SET
+                                                `cidade_endereco` = @cidade_endereco,
+                                                `bairro_endereco` = @bairro_endereco,
+                                                `rua_endereco` = @rua_endereco,
+                                                `numero_endereco` = @numero_endereco,
+                                                `complemento_endereco` = @complemento_endereco,
+                                                `cep_endereco` = @cep_endereco,
+                                                `estado_endereco` = @estado_endereco
+                                                WHERE `codigo_endereco` = @codigo_endereco;";
 
         public enum PerfilUsuario 
         {

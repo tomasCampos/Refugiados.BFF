@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Refugiados.BFF.Models.Requisicoes.Endereco;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
         public DateTime? DataNascimento { get; set; }
         public List<int> Idiomas { get; set; }
         public List<int> AreasTrabalho { get; set; }
+        public CadastrarAtualizarEnderecoRequestModel Endereco { get; set; }
 
         public ValidacaoRequisicaoModel Validar()
         {
@@ -46,17 +48,24 @@ namespace Refugiados.BFF.Models.Requisicoes.Usuario
                     Nacionalidade = Nacionalidade,
                     AreaFormacao = AreaFormacao,
                     Idiomas = new List<IdiomaModel>(),
-                    AreasTrabalho = new List<AreaTrabalhoModel>()
+                    AreasTrabalho = new List<AreaTrabalhoModel>(),
+                    Endereco = this.Endereco?.CriarEndereco()
                 };
 
-                foreach (var codigoIdioma in Idiomas)
+                if (Idiomas != null)
                 {
-                    colaborador.Idiomas.Add(new IdiomaModel { CodigoIdioma = codigoIdioma });
+                    foreach (var codigoIdioma in Idiomas)
+                    {
+                        colaborador.Idiomas.Add(new IdiomaModel { CodigoIdioma = codigoIdioma });
+                    }
                 }
 
-                foreach (var codigoAreaTrabalho in AreasTrabalho)
+                if (AreasTrabalho != null)
                 {
-                    colaborador.AreasTrabalho.Add(new AreaTrabalhoModel { CodigoAreaTrabalho = codigoAreaTrabalho });
+                    foreach (var codigoAreaTrabalho in AreasTrabalho)
+                    {
+                        colaborador.AreasTrabalho.Add(new AreaTrabalhoModel { CodigoAreaTrabalho = codigoAreaTrabalho });
+                    }
                 }
 
                 return colaborador;
