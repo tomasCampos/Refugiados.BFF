@@ -71,7 +71,7 @@ namespace Refugiados.BFF.Servicos
 
             var areasTrabalhoEmpresa = await _areaTrabalhoServico.ListarAreasTrabalhoEmpresa(empresa.codigo_empresa);
 
-            return new EmpresaModel
+            var resultado =  new EmpresaModel
             {
                 CodigoEmpresa = empresa.codigo_empresa,
                 CodigoUsuario = empresa.codigo_usuario,
@@ -85,8 +85,17 @@ namespace Refugiados.BFF.Servicos
                 DataAlteracao = empresa.data_alteracao,
                 Entrevistado = empresa.entrevistado,
                 TelefoneUsuario = empresa.telefone_usuario,
-                AreasTrabalho = areasTrabalhoEmpresa.ToList()
-            };            
+                AreasTrabalho = areasTrabalhoEmpresa.ToList(),
+                Endereco = empresa.codigo_endereco.HasValue ? new EnderecoModel { CodigoEndereco = empresa.codigo_endereco.Value } : null
+            };
+
+            if (resultado.Endereco != null)
+            {
+                var endereco = await _enderecoServico.ObterEndereco(resultado.Endereco.CodigoEndereco);
+                resultado.Endereco = endereco;
+            }
+
+            return resultado;
         }
 
         public async Task<List<EmpresaModel>> ListarEmpresas()
@@ -106,13 +115,20 @@ namespace Refugiados.BFF.Servicos
                 DataCriacao = empresa.data_criacao,
                 DataAlteracao = empresa.data_alteracao,
                 Entrevistado = empresa.entrevistado,
-                TelefoneUsuario = empresa.telefone_usuario
+                TelefoneUsuario = empresa.telefone_usuario,
+                Endereco = empresa.codigo_endereco.HasValue ? new EnderecoModel { CodigoEndereco = empresa.codigo_endereco.Value } : null
             }).ToList();
 
             foreach (var empresa in empresas)
             {
                 var areasTrabalhoEmpresa = await _areaTrabalhoServico.ListarAreasTrabalhoEmpresa(empresa.CodigoEmpresa);
                 empresa.AreasTrabalho = areasTrabalhoEmpresa.ToList();
+
+                if (empresa.Endereco != null)
+                {
+                    var endereco = await _enderecoServico.ObterEndereco(empresa.Endereco.CodigoEndereco);
+                    empresa.Endereco = endereco;
+                }
             }
 
             return empresas;

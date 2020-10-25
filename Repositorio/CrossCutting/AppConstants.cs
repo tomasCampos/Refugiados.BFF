@@ -86,13 +86,13 @@
                                                         WHERE u.usuario_inativo = 0;";
 
         public const string OBTER_EMPRESA_POR_CODIGO_USUARIO = @"SELECT e.codigo_empresa, e.razao_social, e.codigo_usuario, e.data_alteracao, e.data_criacao, u.email_usuario,
-                                                               e.cnpj, e.nome_fantasia, e.data_fundacao, e.numero_funcionarios, u.entrevistado, u.telefone_usuario
+                                                               e.cnpj, e.nome_fantasia, e.data_fundacao, e.numero_funcionarios, u.entrevistado, u.telefone_usuario, e.codigo_endereco
                                                                FROM heroku_93ac2d8811d872a.empresa AS e
                                                                INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON e.codigo_usuario = u.codigo_usuario
                                                                WHERE e.codigo_usuario = @codigo_usuario AND u.usuario_inativo = 0;";
 
         public const string LISTAR_EMPRESAS_SQL = @"SELECT e.codigo_empresa, e.razao_social, e.codigo_usuario, e.data_alteracao, e.data_criacao, u.email_usuario, e.cnpj, 
-                                                    e.nome_fantasia, e.data_fundacao, e.numero_funcionarios, u.entrevistado, u.telefone_usuario
+                                                    e.nome_fantasia, e.data_fundacao, e.numero_funcionarios, u.entrevistado, u.telefone_usuario, e.codigo_endereco
                                                     FROM heroku_93ac2d8811d872a.empresa AS e
                                                     INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON e.codigo_usuario = u.codigo_usuario
                                                     WHERE u.usuario_inativo = 0;";

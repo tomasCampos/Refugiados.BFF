@@ -17,5 +17,6 @@ namespace Repositorio.Dtos
         public string nome_fantasia { get; set; }        
         public DateTime? data_fundacao { get; set; }        
         public int? numero_funcionarios { get; set; }
+        public int? codigo_endereco { get; set; }
     }
 }
