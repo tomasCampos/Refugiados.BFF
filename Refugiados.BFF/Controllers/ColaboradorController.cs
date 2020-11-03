@@ -4,6 +4,7 @@ using Refugiados.BFF.Models.Colaborador.Requisicoes;
 using Refugiados.BFF.Models.Respostas;
 using Refugiados.BFF.Servicos;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -47,9 +48,9 @@ namespace Refugiados.BFF.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> ListarColaborador()
+        public async Task<IActionResult> ListarColaborador(string nacionalidade, string cidade, int? codigoIdioma, int? codigoAreaTrabalho)
         {
-            var colaboradores = await _colaboradorServico.ListarColaboradores();
+            var colaboradores = await _colaboradorServico.ListarColaboradores(nacionalidade, cidade, codigoIdioma, codigoAreaTrabalho);
 
             return Ok(new RespostaModel
             {
