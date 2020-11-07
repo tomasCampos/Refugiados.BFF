@@ -60,12 +60,12 @@ namespace Repositorio.Repositorios
             var joinIdioma = string.Empty;
 
             if (!string.IsNullOrEmpty(nacionalidade))            
-                filtroNacionalidade = $"AND c.nacionalidade = '{nacionalidade}'";
+                filtroNacionalidade = $"AND c.nacionalidade LIKE '%{nacionalidade}%'";
 
             if (!string.IsNullOrEmpty(cidade))
             {
                 joinEndereco = "INNER JOIN endereco AS e ON e.codigo_endereco = c.codigo_endereco";
-                filtroCidade = $"AND e.cidade_endereco = '{cidade}'";
+                filtroCidade = $"AND e.cidade_endereco LIKE '%{cidade}%'";
             }
 
             if (codigoIdioma.HasValue)

@@ -102,7 +102,12 @@
                                                     e.nome_fantasia, e.data_fundacao, e.numero_funcionarios, u.entrevistado, u.telefone_usuario, e.codigo_endereco
                                                     FROM heroku_93ac2d8811d872a.empresa AS e
                                                     INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON e.codigo_usuario = u.codigo_usuario
-                                                    WHERE u.usuario_inativo = 0;";
+                                                    {0}
+                                                    {1}
+                                                    WHERE u.usuario_inativo = 0
+                                                    {2}
+                                                    {3}
+                                                    {4};";
 
         public const string CADASTRAR_COLABORADOR_SQL = @"INSERT INTO `heroku_93ac2d8811d872a`.`colaborador`
                                                     (`codigo_colaborador`,

@@ -99,9 +99,9 @@ namespace Refugiados.BFF.Servicos
             return resultado;
         }
 
-        public async Task<List<EmpresaModel>> ListarEmpresas()
+        public async Task<List<EmpresaModel>> ListarEmpresas(string nomeFantasia, string cidade, int? codigoAreaTrabalho)
         {
-            var lista = await _empresaRepositorio.ListarEmpresas();
+            var lista = await _empresaRepositorio.ListarEmpresas(nomeFantasia, cidade, codigoAreaTrabalho);
 
             var empresas = lista.Select(empresa => new EmpresaModel
             {
