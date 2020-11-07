@@ -41,9 +41,32 @@ namespace Repositorio.Repositorios
             });
         }
 
-        public async Task<List<EmpresaDto>> ListarEmpresas()
+        public async Task<List<EmpresaDto>> ListarEmpresas(string nomeFantasia, string cidade, int? codigoAreaTrabalho)
         {
-            var empresas = await _db.SelecionarAsync<EmpresaDto>(AppConstants.LISTAR_EMPRESAS_SQL);
+            var filtroNomeFantasia = string.Empty;
+            var filtroCidade = string.Empty;
+            var filtroAreasTrabalho = string.Empty;
+
+            var joinEndereco = string.Empty;
+            var joinAreaTrabalho = string.Empty;
+
+            if (!string.IsNullOrEmpty(nomeFantasia))
+                filtroNomeFantasia = $"AND e.nome_fantasia LIKE '%{nomeFantasia}%'";
+
+            if (!string.IsNullOrEmpty(cidade))
+            {
+                joinEndereco = "INNER JOIN heroku_93ac2d8811d872a.endereco AS en ON e.codigo_endereco = en.codigo_endereco";
+                filtroCidade = $"AND en.cidade_endereco LIKE '%{cidade}%'";
+            }
+
+            if (codigoAreaTrabalho.HasValue)
+            {
+                joinAreaTrabalho = "INNER JOIN empresa_area_trabalho AS eat ON eat.codigo_empresa = e.codigo_empresa";
+                filtroAreasTrabalho = $"AND eat.codigo_area_trabalho = {codigoAreaTrabalho.Value}";
+            }
+
+            var query = string.Format(AppConstants.LISTAR_EMPRESAS_SQL, joinEndereco, joinAreaTrabalho, filtroCidade, filtroAreasTrabalho, filtroNomeFantasia);
+            var empresas = await _db.SelecionarAsync<EmpresaDto>(query);
             return empresas.ToList();
         }
 
