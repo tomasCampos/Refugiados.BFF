@@ -20,5 +20,12 @@ namespace Repositorio.Dtos
         public string telefone_usuario { get; set; }
         public bool entrevistado { get; set; }
         public int codigo_endereco { get; set; }
+        public string cidade_endereco { get; set; }
+        public string bairro_endereco { get; set; }
+        public string rua_endereco { get; set; }
+        public string numero_endereco { get; set; }
+        public string complemento_endereco { get; set; }
+        public string cep_endereco { get; set; }
+        public string estado_endereco { get; set; }
     }
 }

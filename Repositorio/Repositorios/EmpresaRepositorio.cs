@@ -47,7 +47,6 @@ namespace Repositorio.Repositorios
             var filtroCidade = string.Empty;
             var filtroAreasTrabalho = string.Empty;
 
-            var joinEndereco = string.Empty;
             var joinAreaTrabalho = string.Empty;
 
             if (!string.IsNullOrEmpty(nomeFantasia))
@@ -55,7 +54,6 @@ namespace Repositorio.Repositorios
 
             if (!string.IsNullOrEmpty(cidade))
             {
-                joinEndereco = "INNER JOIN heroku_93ac2d8811d872a.endereco AS en ON e.codigo_endereco = en.codigo_endereco";
                 filtroCidade = $"AND en.cidade_endereco LIKE '%{cidade}%'";
             }
 
@@ -65,7 +63,7 @@ namespace Repositorio.Repositorios
                 filtroAreasTrabalho = $"AND eat.codigo_area_trabalho = {codigoAreaTrabalho.Value}";
             }
 
-            var query = string.Format(AppConstants.LISTAR_EMPRESAS_SQL, joinEndereco, joinAreaTrabalho, filtroCidade, filtroAreasTrabalho, filtroNomeFantasia);
+            var query = string.Format(AppConstants.LISTAR_EMPRESAS_SQL, joinAreaTrabalho, filtroCidade, filtroAreasTrabalho, filtroNomeFantasia);
             var empresas = await _db.SelecionarAsync<EmpresaDto>(query);
             return empresas.ToList();
         }

@@ -106,7 +106,17 @@ namespace Refugiados.BFF.Servicos
                 AreaFormacao = colab.area_formacao,
                 Entrevistado = colab.entrevistado,
                 TelefoneUsuario = colab.telefone_usuario,
-                Endereco = new EnderecoModel { CodigoEndereco = colab.codigo_endereco }
+                Endereco = new EnderecoModel 
+                { 
+                    CodigoEndereco = colab.codigo_endereco,
+                    CidadeEndereco = colab.cidade_endereco,
+                    BairroEndereco = colab.bairro_endereco,
+                    RuaEndereco = colab.rua_endereco,
+                    NumeroEndereco = colab.numero_endereco,
+                    ComplementoEndereco = colab.complemento_endereco,
+                    CepEndereco = colab.cep_endereco,
+                    EstadoEndereco = colab.estado_endereco
+                }
             }).ToList();
 
             foreach (var colaborador in colaboradores)
@@ -116,9 +126,6 @@ namespace Refugiados.BFF.Servicos
 
                 var areasTrabalhoColaborador = await _areaTrabalhoServico.ListarAreasTrabalhoColaborador(colaborador.CodigoColaborador);
                 colaborador.AreasTrabalho = areasTrabalhoColaborador.ToList();
-
-                var endereco = await _enderecoServico.ObterEndereco(colaborador.Endereco.CodigoEndereco);
-                colaborador.Endereco = endereco;
             }
 
             return colaboradores;
@@ -132,8 +139,7 @@ namespace Refugiados.BFF.Servicos
                 return null;
 
             var idiomasColaborador = await _idiomaServico.ListarIdiomaColaborador(colaborador.codigo_colaborador);
-            var areasTrabalhoColaborador = await _areaTrabalhoServico.ListarAreasTrabalhoColaborador(colaborador.codigo_colaborador);
-            var endereco = await _enderecoServico.ObterEndereco(colaborador.codigo_endereco);
+            var areasTrabalhoColaborador = await _areaTrabalhoServico.ListarAreasTrabalhoColaborador(colaborador.codigo_colaborador);            
 
             var resultado = new ColaboradorModel
             {
@@ -152,7 +158,17 @@ namespace Refugiados.BFF.Servicos
                 TelefoneUsuario = colaborador.telefone_usuario,
                 Idiomas = idiomasColaborador.ToList(),
                 AreasTrabalho = areasTrabalhoColaborador.ToList(),
-                Endereco = endereco
+                Endereco = new EnderecoModel
+                {
+                    CodigoEndereco = colaborador.codigo_endereco,
+                    CidadeEndereco = colaborador.cidade_endereco,
+                    BairroEndereco = colaborador.bairro_endereco,
+                    RuaEndereco = colaborador.rua_endereco,
+                    NumeroEndereco = colaborador.numero_endereco,
+                    ComplementoEndereco = colaborador.complemento_endereco,
+                    CepEndereco = colaborador.cep_endereco,
+                    EstadoEndereco = colaborador.estado_endereco
+                }
             };
 
             return resultado;

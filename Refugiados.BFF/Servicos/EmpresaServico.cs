@@ -75,8 +75,7 @@ namespace Refugiados.BFF.Servicos
             if (empresa == null)
                 return null;
 
-            var areasTrabalhoEmpresa = await _areaTrabalhoServico.ListarAreasTrabalhoEmpresa(empresa.codigo_empresa);
-            var endereco = await _enderecoServico.ObterEndereco(empresa.codigo_endereco);
+            var areasTrabalhoEmpresa = await _areaTrabalhoServico.ListarAreasTrabalhoEmpresa(empresa.codigo_empresa);            
 
             var resultado =  new EmpresaModel
             {
@@ -93,7 +92,17 @@ namespace Refugiados.BFF.Servicos
                 Entrevistado = empresa.entrevistado,
                 TelefoneUsuario = empresa.telefone_usuario,
                 AreasTrabalho = areasTrabalhoEmpresa.ToList(),
-                Endereco = endereco
+                Endereco = new EnderecoModel
+                {
+                    CodigoEndereco = empresa.codigo_endereco,
+                    CidadeEndereco = empresa.cidade_endereco,
+                    BairroEndereco = empresa.bairro_endereco,
+                    RuaEndereco = empresa.rua_endereco,
+                    NumeroEndereco = empresa.numero_endereco,
+                    ComplementoEndereco = empresa.complemento_endereco,
+                    CepEndereco = empresa.cep_endereco,
+                    EstadoEndereco = empresa.estado_endereco
+                }
             };
 
             return resultado;
@@ -117,16 +126,23 @@ namespace Refugiados.BFF.Servicos
                 DataAlteracao = empresa.data_alteracao,
                 Entrevistado = empresa.entrevistado,
                 TelefoneUsuario = empresa.telefone_usuario,
-                Endereco = new EnderecoModel { CodigoEndereco = empresa.codigo_endereco }
+                Endereco = new EnderecoModel 
+                { 
+                    CodigoEndereco = empresa.codigo_endereco,
+                    CidadeEndereco = empresa.cidade_endereco,
+                    BairroEndereco = empresa.bairro_endereco,
+                    RuaEndereco = empresa.rua_endereco,
+                    NumeroEndereco = empresa.numero_endereco,
+                    ComplementoEndereco = empresa.complemento_endereco,
+                    CepEndereco = empresa.cep_endereco,
+                    EstadoEndereco = empresa.estado_endereco
+                }
             }).ToList();
 
             foreach (var empresa in empresas)
             {
                 var areasTrabalhoEmpresa = await _areaTrabalhoServico.ListarAreasTrabalhoEmpresa(empresa.CodigoEmpresa);
                 empresa.AreasTrabalho = areasTrabalhoEmpresa.ToList();
-
-                var endereco = await _enderecoServico.ObterEndereco(empresa.Endereco.CodigoEndereco);
-                empresa.Endereco = endereco;
             }
 
             return empresas;
