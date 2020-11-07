@@ -48,9 +48,40 @@ namespace Repositorio.Repositorios
             });
         }
 
-        public async Task<List<ColaboradorDto>> ListarColaboradores()
+        public async Task<List<ColaboradorDto>> ListarColaboradores(string nacionalidade, string cidade, int? codigoIdioma, int? codigoAreaTrabalho)
         {
-            var colaboradores = await _dataBase.SelecionarAsync<ColaboradorDto>(AppConstants.LISTAR_COLABORADORES_SQL);
+            var filtroNacionalidade = string.Empty;
+            var filtroCidade = string.Empty;
+            var filtroIdiomas = string.Empty;
+            var filtroAreasTrabalho = string.Empty;
+
+            var joinEndereco = string.Empty;
+            var joinAreaTrabalho = string.Empty;
+            var joinIdioma = string.Empty;
+
+            if (!string.IsNullOrEmpty(nacionalidade))            
+                filtroNacionalidade = $"AND c.nacionalidade = '{nacionalidade}'";
+
+            if (!string.IsNullOrEmpty(cidade))
+            {
+                joinEndereco = "INNER JOIN endereco AS e ON e.codigo_endereco = c.codigo_endereco";
+                filtroCidade = $"AND e.cidade_endereco = '{cidade}'";
+            }
+
+            if (codigoIdioma.HasValue)
+            {
+                filtroIdiomas = $"AND ci.codigo_idioma = '{codigoIdioma.Value}'";
+                joinIdioma = "INNER JOIN colaborador_idioma AS ci ON ci.codigo_colaborador = c.codigo_colaborador";
+            }
+
+            if (codigoAreaTrabalho.HasValue)
+            {
+                filtroAreasTrabalho = $"AND cat.codigo_area_trabalho = '{codigoAreaTrabalho.Value}'";
+                joinAreaTrabalho = "INNER JOIN colaborador_area_trabalho AS cat ON cat.codigo_colaborador = c.codigo_colaborador";
+            }
+
+            var query = string.Format(AppConstants.LISTAR_COLABORADORES_SQL, joinEndereco, joinAreaTrabalho, joinIdioma, filtroNacionalidade, filtroCidade, filtroIdiomas, filtroAreasTrabalho);
+            var colaboradores = await _dataBase.SelecionarAsync<ColaboradorDto>(query);
             return colaboradores.ToList();
         }
 
@@ -65,7 +96,7 @@ namespace Repositorio.Repositorios
     {
         Task CadastrarColaborador(string nome, int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaformacao, string escolaridade, int codigoEndereco);
         Task<ColaboradorDto> ObterColaboradorPorCodigoUsuario(int codigoUsuario);
-        Task<List<ColaboradorDto>> ListarColaboradores();
+        Task<List<ColaboradorDto>> ListarColaboradores(string nacionalidade, string cidade, int? codigoIdioma, int? codigoAreaTrabalho);
         Task AtualizarColaborador(string nome, int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade);
     }
 }

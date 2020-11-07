@@ -79,11 +79,18 @@
                                                                         INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON c.codigo_usuario = u.codigo_usuario
                                                                         WHERE c.codigo_usuario = @codigo_usuario AND u.usuario_inativo = 0;";
 
-        public const string LISTAR_COLABORADORES_SQL = @"SELECT c.codigo_colaborador, c.nome_colaborador, c.codigo_usuario, c.data_alteracao, c.data_criacao, u.email_usuario, c.nacionalidade, 
+        public const string LISTAR_COLABORADORES_SQL = @"SELECT DISTINCT c.codigo_colaborador, c.nome_colaborador, c.codigo_usuario, c.data_alteracao, c.data_criacao, u.email_usuario, c.nacionalidade, 
                                                         c.data_nascimento, c.data_chegada_brasil, c.area_formacao, c.escolaridade, u.entrevistado, u.telefone_usuario, c.codigo_endereco
                                                         FROM heroku_93ac2d8811d872a.colaborador AS c
                                                         INNER JOIN heroku_93ac2d8811d872a.usuario AS u ON c.codigo_usuario = u.codigo_usuario
-                                                        WHERE u.usuario_inativo = 0;";
+                                                        {0}
+                                                        {1}
+                                                        {2}
+                                                        WHERE u.usuario_inativo = 0
+                                                        {3}
+                                                        {4}
+                                                        {5}
+                                                        {6};";
 
         public const string OBTER_EMPRESA_POR_CODIGO_USUARIO = @"SELECT e.codigo_empresa, e.razao_social, e.codigo_usuario, e.data_alteracao, e.data_criacao, u.email_usuario,
                                                                e.cnpj, e.nome_fantasia, e.data_fundacao, e.numero_funcionarios, u.entrevistado, u.telefone_usuario, e.codigo_endereco
