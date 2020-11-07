@@ -55,18 +55,14 @@ namespace Repositorio.Repositorios
             var filtroIdiomas = string.Empty;
             var filtroAreasTrabalho = string.Empty;
 
-            var joinEndereco = string.Empty;
             var joinAreaTrabalho = string.Empty;
             var joinIdioma = string.Empty;
 
             if (!string.IsNullOrEmpty(nacionalidade))            
                 filtroNacionalidade = $"AND c.nacionalidade LIKE '%{nacionalidade}%'";
 
-            if (!string.IsNullOrEmpty(cidade))
-            {
-                joinEndereco = "INNER JOIN endereco AS e ON e.codigo_endereco = c.codigo_endereco";
+            if (!string.IsNullOrEmpty(cidade))            
                 filtroCidade = $"AND e.cidade_endereco LIKE '%{cidade}%'";
-            }
 
             if (codigoIdioma.HasValue)
             {
@@ -80,7 +76,7 @@ namespace Repositorio.Repositorios
                 joinAreaTrabalho = "INNER JOIN colaborador_area_trabalho AS cat ON cat.codigo_colaborador = c.codigo_colaborador";
             }
 
-            var query = string.Format(AppConstants.LISTAR_COLABORADORES_SQL, joinEndereco, joinAreaTrabalho, joinIdioma, filtroNacionalidade, filtroCidade, filtroIdiomas, filtroAreasTrabalho);
+            var query = string.Format(AppConstants.LISTAR_COLABORADORES_SQL, joinAreaTrabalho, joinIdioma, filtroNacionalidade, filtroCidade, filtroIdiomas, filtroAreasTrabalho);
             var colaboradores = await _dataBase.SelecionarAsync<ColaboradorDto>(query);
             return colaboradores.ToList();
         }
