@@ -184,7 +184,7 @@ namespace Refugiados.BFF.Controllers
                 {
                     StatusCode = HttpStatusCode.OK,
                     Sucesso = false,
-                    Mensagem = "A entrevista com a ACNUR ainda não foi feita. Aguarde para que seu acesso seja liberado."
+                    Mensagem = "A entrevista com a Catedra Sergio Vieira de Melo ainda não foi feita. Aguarde para que seu acesso seja liberado."
                 });
             }
 
