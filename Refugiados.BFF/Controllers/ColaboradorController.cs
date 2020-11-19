@@ -48,9 +48,9 @@ namespace Refugiados.BFF.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> ListarColaborador(string nacionalidade, string cidade, int? codigoIdioma, int? codigoAreaTrabalho)
+        public async Task<IActionResult> ListarColaborador(string nacionalidade, string cidade, int? codigoIdioma, int? codigoAreaTrabalho, bool? entrevistado)
         {
-            var colaboradores = await _colaboradorServico.ListarColaboradores(nacionalidade, cidade, codigoIdioma, codigoAreaTrabalho);
+            var colaboradores = await _colaboradorServico.ListarColaboradores(nacionalidade, cidade, codigoIdioma, codigoAreaTrabalho, entrevistado);
 
             return Ok(new RespostaModel
             {

@@ -94,7 +94,8 @@
                                                         {2}
                                                         {3}
                                                         {4}
-                                                        {5};";
+                                                        {5}
+                                                        {6};";
 
         public const string OBTER_EMPRESA_POR_CODIGO_USUARIO = @"SELECT e.codigo_empresa, e.razao_social, e.codigo_usuario, e.data_alteracao, e.data_criacao, u.email_usuario,
                                                                 e.cnpj, e.nome_fantasia, e.data_fundacao, e.numero_funcionarios, u.entrevistado, u.telefone_usuario, e.codigo_endereco,

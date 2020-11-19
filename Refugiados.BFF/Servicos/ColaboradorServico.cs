@@ -87,9 +87,9 @@ namespace Refugiados.BFF.Servicos
             return colaboradorCadastrado.CodigoColaborador;
         }
 
-        public async Task<List<ColaboradorModel>> ListarColaboradores(string nacionalidade, string cidade, int? codigoIdioma, int? codigoAreaTrabalho)
+        public async Task<List<ColaboradorModel>> ListarColaboradores(string nacionalidade, string cidade, int? codigoIdioma, int? codigoAreaTrabalho, bool? entrevistado)
         {
-            var lista = await _colaboradorRepositorio.ListarColaboradores(nacionalidade, cidade, codigoIdioma, codigoAreaTrabalho);
+            var lista = await _colaboradorRepositorio.ListarColaboradores(nacionalidade, cidade, codigoIdioma, codigoAreaTrabalho, entrevistado);
 
             var colaboradores = lista.Select(colab => new ColaboradorModel
             {
@@ -179,7 +179,7 @@ namespace Refugiados.BFF.Servicos
     {
         Task<int> CadastrarColaborador(ColaboradorModel colaborador);
         Task<ColaboradorModel> ObterColaboradorPorCodigoUsuario(int codigoUsuario);
-        Task<List<ColaboradorModel>> ListarColaboradores(string nacionalidade, string cidade, int? codigoIdioma, int? codigoAreaTrabalho);
+        Task<List<ColaboradorModel>> ListarColaboradores(string nacionalidade, string cidade, int? codigoIdioma, int? codigoAreaTrabalho, bool? entrevistado);
         Task AtualizarColaborador(string nome, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade, int codigoUsuario, List<int> codigosIdiomas, List<int> codigosAreasTrabalho, EnderecoModel endereco);
     }
 }

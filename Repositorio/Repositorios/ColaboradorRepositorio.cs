@@ -48,12 +48,13 @@ namespace Repositorio.Repositorios
             });
         }
 
-        public async Task<List<ColaboradorDto>> ListarColaboradores(string nacionalidade, string cidade, int? codigoIdioma, int? codigoAreaTrabalho)
+        public async Task<List<ColaboradorDto>> ListarColaboradores(string nacionalidade, string cidade, int? codigoIdioma, int? codigoAreaTrabalho, bool? entrevistado)
         {
             var filtroNacionalidade = string.Empty;
             var filtroCidade = string.Empty;
             var filtroIdiomas = string.Empty;
             var filtroAreasTrabalho = string.Empty;
+            var filtroEntrevistado = string.Empty;
 
             var joinAreaTrabalho = string.Empty;
             var joinIdioma = string.Empty;
@@ -76,7 +77,12 @@ namespace Repositorio.Repositorios
                 joinAreaTrabalho = "INNER JOIN colaborador_area_trabalho AS cat ON cat.codigo_colaborador = c.codigo_colaborador";
             }
 
-            var query = string.Format(AppConstants.LISTAR_COLABORADORES_SQL, joinAreaTrabalho, joinIdioma, filtroNacionalidade, filtroCidade, filtroIdiomas, filtroAreasTrabalho);
+            if (entrevistado.HasValue)
+            {
+                filtroEntrevistado = $"AND u.entrevistado = {entrevistado.Value}";
+            }
+
+            var query = string.Format(AppConstants.LISTAR_COLABORADORES_SQL, joinAreaTrabalho, joinIdioma, filtroNacionalidade, filtroCidade, filtroIdiomas, filtroAreasTrabalho, filtroEntrevistado);
             var colaboradores = await _dataBase.SelecionarAsync<ColaboradorDto>(query);
             return colaboradores.ToList();
         }
@@ -92,7 +98,7 @@ namespace Repositorio.Repositorios
     {
         Task CadastrarColaborador(string nome, int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaformacao, string escolaridade, int codigoEndereco);
         Task<ColaboradorDto> ObterColaboradorPorCodigoUsuario(int codigoUsuario);
-        Task<List<ColaboradorDto>> ListarColaboradores(string nacionalidade, string cidade, int? codigoIdioma, int? codigoAreaTrabalho);
+        Task<List<ColaboradorDto>> ListarColaboradores(string nacionalidade, string cidade, int? codigoIdioma, int? codigoAreaTrabalho, bool? entrevistado);
         Task AtualizarColaborador(string nome, int codigoUsuario, string nacionalidade, DateTime? dataNascimento, DateTime? dataChegadaBrasil, string areaFormacao, string escolaridade);
     }
 }
