@@ -45,9 +45,9 @@ namespace Refugiados.BFF.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> ListarEmpresa(string nomeFantasia, string cidade, int? codigoAreaTrabalho)
+        public async Task<IActionResult> ListarEmpresa(string nomeFantasia, string cidade, int? codigoAreaTrabalho, bool? entrevistado)
         {
-            var empresas = await _empresaServico.ListarEmpresas(nomeFantasia, cidade, codigoAreaTrabalho);
+            var empresas = await _empresaServico.ListarEmpresas(nomeFantasia, cidade, codigoAreaTrabalho, entrevistado);
 
             return Ok(new RespostaModel
             {

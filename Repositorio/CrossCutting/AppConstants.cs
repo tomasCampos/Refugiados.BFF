@@ -114,7 +114,8 @@
                                                     WHERE u.usuario_inativo = 0
                                                     {1}
                                                     {2}
-                                                    {3};";
+                                                    {3}
+                                                    {4};";
 
         public const string CADASTRAR_COLABORADOR_SQL = @"INSERT INTO `heroku_93ac2d8811d872a`.`colaborador`
                                                     (`codigo_colaborador`,

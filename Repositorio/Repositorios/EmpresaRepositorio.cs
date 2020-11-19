@@ -41,11 +41,12 @@ namespace Repositorio.Repositorios
             });
         }
 
-        public async Task<List<EmpresaDto>> ListarEmpresas(string nomeFantasia, string cidade, int? codigoAreaTrabalho)
+        public async Task<List<EmpresaDto>> ListarEmpresas(string nomeFantasia, string cidade, int? codigoAreaTrabalho, bool? entrevistado)
         {
             var filtroNomeFantasia = string.Empty;
             var filtroCidade = string.Empty;
             var filtroAreasTrabalho = string.Empty;
+            var filtroEntrevistado = string.Empty;
 
             var joinAreaTrabalho = string.Empty;
 
@@ -63,7 +64,12 @@ namespace Repositorio.Repositorios
                 filtroAreasTrabalho = $"AND eat.codigo_area_trabalho = {codigoAreaTrabalho.Value}";
             }
 
-            var query = string.Format(AppConstants.LISTAR_EMPRESAS_SQL, joinAreaTrabalho, filtroCidade, filtroAreasTrabalho, filtroNomeFantasia);
+            if (entrevistado.HasValue)
+            {
+                filtroEntrevistado = $"AND u.entrevistado = {entrevistado.Value}";
+            }
+
+            var query = string.Format(AppConstants.LISTAR_EMPRESAS_SQL, joinAreaTrabalho, filtroCidade, filtroAreasTrabalho, filtroNomeFantasia, filtroEntrevistado);
             var empresas = await _db.SelecionarAsync<EmpresaDto>(query);
             return empresas.ToList();
         }
