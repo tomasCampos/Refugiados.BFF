@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Repositorio.CrossCutting;
 using Repositorio.Dtos;
 using Repositorio.Insfraestrutura;
-using Repositorio.Repositorios.Interfaces;
 
 namespace Repositorio.Repositorios
 {
@@ -80,5 +79,13 @@ namespace Repositorio.Repositorios
 
             return response.FirstOrDefault();
         }
+    }
+
+    public interface IEmpresaRepositorio
+    {
+        public Task<EmpresaDto> ObterEmpresaPorCodigoUsuario(int codigoUsuario);
+        public Task<List<EmpresaDto>> ListarEmpresas(string nomeFantasia, string cidade, int? codigoAreaTrabalho, bool? entrevistado);
+        public Task CadastrarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios, int codigoEndereco);
+        public Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios);
     }
 }

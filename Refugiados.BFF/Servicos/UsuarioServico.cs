@@ -1,11 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Refugiados.BFF.Models;
-using Refugiados.BFF.Servicos.Interfaces;
 using Refugiados.BFF.Servicos.Model;
 using Refugiados.BFF.Util;
 using Repositorio.Dtos;
 using Repositorio.Repositorios;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

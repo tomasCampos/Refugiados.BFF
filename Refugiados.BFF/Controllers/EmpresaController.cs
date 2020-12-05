@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Refugiados.BFF.Models.Respostas;
 using Refugiados.BFF.Models.Requisicoes.Empresa;
-using Refugiados.BFF.Servicos.Interfaces;
 using System.Net;
+using Refugiados.BFF.Servicos;
 
 namespace Refugiados.BFF.Controllers
 {

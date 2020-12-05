@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Refugiados.BFF.Models;
-using Refugiados.BFF.Servicos.Interfaces;
-using Repositorio.Repositorios.Interfaces;
+using Repositorio.Repositorios;
 
 namespace Refugiados.BFF.Servicos
 {
@@ -147,6 +146,14 @@ namespace Refugiados.BFF.Servicos
 
             return empresas;
         }
+    }
+
+    public interface IEmpresaServico
+    {
+        Task<EmpresaModel> ObterEmpresaPorCodigoUsuario(int codigoUsuario);
+        Task<List<EmpresaModel>> ListarEmpresas(string nomeFantasia, string cidade, int? codigoAreaTrabalho, bool? entrevistado);
+        Task<int> CadastrarEmpresa(EmpresaModel empresa);
+        Task AtualizarEmpresa(string razaoSocial, int codigoUsuario, string cnpj, string nomeFantasia, DateTime? dataFundacao, int? numeroFuncionarios, List<int> codigosAreasTrabalho, EnderecoModel endereco);
     }
 }
 

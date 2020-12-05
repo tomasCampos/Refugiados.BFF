@@ -1,4 +1,3 @@
-using Autofac;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,11 +22,6 @@ namespace Refugiados.BFF
             Environment = environment;
         }
 
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
-            builder.RegisterModule(new IocModule());
-        }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -48,6 +42,8 @@ namespace Refugiados.BFF
             services.AddScoped<IAreaTrabalhoServico, AreaTrabalhoServico>();
             services.AddScoped<IEnderecoRepositorio, EnderecoRepositorio>();
             services.AddScoped<IEnderecoServico, EnderecoServico>();
+            services.AddScoped<IEmpresaRepositorio, EmpresaRepositorio>();
+            services.AddScoped<IEmpresaServico, EmpresaServico>();
 
             services.AddCors(options =>
             {

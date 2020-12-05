@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Autofac.Extensions.DependencyInjection;
 
 namespace Refugiados.BFF
 {
@@ -17,9 +16,7 @@ namespace Refugiados.BFF
                 .ConfigureAppConfiguration((_, config) =>
                 {
                     var configBuilt = config.Build();
-                })
-                .ConfigureServices(services => services.AddAutofac())
+                })                
                 .UseStartup<Startup>();
-
     }
 }
